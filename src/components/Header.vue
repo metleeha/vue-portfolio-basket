@@ -1,89 +1,91 @@
 <template>
-  <v-toolbar color="indigo" fixed dark app>
-    <v-toolbar-side-icon @click="routerclick('/')"><v-icon>home</v-icon></v-toolbar-side-icon>
-    <v-toolbar-title>My Footprints</v-toolbar-title>
-    <v-btn icon @click="bookmark()">
-      <v-icon rounded>star_border</v-icon>
-    </v-btn>
-    <v-spacer></v-spacer>
-    <v-toolbar-items id="toolbaritems">
-      <v-btn flat @click="routerclick('/post')">Post</v-btn>
-      <v-btn flat @click="routerclick('/portfolio')">Portfolio</v-btn>
-      <v-btn flat @click="routerclick('/login')">Login</v-btn>
-    </v-toolbar-items>
-    <v-menu>
-        <template v-slot:activator="{ on }">
-          <v-toolbar-title v-on="on" id="toolbaricon">
-            <v-btn icon>
-              <v-icon>more_vert</v-icon>
-            </v-btn>
-          </v-toolbar-title>
-        </template>
+    <div>
+    <!-- sidebar -->
+	<!-- <v-navigation-drawer v-model="drawer" app fixed temporary>
+		<v-list>
+			<v-list-tile v-for="item in menuItems" 
+			:key="item.title"
+			router
+			:to="item.link">
+				<v-icon>{{ item.emoji }}</v-icon>
+				<v-list-tile-content>{{ item.title }}</v-list-tile-content>
+			</v-list-tile>
+		</v-list>
+	</v-navigation-drawer> -->
+	<!-- end sidebar -->
 
-        <v-list>
-          <v-list-tile><v-btn flat @click="routerclick('post')" class="menubtn">Post</v-btn></v-list-tile>
-          <v-list-tile><v-btn flat @click="routerclick('portfolio')" class="menubtn">Portfolio</v-btn></v-list-tile>
-          <v-list-tile><v-btn flat @click="routerclick('login')" class="menubtn">Login</v-btn></v-list-tile>
-        </v-list>
-      </v-menu>
-  </v-toolbar>
+    <!-- navbar --> 
+    <v-toolbar class="navbar-default" color='#1E56A0' fixed app temporary dark scroll-off-screen='true'>
+		<v-toolbar-side-icon 
+			@click.stop="drawer = !drawer"
+			class="hidden-sm-and-up"
+		><v-icon>fa-bars</v-icon></v-toolbar-side-icon>
+		<v-toolbar-title class="navbar-brand">
+		<router-link to="/" tag="span" style="cursor: pointer"><v-icon left>free_breakfast</v-icon></router-link>
+		TEN</v-toolbar-title>
+		<v-spacer></v-spacer>
+		<v-toolbar-items class="hidden-xs-only">
+			<v-btn flat v-for="item in menuItems" 
+			:key="item.title"
+			:to="item.link">
+				<v-icon left>{{ item.emoji }}</v-icon>
+				{{ item.title }}
+			</v-btn>
+		</v-toolbar-items>
+	</v-toolbar>
+	<!-- end navbar -->
+
+    <!-- backTotop button -->
+	<v-fab-transition>
+		<v-btn
+			v-show="fab"
+			v-scroll="onScroll"
+			class="md-5 mr-3 elevation-21"
+			fab
+			fixed
+			bottom
+			right
+			color="#d6e4f0"
+			@click="toTop"
+			>
+		<v-icon color="#163172">keyboard_arrow_up</v-icon>
+		</v-btn>
+	</v-fab-transition>
+	<!-- end backTotop button -->
+    </div>
 </template>
-
 <script>
 export default {
-	name: 'Header',
-  data: () => ({
-    }),
-  methods:{
-    routerclick(page){
-      this.$router.push(page);
-      window.scrollTo({
-        top: 0,
-        left: 0,
-        behavior: 'smooth'
-      });
+    name: 'Header',
+    data(){
+        return {
+            fab: false,
+            drawer: false,
+			menuItems: [
+				{ emoji: 'insert_emoticon', title: 'About Me', link: '/#aboutme'},
+				{ emoji: 'assessment', title: 'Portfolio', link: '/portfolio'},
+				{ emoji: 'create', title: 'Post', link: '/post'},
+				{ emoji: 'toys', title: 'Projects', link: '/#projects'}
+            ],
+        }
     },
-    bookmark(){
-      if (window.opera && window.print){// Opera
-        var e = document.createElement('a');
-        e.setAttribute('href', location.href);
-        e.setAttribute('title', document.title);
-        e.setAttribute('rel', 'sidebar');
-        e.click();
-      }
-      else if (document.all){// ie
-        window.external.AddFavorite(location.href, document.title);
-      }
-      else {
-        alert("chrome 과 safari, firefox 는 Ctrl + D 키를 눌러 북마크를 추가해주세요");
+    methods: {
+      onScroll () {
+        if (typeof window === 'undefined') return
+        const top = window.pageYOffset ||
+          document.documentElement.offsetTop ||
+          0
+        this.fab = top > 300
+      },
+      toTop () {
+        this.$router.push({ hash: '' })
+		this.$vuetify.goTo(0)
+		behavior: "smooth"
       }
     }
-  }
+    
 }
-
 </script>
-<style>
-.menubtn {
-  width: 100%;
-  margin: 0;
-}
-@media screen and (min-width:600px) {
-  #toolbaritems {
-    display: run-in;
-  }
-  #toolbaricon {
-    display: none;
-  }
-}
-@media screen and (max-width:960px) {
+<style scoped>
 
-}
-@media screen and (max-width:600px) {
-  #toolbaritems {
-    display: none;
-  }
-  #toolbaricon {
-    display: run-in;
-  }
-}
 </style>
