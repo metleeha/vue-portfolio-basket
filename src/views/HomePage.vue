@@ -15,7 +15,9 @@
           <p>안녕하세요, 컴퓨터 그래픽스 전문가가 되고싶은 정우성의 포트폴리오입니다.<br/>
           </p>
         </v-flex>
-        <link
+        <v-btn icon @click="translate()">
+          <v-icon rounded>star_border</v-icon>
+        </v-btn>
         <v-flex xs4 id="aboutmeImg">
             <v-img :src="getImgUrl('profile.png')" aspect-ratio="0.7"/>
         </v-flex>
@@ -54,6 +56,7 @@ import ImgBanner from '../components/ImgBanner'
 import PortfolioList from '../components/PortfolioList'
 import PostList from '../components/PostList'
 import RepositoryList from '../components/RepositoryList'
+import translate from 'translate'
 
 export default {
 	name: 'HomePage',
@@ -76,6 +79,35 @@ export default {
           alert('pc 접속');
         }
       }
+    },
+    async translate(){
+      const text = await translate('Hello world', { to: 'ko', engine: 'google', key: 'AIzaSyCA_BkTU5SYTmVWT4HRoxiJCjc0htwEx5M' });
+      alert(text);
+      // // Your Google Cloud Platform project ID
+      // const projectId = 'req2-2';
+
+      // // Instantiates a client
+      // const translate = new Translate({
+      //   projectId: projectId,
+      // });
+
+      // // The text to translate
+      // const text = 'Hello, world!';
+      // // The target language
+      // const target = 'ko';
+
+      // // Translates some text into Russian
+      // translate
+      //   .translate(text, target)
+      //   .then(results => {
+      //     const translation = results[0];
+
+      //     console.log(`Text: ${text}`);
+      //     console.log(`Translation: ${translation}`);
+      //   })
+      //   .catch(err => {
+      //     console.error('ERROR:', err);
+      //   });
     }
 	},
 }
