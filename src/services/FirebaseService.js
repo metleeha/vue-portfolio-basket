@@ -13,7 +13,7 @@ const config = {
     projectId: "webmobile-sub2-ssafy",
     messagingSenderId: "49180175175",
     appId: "1:49180175175:web:f6c4ec970a1b7ce1",
-	storageBucket: 'gs://elice-ssafy.appspot.com'
+	storageBucket: 'gs://webmobile-sub2-ssafy.appspot.com'
 }
 
 firebase.initializeApp(config)

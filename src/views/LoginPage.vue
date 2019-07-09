@@ -7,18 +7,24 @@
         </v-flex>
       </v-layout>
     </v-flex>
+	
+	<AnalyticsView></AnalyticsView>
+
   </v-layout>
 </template>
 
 <script>
 import FirebaseService from '@/services/FirebaseService'
+import AnalyticsView from '../components/AnalyticsView'
 
 export default {
 	name: 'LoginPage',
 	data() {
 		return {}
 	},
-	components: {},
+	components: {
+		AnalyticsView
+	},
 	methods: {
 		async loginWithGoogle() {
 			const result = await FirebaseService.loginWithGoogle()
