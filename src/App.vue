@@ -10,6 +10,9 @@
           <div>&copy;2019 — <strong>Jeong Wooseong</strong></div>
           <div>E-mail — wsjeongssa1@gmail.com</div>
         </v-flex>
+        <v-btn icon @click="translate()">
+          <v-icon rounded>g_translate</v-icon>
+        </v-btn>
       </v-layout>
     </v-footer>
     <v-btn id="scrollupbtn" v-show="fab" v-scroll="onScroll" @click="toTop">
@@ -23,6 +26,7 @@
 <script>
 import store from './store'
 import Header from '@/components/Header'
+import translate from 'translate'
 
 export default {
 	name: 'App',
@@ -80,6 +84,35 @@ export default {
         behavior: 'smooth'
       });
     },
+    async translate(){
+      const text = await translate('Hello world', { to: 'ko', engine: 'google', key: 'AIzaSyCA_BkTU5SYTmVWT4HRoxiJCjc0htwEx5M' });
+      alert(text);
+      // // Your Google Cloud Platform project ID
+      // const projectId = 'req2-2';
+
+      // // Instantiates a client
+      // const translate = new Translate({
+      //   projectId: projectId,
+      // });
+
+      // // The text to translate
+      // const text = 'Hello, world!';
+      // // The target language
+      // const target = 'ko';
+
+      // // Translates some text into Russian
+      // translate
+      //   .translate(text, target)
+      //   .then(results => {
+      //     const translation = results[0];
+
+      //     console.log(`Text: ${text}`);
+      //     console.log(`Translation: ${translation}`);
+      //   })
+      //   .catch(err => {
+      //     console.error('ERROR:', err);
+      //   });
+    }
   }
 }
 
