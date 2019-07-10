@@ -9,6 +9,7 @@
         <v-flex color="indigo" dark py-3 text-xs-center white--text xs12>
           <div>&copy;2019 — <strong>Jeong Wooseong</strong></div>
           <div>E-mail — wsjeongssa1@gmail.com</div>
+          <p>translate</p>
         </v-flex>
         <v-btn icon @click="translate()">
           <v-icon rounded>g_translate</v-icon>
@@ -85,6 +86,25 @@ export default {
       });
     },
     async translate(){
+      var t = document.getElementsByTagName('div');
+      for (let i  = 0; i < t.length; i++) {
+        // const element = t[i].nodeName;  // H2를 반환
+        // const element = t[i].nodeValue;  // null를 반환
+        var chidetext;
+        if(t[i].hasChildNodes){
+          chidetext = t[i].firstChild.nodeName;
+        }
+        var mytext = t[i].textContent;  // null를 반환
+        
+        alert("m:"+mytext+"\n/ch:"+chidetext);
+        // const text = await translate(element, { to: 'ko', engine: 'google', key: 'AIzaSyCA_BkTU5SYTmVWT4HRoxiJCjc0htwEx5M' });
+        // // t[i].textContent.replace(element, text);
+        // t[i].textContent = text;
+      }
+
+
+
+
       const text = await translate('Hello world', { to: 'ko', engine: 'google', key: 'AIzaSyCA_BkTU5SYTmVWT4HRoxiJCjc0htwEx5M' });
       alert(text);
       // // Your Google Cloud Platform project ID
