@@ -8,11 +8,11 @@ const PORTFOLIOS = 'portfolios'
 // Setup Firebase
 const config = {
 	apiKey: "AIzaSyACLDe92JVp2hp2IcEWC6bc1oswsv4UzgY",
-    authDomain: "webmobile-sub2-ssafy.firebaseapp.com",
-    databaseURL: "https://webmobile-sub2-ssafy.firebaseio.com",
-    projectId: "webmobile-sub2-ssafy",
-    messagingSenderId: "49180175175",
-    appId: "1:49180175175:web:f6c4ec970a1b7ce1",
+	authDomain: "webmobile-sub2-ssafy.firebaseapp.com",
+	databaseURL: "https://webmobile-sub2-ssafy.firebaseio.com",
+	projectId: "webmobile-sub2-ssafy",
+	messagingSenderId: "49180175175",
+	appId: "1:49180175175:web:f6c4ec970a1b7ce1",
 	storageBucket: 'gs://webmobile-sub2-ssafy.appspot.com'
 }
 
@@ -23,15 +23,15 @@ export default {
 	getPosts() {
 		const postsCollection = firestore.collection(POSTS)
 		return postsCollection
-				.orderBy('created_at', 'desc')
-				.get()
-				.then((docSnapshots) => {
-					return docSnapshots.docs.map((doc) => {
-						let data = doc.data()
-						data.created_at = new Date(data.created_at.toDate())
-						return data
-					})
+			.orderBy('created_at', 'desc')
+			.get()
+			.then((docSnapshots) => {
+				return docSnapshots.docs.map((doc) => {
+					let data = doc.data()
+					data.created_at = new Date(data.created_at.toDate())
+					return data
 				})
+			})
 	},
 	postPost(title, body) {
 		return firestore.collection(POSTS).add({
@@ -43,15 +43,15 @@ export default {
 	getPortfolios() {
 		const postsCollection = firestore.collection(PORTFOLIOS)
 		return postsCollection
-				.orderBy('created_at', 'desc')
-				.get()
-				.then((docSnapshots) => {
-					return docSnapshots.docs.map((doc) => {
-						let data = doc.data()
-						data.created_at = new Date(data.created_at.toDate())
-						return data
-					})
+			.orderBy('created_at', 'desc')
+			.get()
+			.then((docSnapshots) => {
+				return docSnapshots.docs.map((doc) => {
+					let data = doc.data()
+					data.created_at = new Date(data.created_at.toDate())
+					return data
 				})
+			})
 	},
 	postPortfolio(title, body, img) {
 		return firestore.collection(PORTFOLIOS).add({
@@ -63,12 +63,26 @@ export default {
 	},
 	loginWithGoogle() {
 		let provider = new firebase.auth.GoogleAuthProvider()
-		return firebase.auth().signInWithPopup(provider).then(function(result) {
+		return firebase.auth().signInWithPopup(provider).then(function (result) {
 			let accessToken = result.credential.accessToken
 			let user = result.user
 			return result
-		}).catch(function(error) {
+		}).catch(function (error) {
 			console.error('[Google Login Error]', error)
 		})
+	},
+	loginWithFacebook() {
+		let provider = new firebase.auth.FacebookAuthProvider();
+		return firebase.auth().signInWithPopup(provider).then(function(result) {
+			
+			// This gives you a Facebook Access Token. You can use it to access the Facebook API.
+			let token = result.credential.accessToken;
+			// The signed-in user info.
+			let user = result.user;
+			return result;
+			// ...
+		  }).catch(function(error) {
+			console.error('[Facebook Login Error]', error)  
+		  });
 	}
 }
