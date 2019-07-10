@@ -9,7 +9,6 @@
         <v-flex color="indigo" dark py-3 text-xs-center white--text xs12>
           <div>&copy;2019 — <strong>Jeong Wooseong</strong></div>
           <div>E-mail — wsjeongssa1@gmail.com</div>
-          <p>translate</p>
         </v-flex>
         <v-btn icon @click="translate()">
           <v-icon rounded>g_translate</v-icon>
@@ -33,7 +32,8 @@ export default {
 	name: 'App',
 	store,
   data: () => ({
-      fab: false
+      fab: false,
+      translateState: false
     }),
 	components: {
 		Header
@@ -86,52 +86,34 @@ export default {
       });
     },
     async translate(){
-      var t = document.getElementsByTagName('div');
-      for (let i  = 0; i < t.length; i++) {
-        // const element = t[i].nodeName;  // H2를 반환
-        // const element = t[i].nodeValue;  // null를 반환
-        var chidetext;
-        if(t[i].hasChildNodes){
-          chidetext = t[i].firstChild.nodeName;
+      if(!this.translateState){
+        this.translateState = true;
+        var b = document.getElementsByTagName('body');
+        var t = b[0].getElementsByTagName('*');
+        for (let i  = 0; i < t.length; i++) {
+          var chidetext;
+          if(t[i].firstChild!=null){
+            chidetext = t[i].firstChild.nodeName;
+          }else {
+            chidetext = "no child";
+          }
+          var mytext = t[i].textContent;  
+          if(chidetext == "#text"){
+            t[i].dataset.text = mytext;
+            const text = await translate(mytext, { to: 'ko', engine: 'google', key: 'AIzaSyCA_BkTU5SYTmVWT4HRoxiJCjc0htwEx5M' });
+            t[i].textContent = text;
+          }
         }
-        var mytext = t[i].textContent;  // null를 반환
-        
-        alert("m:"+mytext+"\n/ch:"+chidetext);
-        // const text = await translate(element, { to: 'ko', engine: 'google', key: 'AIzaSyCA_BkTU5SYTmVWT4HRoxiJCjc0htwEx5M' });
-        // // t[i].textContent.replace(element, text);
-        // t[i].textContent = text;
+      }else{
+        this.translateState = false;
+        var b = document.getElementsByTagName('body');
+        var t = b[0].getElementsByTagName('*');
+        for (let i  = 0; i < t.length; i++) {
+          if(t[i].dataset.text!=null){
+            t[i].textContent = t[i].dataset.text;
+          }
+        }
       }
-
-
-
-
-      const text = await translate('Hello world', { to: 'ko', engine: 'google', key: 'AIzaSyCA_BkTU5SYTmVWT4HRoxiJCjc0htwEx5M' });
-      alert(text);
-      // // Your Google Cloud Platform project ID
-      // const projectId = 'req2-2';
-
-      // // Instantiates a client
-      // const translate = new Translate({
-      //   projectId: projectId,
-      // });
-
-      // // The text to translate
-      // const text = 'Hello, world!';
-      // // The target language
-      // const target = 'ko';
-
-      // // Translates some text into Russian
-      // translate
-      //   .translate(text, target)
-      //   .then(results => {
-      //     const translation = results[0];
-
-      //     console.log(`Text: ${text}`);
-      //     console.log(`Translation: ${translation}`);
-      //   })
-      //   .catch(err => {
-      //     console.error('ERROR:', err);
-      //   });
     }
   }
 }
