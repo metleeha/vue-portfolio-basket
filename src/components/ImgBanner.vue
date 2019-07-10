@@ -7,6 +7,7 @@
           <span class="banner-title text-shadow display-3 font-weight-light">
             <slot name="text"/>
           </span>
+        <v-btn @click="routerclick(btnlink)" v-show=!btnshow color='#d6e4f0' outline dark large >{{ content }}</v-btn>
         </v-flex>
       </v-layout>
     </v-img>
@@ -18,15 +19,33 @@ export default {
 	name: 'ImgBanner',
 	props: {
 		imgSrc: {type: String},
-		text: {type: String}
-	},
+    text: {type: String},
+    btnshow: {type: Boolean, default:false},
+    content: {type: String, default:''},
+    btnlink: {type: String},
+  },
+  data() {
+    return {
+
+    }
+  },
 	methods: {
+    routerclick(page){
+      this.$router.push(page);
+      window.scrollTo(
+        {
+          top: 0,
+          left: 0,
+          behavior: 'smooth'
+        }
+      )
+    }
 	},
 }
 </script>
 <style scoped>
   .img-banner{
-    margin-top: -80px;
+    margin-top: -2vh;
   }
   .banner-title{
     padding-top: 200px;

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <ImgBanner imgSrc="https://source.unsplash.com/collection/190727/1600x900">
+    <ImgBanner imgSrc="https://source.unsplash.com/collection/190727/1600x900" btnshow=false>
       <div slot="text">There is always a way.</div>
     </ImgBanner>
     <v-container>
@@ -15,7 +15,7 @@
           <p>안녕하세요, <br/>SSAFY Seoul 2반 TEN 팀입니다.<br/> 
           </p>
         </v-flex>
-        <link
+      
         <v-flex sm4 hidden-xs-only>
             <v-img :src="getImgUrl('profile.png')" aspect-ratio="0.7"/>
         </v-flex>
@@ -41,7 +41,7 @@
       <!-- Github -->
       <v-layout my-5>
         <v-flex xs12>
-          <h2 class="headline my-5 text-xs-center" id="projects">Project</h2>
+          <h2  id="projects" class="headline my-5 text-xs-center">Project</h2>
           <RepositoryList></RepositoryList>
         </v-flex>
       </v-layout>

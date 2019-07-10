@@ -13,12 +13,13 @@
 		>
 			<v-card-text>
 				<v-btn
-					v-for="icon in icons"
-					:key="icon"
+					v-for="ii in icons"
+					:key="ii.emoji"
+					:href='ii.link'
 					class="mx-3 white--text"
 					icon
 				>
-					<v-icon size="24px">{{ icon }}</v-icon>
+					<v-icon size="24px">{{ ii.emoji }}</v-icon>
 				</v-btn>
 			</v-card-text>
 
@@ -42,11 +43,11 @@ export default {
 	data() {
 		return {
 			icons: [
-				'fa-facebook',
-				'fa-twitter',
-				'fa-google-plus',
-				'fa-linkedin',
-				'fa-instagram'
+				{ emoji:'fa-facebook', link: 'https://www.facebook.com/hellossafy/'},
+				// 'fa-twitter',
+				// 'fa-google-plus',
+				{ emoji:'fa-instagram', link: 'https://www.instagram.com/hellossafy/'},
+				{ emoji: 'fa-gitlab', link: 'https://lab.ssafy.com/metleeha/webmobile-sub2' }
 			],
 		}
     },

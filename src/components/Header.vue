@@ -1,7 +1,7 @@
 <template>
     <div>
     <!-- sidebar -->
-	<!-- <v-navigation-drawer v-model="drawer" app fixed temporary>
+	<v-navigation-drawer v-model="drawer" app fixed temporary>
 		<v-list>
 			<v-list-tile v-for="item in menuItems" 
 			:key="item.title"
@@ -11,16 +11,16 @@
 				<v-list-tile-content>{{ item.title }}</v-list-tile-content>
 			</v-list-tile>
 		</v-list>
-	</v-navigation-drawer> -->
+	</v-navigation-drawer>
 	<!-- end sidebar -->
 
     <!-- navbar --> 
-    <v-toolbar class="navbar-default" color='#1E56A0' fixed app temporary dark scroll-off-screen='true'>
+    <v-toolbar color='#1E56A0' fixed app temporary dark scroll-off-screen >
 		<v-toolbar-side-icon 
 			@click.stop="drawer = !drawer"
 			class="hidden-sm-and-up"
 		><v-icon>fa-bars</v-icon></v-toolbar-side-icon>
-		<v-toolbar-title class="navbar-brand">
+		<v-toolbar-title>
 		<router-link to="/" tag="span" style="cursor: pointer"><v-icon left>free_breakfast</v-icon></router-link>
 		TEN</v-toolbar-title>
 		<v-spacer></v-spacer>
@@ -54,21 +54,21 @@
 	<!-- end backTotop button -->
     </div>
 </template>
+
 <script>
-export default {
+ export default {
     name: 'Header',
     data(){
         return {
             fab: false,
             drawer: false,
 			menuItems: [
-				{ emoji: 'insert_emoticon', title: 'About Me', link: '/#aboutme'},
 				{ emoji: 'assessment', title: 'Portfolio', link: '/portfolio'},
-				{ emoji: 'create', title: 'Post', link: '/post'},
-				{ emoji: 'toys', title: 'Projects', link: '/#projects'}
+				{ emoji: 'create', title: 'New', link: '/portfoliowriter'},
+				{ emoji: 'input', title: 'LogIn', link: '/login'}
             ],
         }
-    },
+	},
     methods: {
       onScroll () {
         if (typeof window === 'undefined') return

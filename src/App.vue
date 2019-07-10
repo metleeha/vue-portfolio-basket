@@ -4,7 +4,7 @@
     <Header/>
     <!-- main body-->
     <v-content>
-      <router-view/>
+     <router-view/>
     </v-content>
     <!-- footer -->
     <Footer />
@@ -18,14 +18,16 @@ import Footer from '@/components/Footer'
 
 export default {
 	name: 'App',
-	store,
-  data: () => ({
-      fab: false
-    }),
-	components: {
+  store,
+  components: {
     Header,
     Footer
 	},
+  data() {
+    return {
+
+    }
+  },
   created: function(){
     var agent = navigator.userAgent.toLowerCase();
     var browser;
@@ -67,5 +69,6 @@ export default {
 .bg-color {
   background-color: #f6f6f6;
 }
+
 
 </style>
