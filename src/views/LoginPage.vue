@@ -10,6 +10,9 @@
         </v-flex>
       </v-layout>
     </v-flex>
+	
+	<AnalyticsView></AnalyticsView>
+
   </v-layout>
 </template>
 
@@ -23,7 +26,9 @@ export default {
 	data() {
 		return {}
 	},
-	components: {},
+	components: {
+		AnalyticsView
+	},
 	methods: {
 		async loginWithGoogle() {
 			const result = await FirebaseService.loginWithGoogle()
