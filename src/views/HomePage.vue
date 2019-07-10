@@ -45,6 +45,12 @@
           <RepositoryList></RepositoryList>
         </v-flex>
       </v-layout>
+
+      <v-layout>
+        <PageViewChart></PageViewChart>
+        <PageViewChartForToday></PageViewChartForToday>
+      </v-layout>
+
     </v-container>
   </div>
 </template>
@@ -54,6 +60,8 @@ import ImgBanner from '../components/ImgBanner'
 import PortfolioList from '../components/PortfolioList'
 import PostList from '../components/PostList'
 import RepositoryList from '../components/RepositoryList'
+import PageViewChart from '../components/PageViewChart'
+import PageViewChartForToday from '../components/PageViewChartForToday'
 
 export default {
 	name: 'HomePage',
@@ -61,7 +69,9 @@ export default {
 		ImgBanner,
 		PortfolioList,
 		PostList,
-		RepositoryList
+    RepositoryList,
+    PageViewChart,
+    PageViewChartForToday
 	},
 	methods: {
 		getImgUrl(img) {
