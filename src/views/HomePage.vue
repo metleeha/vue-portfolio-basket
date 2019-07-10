@@ -15,7 +15,6 @@
           <p>안녕하세요, 컴퓨터 그래픽스 전문가가 되고싶은 정우성의 포트폴리오입니다.<br/>
           </p>
         </v-flex>
-        <link
         <v-flex xs4 id="aboutmeImg">
             <v-img :src="getImgUrl('profile.png')" aspect-ratio="0.7"/>
         </v-flex>
