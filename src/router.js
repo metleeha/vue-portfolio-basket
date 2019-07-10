@@ -6,10 +6,9 @@ import PortfolioPage from './views/PortfolioPage.vue'
 import PortfolioViewPage from './views/PortfolioViewPage.vue'
 import PortfolioWriterPage from './views/PortfolioWriterPage.vue'
 import LoginPage from './views/LoginPage.vue'
-import FirebaseService from './services/FirebaseService.js'
-import firebase from 'firebase'
 
 Vue.use(Router)
+
 const router = new Router({
   mode: 'history',
   base: process.env.BASE_URL,
@@ -17,76 +16,34 @@ const router = new Router({
 		{
 			path: '/',
 			name: 'home',
-			component: HomePage,
-			beforeEnter: (to, from, next) => {
-				IncrementCnt('Home')
-				next()
-			}
+			component: HomePage
 		},
 		{
 			path: '/post',
 			name: 'post',
-			component: PostPage,
-			beforeEnter: (to, from, next) => {
-				console.log("this is post")
-				next()
-			}
+			component: PostPage
 		},
 		{
 			path: '/portfolio',
 			name: 'portfolio',
-			component: PortfolioPage,
-			beforeEnter: (to, from, next) => {
-				IncrementCnt('Portfolio')
-				next()
-			}
+			component: PortfolioPage
 		},
 		{
 			path: '/portfolioview/:title/:body/:date/:imgSrc',
 			name: 'portfolioview',
-			component: PortfolioViewPage,
-			beforeEnter: (to, from, next) => {
-				IncrementCnt('Portfolio')
-				next()
-			}
+			component: PortfolioViewPage
 		},
 		{
 			path: '/portfoliowriter',
 			name: 'portfoliowriter',
-			component: PortfolioWriterPage,
-			beforeEnter: (to, from, next) => {
-				console.log("this is portfoliowriter")
-				next()
-			}
+			component: PortfolioWriterPage
 		},
 		{
 			path: '/login',
 			name: 'login',
-			component: LoginPage,
-			beforeEnter: (to, from, next) => {
-				IncrementCnt('Login')
-				next()
-			}
+			component: LoginPage
 		}
   ]
 })
-
-function IncrementCnt(path) {
-	var curNo = 0
-	firebase.database().ref('/Page/'+ path).once('value').then(function(snapshot){
-		curNo = snapshot.val().View
-		console.log(curNo)
-		firebase.database().ref('/Page/'+path).set({
-			View: curNo+1
-		})
-
-		console.log(path+ '\t: '+ (curNo+1))
-	})
-
-
-	firebase.database().ref('Page/Login').set({
-	  View: curNo + 1
-	});
-  }
 
 export default router
