@@ -1,6 +1,6 @@
 <template>
   <div>
-    <ImgBanner imgSrc="https://source.unsplash.com/collection/190727/1600x900" btnshow='false'>
+    <ImgBanner imgSrc="https://source.unsplash.com/collection/190727/1600x900" btnshow=btnshow>
       <div style="line-height:1.2em;font-size:1.2em;" slot="text">PortfolioWriter</div>
     </ImgBanner>
     <v-container>
@@ -31,7 +31,9 @@ import uploadImg from '../components/uploadImg'
 export default {
 	name: 'PortfolioWriterPage',
   data() {
-
+    return {
+      btnshow: false
+    }
   },
 	components: {
 		ImgBanner,
