@@ -1,29 +1,30 @@
 <template>
   <div>
-    <ImgBanner imgSrc="https://source.unsplash.com/collection/190727/1600x900">
-      <div style="line-height:1.2em; font-size:5vw;" slot="text">There is always a way.</div>
+    <ImgBanner imgSrc="https://source.unsplash.com/collection/190727/1600x900" btnshow=false>
+      <div slot="text">There is always a way.</div>
     </ImgBanner>
     <v-container>
       <!-- About Me -->
-      <v-layout my-5>
+      <v-layout my-5 id="aboutme">
         <v-flex xs12>
           <h2 class="headline mb-3 text-xs-center">About Me</h2>
         </v-flex>
       </v-layout>
       <v-layout my-5>
-        <v-flex xs12 style="font-size:2vw;" id="aboutmeText">
-          <p>안녕하세요, 컴퓨터 그래픽스 전문가가 되고싶은 정우성의 포트폴리오입니다.<br/>
+        <v-flex xs12 sm8 class="mt-5 pl-3 text-xs-center text-sm-left" style="font-size:1.5em;">
+          <p>안녕하세요, <br/>SSAFY Seoul 2반 TEN 팀입니다.<br/> 
           </p>
         </v-flex>
-        <v-flex xs4 id="aboutmeImg">
+      
+        <v-flex sm4 hidden-xs-only>
             <v-img :src="getImgUrl('profile.png')" aspect-ratio="0.7"/>
         </v-flex>
       </v-layout>
 
       <!-- Portfolio -->
       <v-layout my-5>
-        <v-flex xs12>
-          <h2 class="headline my-5 text-xs-center">Portfolio</h2>
+        <v-flex xs12 sm12>
+          <router-link to="/portfolio" tag="span"><h2 class="headline my-5 text-xs-center">Portfolio</h2></router-link>
           <PortfolioList></PortfolioList>
         </v-flex>
       </v-layout>
@@ -40,10 +41,16 @@
       <!-- Github -->
       <v-layout my-5>
         <v-flex xs12>
-          <h2 class="headline my-5 text-xs-center">Project</h2>
+          <h2  id="projects" class="headline my-5 text-xs-center">Project</h2>
           <RepositoryList></RepositoryList>
         </v-flex>
       </v-layout>
+
+      <v-layout>
+        <PageViewChart></PageViewChart>
+        <PageViewChartForToday></PageViewChartForToday>
+      </v-layout>
+
     </v-container>
   </div>
 </template>
@@ -53,6 +60,8 @@ import ImgBanner from '../components/ImgBanner'
 import PortfolioList from '../components/PortfolioList'
 import PostList from '../components/PostList'
 import RepositoryList from '../components/RepositoryList'
+import PageViewChart from '../components/PageViewChart'
+import PageViewChartForToday from '../components/PageViewChartForToday'
 
 export default {
 	name: 'HomePage',
@@ -60,7 +69,9 @@ export default {
 		ImgBanner,
 		PortfolioList,
 		PostList,
-		RepositoryList
+    RepositoryList,
+    PageViewChart,
+    PageViewChartForToday
 	},
 	methods: {
 		getImgUrl(img) {
@@ -79,16 +90,9 @@ export default {
 	},
 }
 </script>
-<style>
-@media screen and (max-width:960px) {
-
-}
-@media screen and (max-width:600px) {
-  #aboutmeImg {
-    display: none;
+<style scoped>
+  h2 {
+    font-weight: 700;
+    color: #424242;
   }
-  #aboutmeText {
-    text-align: center;
-  }
-}
 </style>

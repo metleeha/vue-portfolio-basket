@@ -1,10 +1,9 @@
 <template>
   <div>
-    <ImgBanner imgSrc="https://source.unsplash.com/collection/190727/1600x900">
+    <ImgBanner imgSrc="https://source.unsplash.com/collection/190727/1600x900" v-show=true content='New Portfolio' btnlink='portfoliowriter'>
       <div style="line-height:1.2em;font-size:1.2em;" slot="text">Portfolio</div>
     </ImgBanner>
     <v-container>
-
       <!-- Portfolio -->
       <v-layout>
         <v-flex xs12>
@@ -21,11 +20,16 @@ import ImgBanner from '../components/ImgBanner'
 import PortfolioList from '../components/PortfolioList'
 
 export default {
-	name: 'PortfolioPage',
-	components: {
+  name: 'PortfolioPage',
+  components: {
 		ImgBanner,
 		PortfolioList,
-	},
+  },
+  data(){
+    return {
+
+    }
+  },
   methods:{
     routePFW(){
       this.$router.push('portfoliowriter');
@@ -38,11 +42,6 @@ export default {
   }
 }
 </script>
-<style>
-@media screen and (max-width:960px) {
+<style scoped>
 
-}
-@media screen and (max-width:600px) {
-
-}
 </style>

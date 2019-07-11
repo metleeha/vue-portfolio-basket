@@ -1,14 +1,18 @@
 <template>
   <div>
-    <ImgBanner imgSrc="https://source.unsplash.com/collection/190727/1600x900">
+    <ImgBanner imgSrc="https://source.unsplash.com/collection/190727/1600x900" btnshow=btnshow>
       <div style="line-height:1.2em;font-size:1.2em;" slot="text">PortfolioWriter</div>
     </ImgBanner>
     <v-container>
       <v-layout>
         <div class="markdown">
           <v-flex xs9>
+
             <v-text-field label="title"></v-text-field>
             <v-btn icon v-on:click="posting"><v-icon>send</v-icon></v-btn>
+
+            <uploadImg></uploadImg>
+
           </v-flex>
           <v-flex xs10>
             <markdown-editor></markdown-editor>
@@ -22,23 +26,29 @@
 
 <script>
 import ImgBanner from '../components/ImgBanner'
+import uploadImg from '../components/uploadImg'
 
 export default {
 	name: 'PortfolioWriterPage',
-  data: {
-
+  data() {
+    return {
+      btnshow: false
+    }
   },
 	components: {
-		ImgBanner
+		ImgBanner,
+    uploadImg
 	},
   methods:{
-    posting(){
-
+    posting(event){
+      console.log("posting is clicked!");
+      console.log(event);
     }
   }
 }
 </script>
 <style>
+
 .markdown {
   width: 100%;
   text-align: -webkit-center;
@@ -50,4 +60,5 @@ export default {
 .v-btn--icon {
   display: inline-block;
 }
+
 </style>

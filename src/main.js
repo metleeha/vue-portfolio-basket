@@ -10,6 +10,9 @@ import router from './router'
 import store from './store'
 import './registerServiceWorker'
 
+import IncrementCnt from './services/IncrementCnt'
+export const bus = new Vue()
+
 Vue.config.productionTip = false
 
 Vue.use(Vuetify, {
@@ -29,3 +32,9 @@ new Vue({
   store,
   render: h => h(App)
 }).$mount('#app')
+
+router.beforeEach(function(to, from, next) {
+	IncrementCnt.Increment(to.name)
+	console.log(from.name+' -> '+to.name)
+	next()
+})
