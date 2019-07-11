@@ -1,7 +1,8 @@
 <script>
 //Importing Line class from the vue-chartjs wrapper
 import {Line} from 'vue-chartjs'
-import firebase from 'firebase'
+import firebase from 'firebase/app'
+import 'firebase/database'
 
 function makeDateFormat(month, date) {
     const thirtyOne = [1, 3, 5, 7, 8, 10, 12]
@@ -32,6 +33,8 @@ for (let index = curDate.getDate()-6; index <= curDate.getDate(); index++) {
 }
 
 for (let index = 0, todayView=0; index < 7; index++) {
+    
+    
     firebase.database().ref('/Page/'+ recent7Days[index] + '/home').once('value').then(function(snapshot){
         todayView = snapshot.val()
         if(todayView != null) {
@@ -53,7 +56,7 @@ data () {
         labels: recent7Days,
         datasets: [
         {
-            label: '조회수',
+            label: 'view',
             backgroundColor: '#f87979',
             pointBackgroundColor: 'white',
             borderWidth: 1,
