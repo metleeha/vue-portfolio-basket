@@ -91,8 +91,9 @@ export default {
 	methods: {
 		async loginWithGoogle() {
 			const result = await FirebaseService.loginWithGoogle()
-			this.$store.state.accessToken = result.credential.accessToken
+			this.$store.state.accessToken = result.accessToken
 			this.$store.state.user = result.user
+			this.$router.replace('/')
 		},
 		async loginWithFacebook(){
 			const result = await FirebaseService.loginWithFacebook()
