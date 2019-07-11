@@ -1,6 +1,6 @@
 <template>
   <div>
-    <ImgBanner imgSrc="https://source.unsplash.com/collection/190727/1600x900" btnshow=false>
+    <ImgBanner imgSrc="https://source.unsplash.com/collection/190727/1600x900" btnshow=btnshow>
       <div slot="text">There is always a way.</div>
     </ImgBanner>
     <v-container>
@@ -72,7 +72,12 @@ export default {
     RepositoryList,
     PageViewChart,
     PageViewChartForToday
-	},
+  },
+  data(){
+    return {
+      btnshow: false,
+    }
+  },
 	methods: {
 		getImgUrl(img) {
 			return require('../assets/' + img)
