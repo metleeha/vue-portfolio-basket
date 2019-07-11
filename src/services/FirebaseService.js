@@ -20,6 +20,7 @@ firebase.initializeApp(config)
 const firestore = firebase.firestore()
 
 export default {
+
 	getPosts() {
 		const postsCollection = firestore.collection(POSTS)
 		return postsCollection

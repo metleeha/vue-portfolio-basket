@@ -1,43 +1,33 @@
 <template>
-  <v-app>
+  <v-app class="bg-color">
+    <!-- header -->
     <Header/>
+    <!-- main body-->
     <v-content>
-      <router-view/>
+     <router-view/>
     </v-content>
-    <v-footer height="auto" color="indigo" dark>
-      <v-layout justify-center row wrap>
-        <v-flex color="indigo" dark py-3 text-xs-center white--text xs12>
-          <div>&copy;2019 — <strong>Jeong Wooseong</strong></div>
-          <div>E-mail — wsjeongssa1@gmail.com</div>
-        </v-flex>
-        <v-btn icon @click="translate()">
-          <v-icon rounded>g_translate</v-icon>
-        </v-btn>
-      </v-layout>
-    </v-footer>
-    <v-btn id="scrollupbtn" v-show="fab" v-scroll="onScroll" @click="toTop">
-      <v-icon>
-        keyboard_arrow_up
-      </v-icon>
-    </v-btn>
+    <!-- footer -->
+    <Footer />
   </v-app>
 </template>
 
 <script>
 import store from './store'
 import Header from '@/components/Header'
-import translate from 'translate'
+import Footer from '@/components/Footer'
 
 export default {
 	name: 'App',
-	store,
-  data: () => ({
-      fab: false,
-      translateState: false
-    }),
-	components: {
-		Header
+  store,
+  components: {
+    Header,
+    Footer
 	},
+  data() {
+    return {
+
+    }
+  },
   created: function(){
     var agent = navigator.userAgent.toLowerCase();
     var browser;
@@ -70,75 +60,15 @@ export default {
 
   },
   methods:{
-    onScroll () {
-        if (typeof window === 'undefined') return
-
-        const top = window.pageYOffset ||
-          document.documentElement.offsetTop ||
-          0
-        this.fab = top > 0
-      },
-    toTop() {
-      window.scrollTo({
-        top: 0,
-        left: 0,
-        behavior: 'smooth'
-      });
-    },
-    async translate(){
-      if(!this.translateState){
-        this.translateState = true;
-        var b = document.getElementsByTagName('body');
-        var t = b[0].getElementsByTagName('*');
-        for (let i  = 0; i < t.length; i++) {
-          var chidetext;
-          if(t[i].firstChild!=null){
-            chidetext = t[i].firstChild.nodeName;
-          }else {
-            chidetext = "no child";
-          }
-          var mytext = t[i].textContent;  
-          if(chidetext == "#text"){
-            t[i].dataset.text = mytext;
-            const text = await translate(mytext, { to: 'ko', engine: 'google', key: 'AIzaSyCA_BkTU5SYTmVWT4HRoxiJCjc0htwEx5M' });
-            t[i].textContent = text;
-          }
-        }
-      }else{
-        this.translateState = false;
-        var b = document.getElementsByTagName('body');
-        var t = b[0].getElementsByTagName('*');
-        for (let i  = 0; i < t.length; i++) {
-          if(t[i].dataset.text!=null){
-            t[i].textContent = t[i].dataset.text;
-          }
-        }
-      }
-    }
+    
   }
 }
 
 </script>
 <style>
-#scrollupbtn {
-  position: fixed;
-  z-index: 4;
-  background-color: rgb(63,81,181);
-  border-color:  rgb(63,81,181);
-  border-radius: 50%;
-  height: 40px;
-  width: 40px;
-  min-width: 40px;
-  margin: 0;
-  padding: 0;
-  bottom: 40px;
-  right: 20px;
-
-  box-shadow: 0px 3px 5px -1px rgba(0,0,0,0.2),
-              0px 6px 10px 0px rgba(0,0,0,0.14),
-              0px 1px 18px 0px rgba(0,0,0,0.12);
-
-  transition: all 1s ease;
-
+.bg-color {
+  background-color: #f6f6f6;
 }
+
+
 </style>
