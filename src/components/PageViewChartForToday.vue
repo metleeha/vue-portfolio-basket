@@ -1,7 +1,8 @@
 <script>
 //Importing Bar class from the vue-chartjs wrapper
 import {Bar} from 'vue-chartjs'
-import firebase from 'firebase'
+import firebase from 'firebase/app'
+import 'firebase/database'
 
 var menuList = ['home', 'post', 'portfolio', 'portfolioWriter', 'login']
 var menuListView = []
