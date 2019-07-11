@@ -10,9 +10,6 @@
           <div>&copy;2019 — <strong>Jeong Wooseong</strong></div>
           <div>E-mail — wsjeongssa1@gmail.com</div>
         </v-flex>
-        <v-btn icon @click="translate()">
-          <v-icon rounded>g_translate</v-icon>
-        </v-btn>
       </v-layout>
     </v-footer>
     <v-btn id="scrollupbtn" v-show="fab" v-scroll="onScroll" @click="toTop">
@@ -26,7 +23,6 @@
 <script>
 import store from './store'
 import Header from '@/components/Header'
-import translate from 'translate'
 
 export default {
 	name: 'App',
@@ -36,7 +32,8 @@ export default {
       translateState: false
     }),
 	components: {
-		Header
+    Header,
+    
 	},
   created: function(){
     var agent = navigator.userAgent.toLowerCase();
@@ -85,36 +82,6 @@ export default {
         behavior: 'smooth'
       });
     },
-    async translate(){
-      if(!this.translateState){
-        this.translateState = true;
-        var b = document.getElementsByTagName('body');
-        var t = b[0].getElementsByTagName('*');
-        for (let i  = 0; i < t.length; i++) {
-          var chidetext;
-          if(t[i].firstChild!=null){
-            chidetext = t[i].firstChild.nodeName;
-          }else {
-            chidetext = "no child";
-          }
-          var mytext = t[i].textContent;  
-          if(chidetext == "#text"){
-            t[i].dataset.text = mytext;
-            const text = await translate(mytext, { to: 'ko', engine: 'google', key: 'AIzaSyCA_BkTU5SYTmVWT4HRoxiJCjc0htwEx5M' });
-            t[i].textContent = text;
-          }
-        }
-      }else{
-        this.translateState = false;
-        var b = document.getElementsByTagName('body');
-        var t = b[0].getElementsByTagName('*');
-        for (let i  = 0; i < t.length; i++) {
-          if(t[i].dataset.text!=null){
-            t[i].textContent = t[i].dataset.text;
-          }
-        }
-      }
-    }
   }
 }
 

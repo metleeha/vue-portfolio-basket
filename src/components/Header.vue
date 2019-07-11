@@ -5,6 +5,7 @@
     <v-btn icon @click="bookmark()">
       <v-icon rounded>star_border</v-icon>
     </v-btn>
+    <TranslateBtn/>
     <v-spacer></v-spacer>
     <v-toolbar-items id="toolbaritems">
       <v-btn flat @click="routerclick('/post')">Post</v-btn>
@@ -30,10 +31,15 @@
 </template>
 
 <script>
+import TranslateBtn from '@/components/TranslateBtn'
+
 export default {
 	name: 'Header',
   data: () => ({
     }),
+	components: {
+		TranslateBtn
+	},
   methods:{
     routerclick(page){
       this.$router.push(page);
@@ -57,7 +63,7 @@ export default {
       else {
         alert("chrome 과 safari, firefox 는 Ctrl + D 키를 눌러 북마크를 추가해주세요");
       }
-    }
+    },
   }
 }
 
