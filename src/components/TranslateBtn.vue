@@ -18,9 +18,9 @@ export default {
       translateState: false
     }),
 	methods: {	
-		async translateAll(){
+		translateAll(){
       this.translateState = !this.translateState;
-			await TranslateService.translate();
+			TranslateService.translate();
 		}
 	}
 }

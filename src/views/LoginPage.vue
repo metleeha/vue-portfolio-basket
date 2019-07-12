@@ -11,7 +11,7 @@
 			<!-- Signup modal -->
 			<v-dialog v-model="dialog" row justify-center max-width="500px">
 				<template v-slot:activator="{ on }">
-					<v-btn round color="#s2s2s2" dark style="width:100%;" v-on="on">SignUp</v-btn>
+					<v-btn round color="#s2s2s2" dark style="width:100%;" v-on="on">Sign Up</v-btn>
 				</template>
 				<v-card>
 					<v-card-title primary-title class="layout justify-center"> 
