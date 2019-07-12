@@ -1,6 +1,6 @@
 <template>
   <div>
-    <ImgBanner imgSrc="https://source.unsplash.com/collection/190727/1600x900" btnshow=false>
+    <ImgBanner btnshow=false>
       <div slot="text">There is always a way.</div>
     </ImgBanner>
     <v-container>
