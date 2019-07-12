@@ -152,16 +152,12 @@ export default {
 			this.$store.state.user = result.user
 			this.$router.replace('/')
 		},
-		signUp: function(){
-			FirebaseService.signup(this.email, this.password)
+		async signUp(){
+			const result = await FirebaseService.signup(this.email, this.password)
 			this.signUpDialog = false
 		},
-		signIn: function(){
-			
-			const result = FirebaseService.signIn(this.email, this.password)
-			console.log(result)
-			this.signInDialog = false
-			this.$router.replace('/')
+		async signIn(){
+			const result = await FirebaseService.signIn(this.email, this.password)
 		}
 	},
 	mounted: function() {

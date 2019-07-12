@@ -127,6 +127,10 @@ export default {
 			console.log(error);
 			document.getElementById('quickstart-sign-in').disabled = false;
 			// [END_EXCLUDE]
-		});
+		}).then(
+			function(user){
+				alert("Hello!");
+			}
+			);
 	}
 }
