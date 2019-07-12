@@ -4,7 +4,7 @@
            aspect-ratio="1.7">
            <v-dialog v-model="dialog" row justify-center max-width="800px">
             <template v-slot:activator="{ on }">
-                <v-btn icon v-on="on" class='moveIcon'><v-icon x-large>refresh</v-icon></v-btn>
+                <v-btn icon v-on="on" class='moveIcon' dark large><v-icon x-large>refresh</v-icon></v-btn>
             </template>
             <v-card>
                 <v-card-title primary-title class="layout justify-center"> 
@@ -73,7 +73,6 @@
           <span class="banner-title text-shadow display-3 font-weight-light">
             <slot name="text"/>
           </span>
-        <v-btn @click="routerclick(btnlink)" v-show=!btnshow color='#d6e4f0' outline dark large >{{ content }}</v-btn>
         </v-flex>
       </v-layout>
     </v-img>
@@ -90,9 +89,6 @@ export default {
 	props: {
 		imgSrc: {type: String},
     text: {type: String},
-    btnshow: {type: Boolean, default:false},
-    content: {type: String, default:''},
-    btnlink: {type: String},
   },
   data() {
     return {

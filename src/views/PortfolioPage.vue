@@ -1,6 +1,6 @@
 <template>
   <div>
-    <ImgBanner v-show=true content='New Portfolio' btnlink='portfoliowriter'>
+    <ImgBanner>
       <div style="line-height:1.2em;font-size:1.2em;" slot="text">Portfolio</div>
     </ImgBanner>
     <v-container>

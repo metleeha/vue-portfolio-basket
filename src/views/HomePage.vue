@@ -1,6 +1,6 @@
 <template>
   <div>
-    <ImgBanner btnshow=false>
+    <ImgBanner>
       <div slot="text">There is always a way.</div>
     </ImgBanner>
     <v-container>
@@ -75,7 +75,7 @@ export default {
   },
   data(){
     return {
-      btnshow: false,
+
     }
   },
 	methods: {
