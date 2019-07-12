@@ -26,7 +26,8 @@ export default {
 						const translateText = await translate(mytext, { to: 'en', engine: 'google', key: 'AIzaSyCA_BkTU5SYTmVWT4HRoxiJCjc0htwEx5M' });
 						
 						var tnode = document.createElement('font');          // font 엘리먼트 생성
-        				var ttext = document.createTextNode(translateText); 	// translateText text 생성
+						var ttext = document.createTextNode(translateText); 	// translateText text 생성
+						
 						tnode.appendChild(ttext);                                // 엘리먼트에 자식으로 추가
 						tnode.dataset.tran = mytext;
 						tnode.setAttribute('style','vertical-align: inherit');
