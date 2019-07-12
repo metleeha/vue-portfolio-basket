@@ -14,8 +14,11 @@
 					color="#112d4e"
 				>
 					<v-card-text>
-						<v-flex xs12>
-							<v-flex xs3>
+						<v-layout xs12 align-center row>
+							<v-flex xs4>
+								<v-btn>TODAY</v-btn>
+							</v-flex>
+							<v-flex xs4> 
 								<v-btn
 									v-for="ii in icons"
 									:key="ii.emoji"
@@ -25,20 +28,19 @@
 								>
 									<v-icon size="24px">{{ ii.emoji }}</v-icon>
 								</v-btn>
-								<v-flex xs3>
-									<img :src="iconURL" alt="">
-								</v-flex>
+								<p class="white--text my-1">Please contact us if you have any question. </p>
 							</v-flex>
-							<v-flex xs6>
+							<v-flex xs4>
+								<v-card-text>
+									<v-avatar slot="activator" size="45px"><img :src="iconURL" alt="weather__avatar" style="backgroundColor:#dbe2ef;"></v-avatar>
+									<span class="ml-2">{{ description }}, {{currentTemp}} &deg;</span>
+								</v-card-text>
+							</v-flex>
+						</v-layout>
+						
+						
+					</v-card-text>
 
-							</v-flex>
-						</v-flex>
-						
-						
-					</v-card-text>
-					<v-card-text class="white--text pt-0">
-						Please contact us if you have any question. 
-					</v-card-text>
 
 					<v-divider></v-divider>
 
@@ -67,6 +69,8 @@ export default {
 				{ emoji: 'fa-gitlab', link: 'https://lab.ssafy.com/metleeha/webmobile-sub2' }
 			],
 			iconURL: '',
+			currentTemp: '',
+			description: '',
 		}
 	},
 	components: {
@@ -80,6 +84,8 @@ export default {
         .then(data => {
 			this.iconURL = "http://openweathermap.org/img/w/" + data.weather[0].icon+ ".png";
 			this.description = data.weather[0].description;
+			this.currentTemp = Math.round(data.main.temp);
+			this.description = data.weather[0].description;
         })
 	}
 
@@ -90,5 +96,6 @@ export default {
 .footer-icons {
 	display: inline-flex;
 }
+
 
 </style>
