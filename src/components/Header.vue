@@ -15,7 +15,7 @@
 	<!-- end sidebar -->
 
     <!-- navbar --> 
-    <v-toolbar color='#1E56A0' fixed app temporary dark scroll-off-screen >
+    <v-toolbar color='#112d4e' fixed app temporary dark scroll-off-screen >
 		<v-toolbar-side-icon 
 			@click.stop="drawer = !drawer"
 			class="hidden-sm-and-up"
@@ -48,7 +48,7 @@
 			color="#d6e4f0"
 			@click="toTop"
 			>
-		<v-icon color="#163172">keyboard_arrow_up</v-icon>
+		<v-icon color="#112d4e">keyboard_arrow_up</v-icon>
 		</v-btn>
 	</v-fab-transition>
 	<!-- end backTotop button -->
