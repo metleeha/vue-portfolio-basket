@@ -23,6 +23,7 @@
 		<v-toolbar-title>
 		<router-link to="/" tag="span" style="cursor: pointer"><v-icon left>free_breakfast</v-icon></router-link>
 		TEN</v-toolbar-title>
+		<TranslateBtn></TranslateBtn>
 		<v-spacer></v-spacer>
 		<v-toolbar-items class="hidden-xs-only">
 			<v-btn flat v-for="item in menuItems" 
@@ -56,7 +57,8 @@
 </template>
 
 <script>
- export default {
+import TranslateBtn from './TranslateBtn'
+export default {
     name: 'Header',
     data(){
         return {
@@ -68,6 +70,9 @@
 				{ emoji: 'input', title: 'LogIn', link: '/login'}
             ],
         }
+	},
+	components: {
+		TranslateBtn
 	},
     methods: {
       onScroll () {
