@@ -23,7 +23,7 @@ export default {
 						if(tags[i].childNodes[j].nodeValue == '')
 							continue;
 						var mytext = tags[i].childNodes[j].nodeValue;   
-						const translateText = await translate(mytext, { to: 'en', engine: 'google', key: 'AIzaSyCA_BkTU5SYTmVWT4HRoxiJCjc0htwEx5M' });
+						const translateText = await translate(mytext, { from:'en', to: 'ko', engine: 'google', key: 'AIzaSyCA_BkTU5SYTmVWT4HRoxiJCjc0htwEx5M' });
 						
 						var tnode = document.createElement('font');          // font 엘리먼트 생성
 						var ttext = document.createTextNode(translateText); 	// translateText text 생성
