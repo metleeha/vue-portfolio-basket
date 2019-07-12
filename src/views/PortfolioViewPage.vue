@@ -18,6 +18,8 @@
   </div>
 </template>
 
+
+
 <script>
 import ImgBanner from '../components/ImgBanner'
 
@@ -28,6 +30,8 @@ export default {
 	}
 }
 </script>
+
+
 <style>
 @media screen and (max-width:960px) {
 
