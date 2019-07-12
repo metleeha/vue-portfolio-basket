@@ -31,13 +31,15 @@
 								<p class="white--text my-1">Please contact us if you have any question. </p>
 							</v-flex>
 							<v-flex xs4>
-								<v-card-text>
-									<v-avatar slot="activator" size="45px"><img :src="iconURL" alt="weather__avatar" style="backgroundColor:#dbe2ef;"></v-avatar>
-									<span class="ml-2">{{ description }}, {{currentTemp}} &deg;</span>
-								</v-card-text>
+								<v-menu open-on-hover top offset-y>
+									<template slot="activator">
+										<v-avatar size="45px"><img :src="iconURL" alt="weather__avatar" style="backgroundColor:#dbe2ef;"></v-avatar>
+										<span class="ml-2">{{ description }}, {{currentTemp}} &deg;</span>
+									</template>
+									<Weather />
+								</v-menu>
 							</v-flex>
 						</v-layout>
-						
 						
 					</v-card-text>
 
