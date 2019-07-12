@@ -6,7 +6,7 @@ import PortfolioPage from './views/PortfolioPage.vue'
 import PortfolioViewPage from './views/PortfolioViewPage.vue'
 import PortfolioWriterPage from './views/PortfolioWriterPage.vue'
 import LoginPage from './views/LoginPage.vue'
-import SignupPage from './views/SignupPage.vue'
+import Weather from './components/Weather.vue'
 
 Vue.use(Router)
 
@@ -49,9 +49,9 @@ const router = new Router({
 			component: LoginPage
 		},
 		{
-			path: '/signup',
-			name: 'signup',
-			component: SignupPage
+			path: '/weather',
+			name: 'weather',
+			component: Weather
 		}
   ]
 })

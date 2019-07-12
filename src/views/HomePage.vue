@@ -72,7 +72,12 @@ export default {
     RepositoryList,
     PageViewChart,
     PageViewChartForToday
-	},
+  },
+  data(){
+    return {
+      btnshow: false,
+    }
+  },
 	methods: {
 		getImgUrl(img) {
 			return require('../assets/' + img)

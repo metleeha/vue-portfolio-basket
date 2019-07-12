@@ -23,7 +23,7 @@ export default {
   name: 'PortfolioPage',
   components: {
 		ImgBanner,
-		PortfolioList,
+    PortfolioList,
   },
   data(){
     return {
