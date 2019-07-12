@@ -113,7 +113,7 @@ export default {
     if(this.imgSrc == null) {
       this.imgUrl = 'https://source.unsplash.com/collection/190727/1600x900'
     }
-    console.log(this.imgSrc)
+    // console.log(this.imgSrc)
   },
 	methods: {
     routerclick(page){
@@ -132,7 +132,7 @@ export default {
     },
     async getBannerImg() {
       this.imgUrlList = await FirebaseService.getBannerImage()
-      console.log(this.imgUrlList[0].img)
+      // console.log(this.imgUrlList[0].img)
     },
     getRandomImgUrl() {
       this.index++
