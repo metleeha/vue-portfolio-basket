@@ -153,11 +153,23 @@ export default {
 			this.$router.replace('/')
 		},
 		async signUp(){
-			const result = await FirebaseService.signup(this.email, this.password)
-			this.signUpDialog = false
+			const result = await FirebaseService.signUp(this.email, this.password)
+			if(result){
+				alert("가입완료!");
+				this.email = "";
+				this.password = "";
+				this.confirmPassword = "";
+				this.signUpDialog = false;
+			}
 		},
 		async signIn(){
 			const result = await FirebaseService.signIn(this.email, this.password)
+			if(result){
+				alert("로그인!");
+				this.$store.state.accessToken = result.accessToken;
+				this.$store.state.user = result.user;
+				this.$router.replace('/');
+			}
 		}
 	},
 	mounted: function() {
