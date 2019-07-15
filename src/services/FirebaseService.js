@@ -4,6 +4,7 @@ import 'firebase/auth'
 
 const POSTS = 'posts'
 const PORTFOLIOS = 'portfolios'
+const BANNERIMAGE = 'bannerimage'
 
 // Setup Firebase
 const config = {
@@ -60,6 +61,22 @@ export default {
 			body,
 			img,
 			created_at: firebase.firestore.FieldValue.serverTimestamp()
+		})
+	},
+	getBannerImage() {
+		const postsCollection = firestore.collection(BANNERIMAGE)
+		return postsCollection
+			.get()
+			.then((docSnapshots) => {
+				return docSnapshots.docs.map((doc) => {
+					let data = doc.data()
+					return data
+				})
+			})
+	},
+	postBannerImage(img) {
+		return firestore.collection(BANNERIMAGE).add({
+			img
 		})
 	},
 	loginWithGoogle() {
