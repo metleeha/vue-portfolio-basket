@@ -21,8 +21,8 @@
 			class="hidden-sm-and-up"
 		><v-icon>fa-bars</v-icon></v-toolbar-side-icon>
 		<v-toolbar-title>
-		<router-link to="/" tag="span" style="cursor: pointer"><v-icon left>free_breakfast</v-icon></router-link>
-		TEN</v-toolbar-title>
+		<router-link to="/" tag="span" style="cursor: pointer"><v-icon class="mr-1">free_breakfast</v-icon>
+		TEN</router-link></v-toolbar-title>
 		<TranslateBtn></TranslateBtn>
 		<v-spacer></v-spacer>
 		<v-toolbar-items class="hidden-xs-only">

@@ -16,7 +16,17 @@
 					<v-card-text>
 						<v-layout xs12 align-center row>
 							<v-flex xs4>
-								<v-btn>TODAY</v-btn>
+								<v-menu open-on-hover top offset-y>
+									<v-btn slot="activator">TODAY: 00</v-btn>
+									<v-card class="visit-card" color="rgba(184,193,204,0.5)" width="230px">
+										<v-card-title>TODAY</v-card-title>
+										<v-card-text>123</v-card-text>				
+										<v-layout xs-2>
+										</v-layout>
+										<v-layout xs-2>
+										</v-layout>
+									</v-card>
+								</v-menu>
 							</v-flex>
 							<v-flex xs4> 
 								<v-btn
@@ -97,6 +107,11 @@ export default {
 <style scoped>
 .footer-icons {
 	display: inline-flex;
+}
+.visit-card{
+	display:flex;
+	align-items: center;
+	justify-content: center;
 }
 
 
