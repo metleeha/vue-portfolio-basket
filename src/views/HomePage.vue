@@ -4,11 +4,16 @@
       <div slot="text">There is always a way.</div>
     </ImgBanner>
     <v-container>
+      <!-- Team Introduction -->
+      <v-lyout>
+        <div class="main-title display-2 my-5 text-xs-center">Team</div>
+      </v-lyout>
+
 
       <!-- Portfolio -->
       <v-layout my-5>
         <v-flex xs12 sm12>
-          <router-link to="/portfolio" tag="span"><h2 class="headline my-5 text-xs-center">Portfolio</h2></router-link>
+          <router-link to="/portfolio" tag="span"><div class="main-title display-2 my-5 text-xs-center">Portfolio</div></router-link>
           <PortfolioList></PortfolioList>
         </v-flex>
       </v-layout>
@@ -17,7 +22,7 @@
       <!-- Github -->
       <v-layout my-5>
         <v-flex xs12>
-          <h2  id="projects" class="headline my-5 text-xs-center">Project</h2>
+          <div class="main-title display-2 my-5 text-xs-center" id="projects">Project</div>
           <RepositoryList></RepositoryList>
         </v-flex>
       </v-layout>
@@ -70,8 +75,12 @@ export default {
 }
 </script>
 <style scoped>
-  h2 {
+
+  .main-title {
+    font-family: 'Literata', serif!important;
+    /* font-family: 'Mina', sans-serif; */
+    font-style: italic;
     font-weight: 700;
-    color: #424242;
+    color: #112D4E;
   }
 </style>
