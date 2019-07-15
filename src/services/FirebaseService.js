@@ -145,5 +145,11 @@ export default {
 			document.getElementById('quickstart-sign-in').disabled = false;
 			// [END_EXCLUDE]
 		});
+	},
+	currentUser(){
+		return firebase.auth().currentUser;
+	},
+	onAuthStateChanged(){
+		return firebase.auth().onAuthStateChanged();
 	}
 }
