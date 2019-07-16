@@ -1,10 +1,10 @@
 import Api from '@/services/Api'
 
-const BASE_URL = 'https://gitlab.com/api/v4'
+const BASE_URL = 'https://lab.ssafy.com/api/v4'
 
 export default {
-	getRepos(userName) {
-		return Api(BASE_URL).get(`/users/${userName}/projects`)
+	async getRepos(userName) {
+		return await Api(BASE_URL).get(`/users/${userName}/projects?private-token=RxfxKNybZWAMbj4boDK7`)
 	},
 	getCommits(fullName) {
 		let d = new Date()

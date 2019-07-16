@@ -27,11 +27,12 @@ export default {
 		Repository
 	},
 	mounted() {
-		this.getGitlabRepos('hackurity01')
+		this.getGitlabRepos('wsjeong')
 	},
 	methods: {
 		async getGitlabRepos(userName) {
 			const response = await GitlabService.getRepos(userName)
+			console.log(response)
 			if(response.status !== 200) {
 				return
 			}
