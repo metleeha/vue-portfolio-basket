@@ -5,9 +5,12 @@
     </ImgBanner>
     <v-container>
       <!-- Team Introduction -->
-      <v-lyout>
-        <div class="main-title display-2 my-5 text-xs-center">Team</div>
-      </v-lyout>
+      <v-layout my-5>
+        <v-flex xs12 sm12>
+          <div class="main-title display-2 my-5 text-xs-center">Team</div>
+          <Team></Team>
+        </v-flex>
+      </v-layout>
 
 
       <!-- Portfolio -->
@@ -38,6 +41,7 @@
 
 <script>
 import ImgBanner from '../components/ImgBanner'
+import Team from '../components/Team'
 import PortfolioList from '../components/PortfolioList'
 import RepositoryList from '../components/RepositoryList'
 import PageViewChart from '../components/PageViewChart'
@@ -46,7 +50,8 @@ import PageViewChartForToday from '../components/PageViewChartForToday'
 export default {
 	name: 'HomePage',
 	components: {
-		ImgBanner,
+    ImgBanner,
+    Team,
 		PortfolioList,
     RepositoryList,
     PageViewChart,
