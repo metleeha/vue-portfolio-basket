@@ -15,14 +15,14 @@
 	<!-- end sidebar -->
 
     <!-- navbar --> 
-    <v-toolbar color='#1E56A0' fixed app temporary dark scroll-off-screen >
+    <v-toolbar color='#112d4e' fixed app temporary dark scroll-off-screen >
 		<v-toolbar-side-icon 
 			@click.stop="drawer = !drawer"
 			class="hidden-sm-and-up"
 		><v-icon>fa-bars</v-icon></v-toolbar-side-icon>
 		<v-toolbar-title>
-		<router-link to="/" tag="span" style="cursor: pointer"><v-icon left>free_breakfast</v-icon></router-link>
-		TEN</v-toolbar-title>
+		<router-link to="/" tag="span" style="cursor: pointer"><v-icon class="mr-1">free_breakfast</v-icon>
+		TEN</router-link></v-toolbar-title>
 		<TranslateBtn></TranslateBtn>
 		<v-spacer></v-spacer>
 		<v-toolbar-items class="hidden-xs-only">
@@ -49,7 +49,7 @@
 			color="#d6e4f0"
 			@click="toTop"
 			>
-		<v-icon color="#163172">keyboard_arrow_up</v-icon>
+		<v-icon color="#112d4e">keyboard_arrow_up</v-icon>
 		</v-btn>
 	</v-fab-transition>
 	<!-- end backTotop button -->
