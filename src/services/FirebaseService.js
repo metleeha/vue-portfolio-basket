@@ -151,5 +151,24 @@ export default {
 	},
 	onAuthStateChanged(){
 		return firebase.auth().onAuthStateChanged();
+	},
+	getTodayView() {
+		let today = new Date()
+		let formattedToday = (today.getMonth()+1)+'월 '+ today.getDate()+'일'
+	    return firebase.database().ref('/Page/'+ formattedToday + '/home').once('value').then(function(snapshot){
+			let todayView = snapshot.val()
+        	if(todayView != null) {
+        	    return todayView.View
+        	}
+	    	else {
+	    	    return 0
+	        }
+		})
+	},
+	async getTotalView() {
+		return firebase.database().ref('/Page/TotalView').once('value').then(function(snapshot){
+			let TotalView = snapshot.val().View
+			return TotalView
+		})
 	}
 }
