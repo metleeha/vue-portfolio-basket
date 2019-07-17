@@ -1,16 +1,11 @@
 <template>
-  <div>
-    <ImgBanner imgSrc="https://source.unsplash.com/collection/190727/1600x900" btnshow=btnshow>
-      <div style="line-height:1.2em;font-size:1.2em;" slot="text">Portfolio Writer</div>
-    </ImgBanner>
     <v-container>
       <v-layout>
         <div class="markdown">
           <v-flex xs9>
 
             <v-text-field label="title" v-model="title"></v-text-field>
-            <v-btn icon @click="posting"><v-icon>send</v-icon></v-btn>
-
+            <v-btn icon @click.prevent="posting"><v-icon>send</v-icon></v-btn>
             <UploadImg></UploadImg>
 
           </v-flex>
@@ -20,12 +15,10 @@
         </div>
       </v-layout>
     </v-container>
-  </div>
 </template>
 
 
 <script>
-import ImgBanner from '../components/ImgBanner'
 import UploadImg from '../components/UploadImg'
 import FirebaseService from '@/services/FirebaseService'
 
@@ -42,8 +35,7 @@ export default {
       }
   },
 	components: {
-		ImgBanner,
-    UploadImg
+        UploadImg
 	},
   methods:{
     posting(event){
@@ -60,7 +52,7 @@ export default {
       //파이어베이스 디비에 넣는 작업
       FirebaseService.postPortfolio(this.title,this.contents,this.img)
       //등록 완료 후, 포트폴리오 목록 페이지로 이동
-      document.location.href="/Portfolio"
+      //   document.location.href="/Portfolio"
 
     }
   }
