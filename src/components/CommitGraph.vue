@@ -1,11 +1,6 @@
-<template>
-    <v-flex xs12>
-		<canvas id="cChart" width="300" height="100"></canvas>
-    </v-flex>
-</template>
-
 <script>
-import {Bar} from 'vue-chartjs'
+import { Bar } from 'vue-chartjs'
+import Date from 'date-and-time'
 
 export default {
 	name: 'CommitGraph',
@@ -17,21 +12,7 @@ export default {
 	},
 	data() {
 		return {
-			datacollection: {
-				//Data to be represented on x-axis
-				labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-				datasets: [
-				{
-					label: '조회수',
-					backgroundColor: '#f87979',
-					pointBackgroundColor: 'white',
-					borderWidth: 1,
-					pointBorderColor: '#249EBF',
-					//Data to be represented on y-axis
-					data: [12, 19, 3, 5, 2, 3]
-				}
-				]
-			},
+			datacollection: null,
 			//Chart.js options that controls the appearance of the chart
 			options: {
 				scales: {
@@ -59,6 +40,8 @@ export default {
 	},
 	mounted() {
 		//renderChart function renders the chart with the datacollection and options object.
+		this.makeData()
+		this.fillData()
 		this.renderChart(this.datacollection, this.options)
 		// Chart.generateChart()
 		// var ctx = document.getElementById('cChart');
@@ -67,7 +50,33 @@ export default {
     	// 	data: this.data,
     	// 	options: this.options
 		// });
-	}
+    },
+    methods: {
+		makeData() {
+			console.log(this.startdate)
+			var stdate = Date.parse(this.startdate.substring(0,10),'YYYY-MM-DD')
+		},
+      	fillData () {
+        	this.datacollection = {
+          		labels: [this.getRandomInt(), this.getRandomInt()],
+          		datasets: [
+            		{
+            			label: 'Data One',
+            			backgroundColor: '#f87979',
+            			data: [this.getRandomInt(), this.getRandomInt()]
+					}, 
+					{
+            			label: 'Data One',
+            			backgroundColor: '#f87979',
+        				data: [this.getRandomInt(), this.getRandomInt()]
+            		}
+          		]
+        	}
+      	},
+      	getRandomInt () {
+        	return Math.floor(Math.random() * (50 - 5 + 1)) + 5
+      	}
+    }
 }
 </script>
 <style>

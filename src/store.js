@@ -6,6 +6,14 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
 		accessToken: '',
-		user: ''
-  } 
+    user: '',
+    commits: [],
+    members: {},
+    repository: {},
+  },
+  getters:{
+    getMembers: state => {
+      return state.members
+    }
+  }
 })
