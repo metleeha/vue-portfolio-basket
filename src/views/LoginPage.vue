@@ -1,9 +1,16 @@
 <template>
 <v-layout row justify-center>
     <v-dialog v-model="dialog" max-width="400px">
+
+        <!-- Login Button -->
         <template v-slot:activator="{ on }">
-            <v-btn color="primary" dark v-on="on">Login</v-btn>
+            <v-btn color="primary" dark >Login</v-btn>
+            <v-btn flat v-on="on">
+				<v-icon left>input</v-icon>
+				Login
+			</v-btn>
         </template>
+
         <!-- modal -->
         <v-card>
             <!-- header -->

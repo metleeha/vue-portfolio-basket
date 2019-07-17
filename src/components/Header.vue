@@ -32,6 +32,11 @@
 				<v-icon left>{{ item.emoji }}</v-icon>
 				{{ item.title }}
 			</v-btn>
+			<LoginDialog v-show="!isLogin"></LoginDialog>
+			<v-btn flat v-show="isLogin">
+				<v-icon left>cancel</v-icon>
+				Logout
+			</v-btn>
 		</v-toolbar-items>
 	</v-toolbar>
 	<!-- end navbar -->
@@ -58,6 +63,7 @@
 
 <script>
 import TranslateBtn from './TranslateBtn'
+import LoginDialog from '@/components/LoginDialog'
 export default {
     name: 'Header',
     data(){
@@ -66,13 +72,28 @@ export default {
             drawer: false,
 			menuItems: [
 				{ emoji: 'assessment', title: 'Portfolio', link: '/portfolio'},
-				{ emoji: 'create', title: 'New', link: '/portfoliowriter'},
-				{ emoji: 'input', title: 'LogIn', link: '/login'}
-            ],
+				{ emoji: 'create', title: 'New', link: '/portfoliowriter'}
+			],
+			isLogin: false
         }
 	},
 	components: {
-		TranslateBtn
+		TranslateBtn,
+		LoginDialog
+	},
+	computed: {
+		loginCheck(){
+			return this.$store.state.user
+		}
+	},
+	watch: {
+		loginCheck(val, oldVal){
+			if(val == ''){
+				this.isLogin = false;
+			}else{
+				this.isLogin = true;
+			}
+	  }
 	},
     methods: {
       onScroll () {
@@ -86,7 +107,8 @@ export default {
         this.$router.push({ hash: '' })
 		this.$vuetify.goTo(0)
 		behavior: "smooth"
-      }
+	  }
+	  
     }
     
 }
