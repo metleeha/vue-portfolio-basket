@@ -11,6 +11,7 @@ import store from './store'
 import './registerServiceWorker'
 
 import IncrementCnt from './services/IncrementCnt'
+
 export const bus = new Vue()
 
 Vue.config.productionTip = false
