@@ -30,11 +30,6 @@
         </v-flex>
       </v-layout>
 
-      <v-layout>
-        <PageViewChart></PageViewChart>
-        <PageViewChartForToday></PageViewChartForToday>
-      </v-layout>
-
     </v-container>
   </div>
 </template>

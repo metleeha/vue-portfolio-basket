@@ -6,6 +6,17 @@ export default {
         var curNo = 0
         var date = new Date();
         var curDate = (date.getMonth()+1)+'월 '+ date.getDate()+'일'
+        var curTotalNo = 0
+
+        if(path == 'home') {
+            firebase.database().ref('/Page/TotalView').once('value').then(function(snapshot){
+                curTotalNo = snapshot.val().View + 1
+                firebase.database().ref('/Page/TotalView').set({
+                    View : curTotalNo 
+                })
+            })
+        }
+
         firebase.database().ref('/Page/'+ curDate + '/' + path).once('value').then(function(snapshot){
             curNo = snapshot.val()
             if(curNo != null) {
@@ -13,7 +24,7 @@ export default {
                 firebase.database().ref('/Page/' + curDate + '/' + path).set({
                 View: curNo
                 })
-    
+                
                 console.log(path+ '\t: '+ (curNo))
             }
             else {
