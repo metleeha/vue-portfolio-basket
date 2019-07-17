@@ -65,7 +65,6 @@
 <script>
 import FirebaseService from '@/services/FirebaseService'
 import store from '../store'
-import * as FirebaseUI from 'firebaseui'
 
 export default {
     name: 'LoginPage',
