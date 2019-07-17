@@ -6,7 +6,8 @@ export default (baseURL) => {
 		withCredentials: false,
 		headers: {
 			'Accept': 'application/json',
-			'Content-Type': 'application/json'
+			'Content-Type': 'application/json',
+			'Private-Token':'YyQhY6amWnc3F4supCjH'
 		}
 	})
 }
