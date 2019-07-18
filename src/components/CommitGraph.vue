@@ -1,74 +1,100 @@
-<template>
-    <v-flex xs12>
-		<canvas id="cChart" width="300" height="100"></canvas>
-    </v-flex>
-</template>
-
 <script>
-import {Bar} from 'vue-chartjs'
+import { Bar } from 'vue-chartjs'
+import Date from 'date-and-time'
 
 export default {
 	name: 'CommitGraph',
   	extends: Bar,
 	props: {
-		commitByDate: {type: null},
-		startdate: {type: String},
-		lastdate: {type: String},
+		member: {type: null}
 	},
 	data() {
 		return {
+			myCommits: [],
+			startDate: '',
+			lastDate: '',
+			labelsData: new Map(),
 			datacollection: {
-				//Data to be represented on x-axis
-				labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-				datasets: [
-				{
-					label: '조회수',
-					backgroundColor: '#f87979',
-					pointBackgroundColor: 'white',
-					borderWidth: 1,
-					pointBorderColor: '#249EBF',
-					//Data to be represented on y-axis
-					data: [12, 19, 3, 5, 2, 3]
-				}
-				]
-			},
-			//Chart.js options that controls the appearance of the chart
+          		labels: [],
+          		datasets: [
+            		{
+            			label: 'Commite By Date',
+            			backgroundColor: '#112d4e',
+            			data: []
+					}
+          		]
+        	},
 			options: {
 				scales: {
-				yAxes: [{
-					ticks: {
-					beginAtZero: true
+					yAxes: [{
+						ticks: {
+						beginAtZero: true
+						},
+						gridLines: {
+						display: false
+						}
+					}],
+					xAxes: [ {
+						gridLines: {
+						display: false
+						}
+					}]
 					},
-					gridLines: {
-					display: true
-					}
-				}],
-				xAxes: [ {
-					gridLines: {
-					display: false
-					}
-				}]
-				},
-				legend: {
-					display: true
-				},
+					legend: {
+						display: false
+					},
 				responsive: true,
-				maintainAspectRatio: false
+				maintainAspectRatio: false,
+				backgroundColor: '#dbe2ef'
 			}
 		}
 	},
-	mounted() {
-		//renderChart function renders the chart with the datacollection and options object.
-		this.renderChart(this.datacollection, this.options)
-		// Chart.generateChart()
-		// var ctx = document.getElementById('cChart');
-		// var myBarChart = new Chart(ctx, {
-    	// 	type: 'bar',
-    	// 	data: this.data,
-    	// 	options: this.options
-		// });
+    methods: {
+		selectCommit(commits){
+			for (let i = 0; i < commits.length; i++) {
+				if(commits[i].committer_name.toLowerCase() == this.member.name.toLowerCase()){
+					var date = Date.parse(commits[i].committed_date.substring(0,10),'YYYY-MM-DD')
+					date = Date.format(date,'YY/MM/DD')
+					this.myCommits.push(date)
+					this.labelsData.set(date,this.labelsData.get(date)+1)
+				}
+			}
+			this.datacollection.datasets[0].data = Array.from(this.labelsData.values())
+			this.renderChart(this.datacollection, this.options)
+		},
+		setDate(repository){
+			this.startDate = Date.parse(repository.created_at.substring(0,10),'YYYY-MM-DD')
+			this.lastDate = Date.parse(repository.last_activity_at.substring(0,10),'YYYY-MM-DD')
+			var date = this.startDate
+			var length = Date.subtract(this.lastDate, this.startDate).toDays();
+			for (let i = 0; i <= length; i++) {
+				this.labelsData.set(Date.format(date,'YY/MM/DD'),0)
+				date = Date.addDays(date,1)
+			}
+			this.datacollection.labels = Array.from(this.labelsData.keys())
+		}
+    },
+	computed: {
+		getCommits(){
+			return this.$store.getters.getCommits
+		},
+		getRepositoryDate(){
+			return this.$store.getters.getRepository
+		}
+	},
+	watch: {
+		getCommits(val, oldVal){
+			this.selectCommit(val)
+		},
+		getRepositoryDate(val, oldVal){
+			this.setDate(val)
+		}
 	}
 }
 </script>
 <style>
+.graph {
+	width: 500px;
+	height: 80px;
+}
 </style>

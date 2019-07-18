@@ -79,7 +79,7 @@ export default {
 			img
 		})
 	},
-	loginWithGoogle() {
+	signInWithGoogle() {
 		let provider = new firebase.auth.GoogleAuthProvider()
 		return firebase.auth().signInWithPopup(provider).then(function (result) {
 			let accessToken = result.credential.accessToken
@@ -89,21 +89,45 @@ export default {
 			console.error('[Google Login Error]', error)
 		})
 	},
-	loginWithFacebook() {
+	signInWithFacebook() {
 		let provider = new firebase.auth.FacebookAuthProvider();
-		return firebase.auth().signInWithPopup(provider).then(function(result) {
-			
+		return firebase.auth().signInWithPopup(provider).then(function (result) {
+
 			// This gives you a Facebook Access Token. You can use it to access the Facebook API.
 			let token = result.credential.accessToken;
 			// The signed-in user info.
 			let user = result.user;
 			return result;
 			// ...
-		}).catch(function(error) {
-			console.error('[Facebook Login Error]', error)  
+		}).catch(function (error) {
+			console.error('[Facebook Login Error]', error)
 		});
 	},
-	signUp(email, password){
+	signInWithGithub() {
+		let provider = new firebase.auth.GithubAuthProvider();
+		return firebase.auth().signInWithPopup(provider).then(function (result) {
+			// This gives you a GitHub Access Token. You can use it to access the GitHub API.
+			var token = result.credential.accessToken;
+			// The signed-in user info.
+			var user = result.user;
+			return result;
+			// ...
+		}).catch(function (error) {
+			// Handle Errors here.
+			var errorCode = error.code;
+			var errorMessage = error.message;
+			// The email of the user's account used.
+			var email = error.email;
+			// The firebase.auth.AuthCredential type that was used.
+			var credential = error.credential;
+			if(errorCode == "auth/account-exists-with-different-credential"){
+				alert("해당 이메일은 이미 가입되어 있습니다.");
+			}
+			console.error('[Github Login Error]', error)
+			// ...
+		});
+	},
+	signUp(email, password) {
 		if (email.length < 4) {
 			alert('Please enter an email address.');
 			return;
@@ -112,9 +136,9 @@ export default {
 			alert('Please enter a password.');
 			return;
 		}
-		  // Sign in with email and pass.
-		  // [START createwithemail]
-		return firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
+		// Sign in with email and pass.
+		// [START createwithemail]
+		return firebase.auth().createUserWithEmailAndPassword(email, password).catch(function (error) {
 			// Handle Errors here.
 			var errorCode = error.code;
 			var errorMessage = error.message;
@@ -128,10 +152,10 @@ export default {
 			// [END_EXCLUDE]
 		});
 
-		  // [END createwithemail]
+		// [END createwithemail]
 	},
-	signIn(email, password){
-		return firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
+	signIn(email, password) {
+		return firebase.auth().signInWithEmailAndPassword(email, password).catch(function (error) {
 			// Handle Errors here.
 			var errorCode = error.code;
 			var errorMessage = error.message;
@@ -146,10 +170,38 @@ export default {
 			// [END_EXCLUDE]
 		});
 	},
-	currentUser(){
+	signOut() {
+		return firebase.auth().signOut().then(function () {
+			return true;
+		}).catch(function (error) {
+			// An error happened.
+			alert("Error: " + error)
+		});
+	},
+	currentUser() {
 		return firebase.auth().currentUser;
 	},
-	onAuthStateChanged(){
+	onAuthStateChanged() {
 		return firebase.auth().onAuthStateChanged();
-	}
+	},
+	getTodayView() {
+		let today = new Date()
+		let formattedToday = (today.getMonth() + 1) + '월 ' + today.getDate() + '일'
+		return firebase.database().ref('/Page/' + formattedToday + '/home').once('value').then(function (snapshot) {
+			let todayView = snapshot.val()
+			if (todayView != null) {
+				return todayView.View
+			}
+			else {
+				return 0
+			}
+		})
+	},
+	async getTotalView() {
+		return firebase.database().ref('/Page/TotalView').once('value').then(function (snapshot) {
+			let TotalView = snapshot.val().View
+			return TotalView
+		})
+	},
+
 }

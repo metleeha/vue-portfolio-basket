@@ -1,55 +1,76 @@
 <template>
-    <v-layout row justify-center>
-        <v-dialog v-model="dialog" max-width="400px">
-            <template v-slot:activator="{ on }">
-                <v-btn color="primary" dark v-on="on">Login</v-btn>
-            </template>
-            <!-- modal -->
-            <v-card>
-                <!-- header -->
-                <v-toolbar tabs color="secondary">
-                    <v-toolbar-title><span class="headline">Login</span></v-toolbar-title>
-                    <v-spacer></v-spacer>
-                    <v-btn icon dark @click="dialog = false">
-                        <v-icon>close</v-icon>
-                    </v-btn>
-                </v-toolbar>
+<v-layout row justify-center>
+    <v-dialog v-model="dialog" max-width="400px">
 
-                <!-- contents -->
+        <!-- Login Button -->
+        <template v-slot:activator="{ on }">
+            <v-btn flat v-show="isLogin">
+                <v-icon left>cancel</v-icon>
+                Logout
+            </v-btn>
+            <v-btn color="primary" dark v-show="!isLogin">Login</v-btn>
+            <v-btn flat v-on="on">
+				<v-icon left>input</v-icon>
+				Login
+			</v-btn>
+        </template>
+
+        <!-- modal -->
+        <v-card>
+            <!-- header -->
+            <v-toolbar tabs color="secondary">
+                <v-toolbar-title><span class="headline">Login</span></v-toolbar-title>
+                <v-spacer></v-spacer>
+                <v-btn icon dark @click="dialog = false">
+                    <v-icon>close</v-icon>
+                </v-btn>
+            </v-toolbar>
+
+            <!-- contents -->
+            <v-card-text>
+                <!-- Login with E-mail -->
                 <v-form>
-                <v-container grid-list-md>
-                    <!-- Login with E-mail -->
-                    <v-layout row wrap>
-                        
-                            <v-flex xs12 >
-                                <v-text-field class="please" label="E-mail" prepend-icon="face" type="text" required></v-text-field>
-                            </v-flex>
-                            <v-flex xs12>
-                                <v-text-field label="Password" prepend-icon="lock" type="password" required></v-text-field>
-                            </v-flex>
+                    <v-container grid-list-md text-xs-center>
 
-                            <v-layout wrap row>
-                                <v-btn>Login</v-btn>
-                            </v-layout>
+                        <v-layout wrap row>
+                            <v-text-field class="input-with-icon" label="E-mail" prepend-icon="face" type="text" required></v-text-field>
+                            <v-text-field class="input-with-icon" label="Password" prepend-icon="lock" type="password" required></v-text-field>
+                        </v-layout>
+                        <v-layout wrap row>
+                            <v-flex>
+                                <small>ID/PW 찾기</small>
+                            </v-flex>
+                        </v-layout>
+                        <v-layout wrap row>
+                            <v-flex>
+                                <v-btn round color="info" style="width:100%;">Login</v-btn>
+                                <v-btn round color="success" style="width:100%;">SignUp</v-btn>
+                            </v-flex>
+                        </v-layout>
 
-                                
-                            <v-layout wrap row>
-                                <v-flex xs4><small>회원가입</small></v-flex>
-                                <v-flex xs4><small>ID&PW 찾기</small></v-flex>
-                            </v-layout>
-                                              
+                    </v-container>
+                </v-form>
+                <!-- /Login with E-mail -->
+
+                <!-- Login without E-mail -->
+                <v-container grid-list-md text-xs-center>
+                    <h4>Sign in with</h4>
+                    <v-layout justify-center>
+                        <v-btn round color="#df4a31" dark v-on:click="loginWithGoogle" style="width:100%;">
+                            <v-icon size="25" class="mr-2">fa-google</v-icon>Google
+                        </v-btn>
                     </v-layout>
-
-                    <!-- Login without E-mail -->
-                    <v-layout>
-
+                    <v-layout justify-center>
+                        <v-btn round color="blue" dark v-on:click="loginWithFacebook" style="width:100%;">
+                            <v-icon size="25" class="mr-2">fa-facebook</v-icon>Facebook
+                        </v-btn>
                     </v-layout>
                 </v-container>
-                </v-form>
-            </v-card>
-            <!-- end modal -->
-        </v-dialog>
-    </v-layout>
+            </v-card-text>
+        </v-card>
+        <!-- end modal -->
+    </v-dialog>
+</v-layout>
 </template>
 
 <script>
@@ -62,11 +83,10 @@ export default {
     data() {
         return {
             dialog: false,
-            signInDialog: false,
-            signUpDialog: false,
             email: '',
             password: '',
             confirmPassword: '',
+            isLogin:false
         }
     },
     components: {},
@@ -101,6 +121,10 @@ export default {
                 this.$store.state.user = result.user;
                 this.$router.replace('/');
             }
+        },
+        async logout(){
+            const result = await firebaseService.signOut();
+            console.log(result);
         }
     },
     mounted: function () {
@@ -109,12 +133,25 @@ export default {
     computed: {
         comparePasswords() {
             return this.password !== this.confirmPassword ? 'Passwords do not match' : ''
+        },
+        loginCheck() {
+            return this.$store.state.user
+        }
+    },
+    watch: {
+        loginCheck(val, oldVal) {
+            if (val == '') {
+                this.isLogin = false;
+            } else {
+                this.isLogin = true;
+            }
         }
     }
 }
 </script>
+
 <style scoped>
-.please{
+.input-with-icon {
     display: inline-flex;
 }
 </style>

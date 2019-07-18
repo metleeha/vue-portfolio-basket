@@ -12,7 +12,7 @@ export default {
 		let d = new Date()
 		d.setMonth(d.getMonth() - 1)
 
-		return Api(TEST_URL).get(`/projects/${fullName}/repository/commits?since=${d.toISOString()}`)
+		return Api(TEST_URL).get(`/projects/${fullName}/repository/commits?since=${d.toISOString()}&per_page=100`)
 	},
 	getMembers(projectID) {
 		return Api(TEST_URL).get(`/projects/${projectID}/members`)

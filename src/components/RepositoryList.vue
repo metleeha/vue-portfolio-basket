@@ -2,15 +2,17 @@
   <v-layout column px-4>
     <v-flex v-for="i in members.length" :key="i">
       <v-divider v-if="i === 1"></v-divider>
-      <Repository :projectID="projectID" :repository="repository" :user="members[i - 1]"></Repository>
+      <Repository :member = members[i-1]></Repository>
       <v-divider></v-divider>
     </v-flex>
+	<div>{{members.length}}</div>
   </v-layout>
 </template>
 
 <script>
 import Repository from '@/components/Repository'
 import GitlabService from '@/services/GitlabService'
+import { mapGetters } from 'vuex'
 
 export default {
 	name: 'RepositoryList',
@@ -22,8 +24,8 @@ export default {
 	data() {
 		return {
 			repository: {},
-			members: []
-    }
+			members: [],
+    	}
 	},
 	components: {
 		Repository
@@ -34,17 +36,25 @@ export default {
 	methods: {
 		async getGitlabRepos(projectID) {
 			const members = await GitlabService.getMembers(projectID)
-			if(members.status !== 200) {
-				return
-			}
-			this.members = members.data
-
+			if(members.status !== 200) {return}
+			this.$store.state.members = members.data
 			const response = await GitlabService.getRepos(projectID)
-			if(response.status !== 200) {
-			 	return
-			}
-			console.log(response)
-			this.repository = response.data
+			if(response.status !== 200) {return} 
+			this.$store.state.repository = response.data
+			console.log(response.data)
+			const commits = await GitlabService.getCommits(this.projectID)
+			if(commits.status !== 200){return}
+			this.$store.state.commits = commits.data
+		}
+	},
+	computed: {
+		getMembers(){
+			return this.$store.getters.getMembers
+		}
+	},
+	watch: {
+		getMembers(val, oldVal){
+			this.members = val
 		}
 	}
 }
