@@ -2,11 +2,14 @@
   <div class="py-3">
     <v-layout>
       	<v-flex xs12>
-        	<h2 class="font-weight-regular">{{repository.path_with_namespace}}</h2>
-        	<p class="subheading mb-1 grey--text text--darken-1 font-weight-light">@{{member.username}}</p>
-      	</v-flex>
-		<CommitGraph 	:member = member>
-		</CommitGraph>
+        	<div class="project-text">
+			<h2 class="font-weight-regular">{{repository.path_with_namespace}}</h2>
+        	<p class="username mb-1 grey--text text--darken-1 font-weight-light">@{{member.username}}</p>
+        	</div>
+			<div class="project-graph">
+			<CommitGraph 	:member = member class="graph hidden-xs-only"></CommitGraph>
+			</div>
+		</v-flex>
 		<!-- <rc></rc> -->
     </v-layout>
   </div>
@@ -48,5 +51,14 @@ export default {
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
+}
+.username {
+	height: 2.4em;
+}
+.project-text{
+	float: left;
+}
+.project-graph{
+	float: right;
 }
 </style>
