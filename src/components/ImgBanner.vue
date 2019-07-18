@@ -1,7 +1,8 @@
 <template>
   <div class="img-banner">
     <v-img :src="imgUrl"
-           aspect-ratio="1.7">
+           aspect-ratio="1.7"
+           max-height="100vh">
            <v-dialog v-model="dialog" row justify-center max-width="800px">
             <template v-slot:activator="{ on }">
                 <v-btn icon v-on="on" class='moveIcon' dark large><v-icon x-large>refresh</v-icon></v-btn>
@@ -69,8 +70,8 @@
             </v-card>
         </v-dialog>	  
       <v-layout align-center justify-center row fill-height>
-        <v-flex text-xs-center class=' moveSlot'>
-          <span class="banner-title text-shadow display-3 font-weight-light">
+        <v-flex class=' moveSlot'>
+          <span class="banner-title text-shadow">
             <slot name="text"/>
           </span>
         </v-flex>
@@ -147,12 +148,12 @@ export default {
     margin-top: -2vh;
   }
   .banner-title{
-    padding-top: 200px;
-    text-align: center;
-    line-height:1.2em; 
+    padding-top: 400px;
+    text-align:end;
+    /* line-height:1.2em;  */
     color:#f2f2f2; 
-    font-size:6vw; 
-    font-family:Roboto Slab;
+    font-size:8vw; 
+    font-family: Oswald;
   }
   .text-shadow {
     text-shadow: 0 0 10px #424242;
