@@ -19,7 +19,9 @@ export default {
 	props: {
 		limits: {type: Number, default: 5},
 		loadMore: {type: Boolean, default: false},
-		projectID: {type: String, default: '13334004'}
+		// projectID: {type: String, default: '13334004'},
+		// projectID: {type: String, default: '5632'},
+		projectID: {type: String, default: '6047'}
 	},
 	data() {
 		return {
@@ -31,20 +33,22 @@ export default {
 		Repository
 	},
 	mounted() {
-		this.getGitlabRepos(this.projectID)
+		this.getGitlabRepos()
 	},
 	methods: {
-		async getGitlabRepos(projectID) {
-			const members = await GitlabService.getMembers(projectID)
+		async getGitlabRepos() {
+			const members = await GitlabService.getMembers(this.projectID)
 			if(members.status !== 200) {return}
 			this.$store.state.members = members.data
-			const response = await GitlabService.getRepos(projectID)
+			console.log(members.data)
+			const response = await GitlabService.getRepos(this.projectID)
 			if(response.status !== 200) {return} 
 			this.$store.state.repository = response.data
 			console.log(response.data)
 			const commits = await GitlabService.getCommits(this.projectID)
 			if(commits.status !== 200){return}
 			this.$store.state.commits = commits.data
+			console.log(commits.data)
 		}
 	},
 	computed: {
