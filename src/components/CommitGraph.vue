@@ -52,13 +52,16 @@ export default {
     methods: {
 		selectCommit(commits){
 			for (let i = 0; i < commits.length; i++) {
-				if(commits[i].committer_name.toLowerCase() == this.member.name.toLowerCase()){
+				if((commits[i].committer_name.toLowerCase() == this.member.name.toLowerCase()) ||
+				(commits[i].committer_name.toLowerCase() == this.member.username.toLowerCase()) ||
+				(commits[i].committer_name.toLowerCase().replace(' ', '') == this.member.name.toLowerCase())){
 					var date = Date.parse(commits[i].committed_date.substring(0,10),'YYYY-MM-DD')
-					date = Date.format(date,'YY/MM/DD')
+					date = Date.format(date,'MM/DD')
 					this.myCommits.push(date)
 					this.labelsData.set(date,this.labelsData.get(date)+1)
 				}
 			}
+			console.log(this.myCommits)
 			this.datacollection.datasets[0].data = Array.from(this.labelsData.values())
 			this.renderChart(this.datacollection, this.options)
 		},
@@ -68,7 +71,7 @@ export default {
 			var date = this.startDate
 			var length = Date.subtract(this.lastDate, this.startDate).toDays();
 			for (let i = 0; i <= length; i++) {
-				this.labelsData.set(Date.format(date,'YY/MM/DD'),0)
+				this.labelsData.set(Date.format(date,'MM/DD'),0)
 				date = Date.addDays(date,1)
 			}
 			this.datacollection.labels = Array.from(this.labelsData.keys())
