@@ -10,9 +10,9 @@ export default {
 	},
 	getCommits(fullName) {
 		let d = new Date()
-		d.setMonth(d.getMonth() - 1)
+		d.setMonth(d.getMonth()-1)
 
-		return Api(BASE_URL).get(`/projects/${fullName}/repository/commits?since=${d.toISOString()}&per_page=100&all=true`)
+		return Api(BASE_URL).get(`/projects/${fullName}/repository/commits?since=${d.toISOString()}&per_page=9999&ref_name=dev&page=1`)
 	},
 	getMembers(projectID) {
 		return Api(BASE_URL).get(`/projects/${projectID}/members`)
