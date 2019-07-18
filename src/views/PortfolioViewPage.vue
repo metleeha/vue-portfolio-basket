@@ -1,19 +1,34 @@
 <template>
   <div>
-    <ImgBanner :imgSrc='$route.params.imgSrc'>
-      <div style="line-height:1.2em;font-size:1.2em;" slot="text">{{$route.params.title}}</div>
-    </ImgBanner>
+
     <v-container>
-      <v-layout>
-        <v-flex xs10>
-          <v-flex xs12 style="font-size:2vw;" id="aboutmeText">
-            <p>{{$route.params.body}}<br/>
-              {{$route.params.date}}
-            </p>
-          </v-flex>
+      <v-layout class="page-header" row>
+        <v-flex xs12>
+          <h1 class="page-title">{{ $route.params.title }}</h1>
+        </v-flex>
+      </v-layout>
+      <v-layout class="page-content">
+        <v-flex xs12>
+          <v-layout row class="page-author">
+            <v-flex xs12 justify-content-left>
+              <span><v-icon class="mr-1">fa-paperclip</v-icon>{{ stringDate }}</span>
+              <span><v-icon class="mr-1">fa-user</v-icon>by admin</span>
+              <span><v-icon class="mr-1">fa-comments</v-icon>3 Comments</span>
+            </v-flex>
+          </v-layout>
+          <v-img 
+            :src='$route.params.imgSrc'
+            max-height="300"
+            cover
+          ></v-img>
         </v-flex>
       </v-layout>
 
+      <v-layout>
+        <v-flex xs12 class="page-body">
+          <h4>{{$route.params.body}}</h4>
+        </v-flex>
+      </v-layout>
     </v-container>
   </div>
 </template>
@@ -21,22 +36,43 @@
 
 
 <script>
-import ImgBanner from '../components/ImgBanner'
-
 export default {
 	name: 'PortfolioViewPage',
-	components: {
-		ImgBanner
-	}
+	data(){
+    return{
+      stringDate: ''
+    }
+  },
+  created: function(){
+    this.stringDate = this.$route.params.date.substring(0, 16)
+  }
+  
 }
 </script>
 
 
-<style>
+<style scoped>
 @media screen and (max-width:960px) {
 
 }
 @media screen and (max-width:600px) {
 
+}
+.page-header{
+  height: 20vh;
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-bottom-color: black;
+}
+.page-title{
+  margin: 0 0 5px;
+  padding-top: 10vh;
+  font-family: Roboto;
+  font-size: 50px;
+  text-align: center;
+  line-height: 40px;
+}
+.page-content{
+  padding-top: 2vh;
 }
 </style>

@@ -17,10 +17,19 @@
 						<v-layout xs12 align-center row>
 							<v-flex xs4>
 								<v-menu open-on-hover top offset-y>
-									<v-btn slot="activator">TODAY: 00</v-btn>
-									<v-card class="visit-card" color="rgba(184,193,204,0.5)" width="230px">
-										<v-card-title>TODAY</v-card-title>
-										<v-card-text>123</v-card-text>				
+									<v-btn slot="activator">TODAY: 123</v-btn>
+									<v-card class="visit-card" color="rgba(184,193,204,0.5)" width="200px">
+										<v-flex xs12 d-flex justify-center>
+											<v-flex xs6 text-xs-center>
+												<v-card-text xs3>TODAY</v-card-text>
+												<p>123</p>	
+											</v-flex>
+											<v-flex xs6 text-xs-center>
+												<v-card-text xs3>TOTAL</v-card-text>
+												<p>9473</p>	
+											</v-flex>
+										</v-flex>
+			
 										<v-layout xs-2>
 										</v-layout>
 										<v-layout xs-2>

@@ -53,10 +53,12 @@ export default {
         left: 0,
         behavior: 'smooth'
       });
-    }
+    },
+
   }
 }
 </script>
+
 <style scoped>
 .fade-enter-active, .fade-leave-active {
   transition: opacity .5s;

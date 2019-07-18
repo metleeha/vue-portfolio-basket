@@ -3,11 +3,9 @@
       <v-layout>
         <div class="markdown">
           <v-flex xs9>
-
             <v-text-field label="title" v-model="title"></v-text-field>
-            <v-btn icon @click.prevent="posting"><v-icon>send</v-icon></v-btn>
+            <v-btn icon @click="posting"><v-icon>send</v-icon></v-btn>
             <UploadImg></UploadImg>
-
           </v-flex>
           <v-flex xs10>
             <markdown-editor v-model="contents"></markdown-editor>
@@ -23,7 +21,7 @@ import UploadImg from '../components/UploadImg'
 import FirebaseService from '@/services/FirebaseService'
 
 export default {
-	name: 'PortfolioWriterPage',
+  name: 'PortfolioWriterPage',
   data(){
     title:'';
     contents: '';
@@ -31,7 +29,8 @@ export default {
 
     return {
       title:'',
-      contents: ''
+      contents: '',
+
       }
   },
 	components: {
@@ -48,15 +47,15 @@ export default {
       console.log(this.contents)
       console.log(this.img)
 
-
       //파이어베이스 디비에 넣는 작업
       FirebaseService.postPortfolio(this.title,this.contents,this.img)
-      //등록 완료 후, 포트폴리오 목록 페이지로 이동
-      //   document.location.href="/Portfolio"
+      // 등록 완료 후, 포트폴리오 목록 페이지로 이동
+      document.location.href="/Portfolio"
+    },
 
     }
   }
-}
+
 </script>
 <style>
 

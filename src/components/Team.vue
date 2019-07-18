@@ -58,7 +58,7 @@ export default {
         return {
             profiles: [
                 { name: 'Hadong', role: 'Frontend', git: 'https://lab.ssafy.com/metleeha', email: 'nodongth@gmail.com', imgUrl: 'https://upload.wikimedia.org/wikipedia/en/a/aa/Bart_Simpson_200px.png'},
-                { name: 'Gilsung', role: 'DevOps', git: 'https://lab.ssafy.com/Gilseong', email: 'gilseong223@gmail.com', imgUrl: 'https://upload.wikimedia.org/wikipedia/en/0/02/Homer_Simpson_2006.png'},
+                { name: 'Gilsung', role: 'Server', git: 'https://lab.ssafy.com/Gilseong', email: 'gilseong223@gmail.com', imgUrl: 'https://upload.wikimedia.org/wikipedia/en/0/02/Homer_Simpson_2006.png'},
                 { name: 'Jinhwan', role: 'Backend', git: 'https://lab.ssafy.com/jinhwan_nim', email: 'dicmon@naver.com', imgUrl: 'https://upload.wikimedia.org/wikipedia/en/9/9d/Maggie_Simpson.png'},
                 { name: 'Wooseong', role: 'Scrum', git: 'https://lab.ssafy.com/wsjeong', email: 'wsjeongssa1@gmail.com', imgUrl: 'https://upload.wikimedia.org/wikipedia/en/e/ec/Lisa_Simpson.png'},
                 { name: 'Haebin', role: 'Backend', git: 'https://lab.ssafy.com/heabin', email: 'heabin209@gmail.com', imgUrl: 'https://upload.wikimedia.org/wikipedia/en/0/0b/Marge_Simpson.png'},
