@@ -128,7 +128,7 @@ export default {
 		});
 	},
 	signInAnonymously() {
-		return firebase.auth().signInAnonymously().then(function(){
+		return firebase.auth().signInAnonymously().then(function () {
 			return true;
 		}).catch(function (error) {
 			// Handle Errors here.
@@ -215,5 +215,9 @@ export default {
 			return TotalView
 		})
 	},
+	async signInCheck() {
+		return firebase.auth().onAuthStateChanged();
+		return user;
 
+	}
 }

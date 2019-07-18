@@ -4,7 +4,7 @@
     <template v-slot:activator="{ on }">
         <v-btn flat v-on="on" v-show="!isSignIn">
             <v-icon left>input</v-icon>
-            signIn
+            Sign In
         </v-btn>
         <v-btn flat v-show="isSignIn" v-on:click="signOut">
             <v-icon left>cancel</v-icon>
@@ -181,7 +181,6 @@ export default {
         },
         async signInWithGithub() {
             const result = await FirebaseService.signInWithGithub();
-            console.log(result)
             this.$store.state.accessToken = result.credential.accessToken
             this.$store.state.user = result.user
             alert("Sign in with Github!");
@@ -244,7 +243,7 @@ export default {
             return this.signUpPassword !== this.confirmPassword ? 'Passwords do not match' : ''
         },
         signInCheck() {
-            return this.$store.state.accessToken;
+            return this.$store.state.user;
         }
     },
     watch: {
@@ -252,6 +251,11 @@ export default {
             if (val == false) {
                 this.isSignUp = false;
                 this.clear()
+            }
+        },
+        signInCheck(val, oldVal){
+            if(val){
+                this.isSignIn = true;
             }
         }
     }
