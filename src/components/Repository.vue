@@ -3,7 +3,7 @@
     <v-layout>
       	<v-flex xs12>
         	<div class="project-text">
-			<h2 class="font-weight-regular">{{repository.path_with_namespace}}</h2>
+			<h2 class="font-weight-regular" @click="goRepo()">{{repository.path_with_namespace}}</h2>
         	<p class="username mb-1 grey--text text--darken-1 font-weight-light">@{{member.username}}</p>
         	</div>
 			<div class="project-graph">
@@ -32,6 +32,11 @@ export default {
 	data() {
 		return {
 			repository: {}
+		}
+	},
+	methods:{
+		goRepo(){
+			location.href=this.repository.http_url_to_repo
 		}
 	},
 	computed: {

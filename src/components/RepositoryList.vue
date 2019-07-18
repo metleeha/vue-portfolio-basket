@@ -41,6 +41,7 @@ export default {
 			const response = await GitlabService.getRepos(projectID)
 			if(response.status !== 200) {return} 
 			this.$store.state.repository = response.data
+			console.log(response.data)
 			const commits = await GitlabService.getCommits(this.projectID)
 			if(commits.status !== 200){return}
 			this.$store.state.commits = commits.data
