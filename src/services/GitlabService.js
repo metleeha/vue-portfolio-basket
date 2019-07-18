@@ -6,15 +6,15 @@ const TEST_URL = 'https://gitlab.com/api/v4'
 export default {
 	getRepos(projectID) {
 		// return Api(TEST_URL).get(`/users/hackurity01/projects`)
-		return Api(TEST_URL).get(`/projects/${projectID}`)
+		return Api(BASE_URL).get(`/projects/${projectID}`)
 	},
 	getCommits(fullName) {
 		let d = new Date()
 		d.setMonth(d.getMonth() - 1)
 
-		return Api(TEST_URL).get(`/projects/${fullName}/repository/commits?since=${d.toISOString()}&per_page=100`)
+		return Api(BASE_URL).get(`/projects/${fullName}/repository/commits?since=${d.toISOString()}&per_page=100&all=true`)
 	},
 	getMembers(projectID) {
-		return Api(TEST_URL).get(`/projects/${projectID}/members`)
+		return Api(BASE_URL).get(`/projects/${projectID}/members`)
 	}
 }

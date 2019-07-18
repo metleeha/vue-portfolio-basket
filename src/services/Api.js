@@ -7,7 +7,8 @@ export default (baseURL) => {
 		headers: {
 			'Accept': 'application/json',
 			'Content-Type': 'application/json',
-			'Private-Token':'YyQhY6amWnc3F4supCjH'
+			// 'Private-Token':'YyQhY6amWnc3F4supCjH',	// gitlab
+			'Private-Token':'jKzAYJGDh78mssL8Cjzj '	// ssafy.git
 		}
 	})
 }

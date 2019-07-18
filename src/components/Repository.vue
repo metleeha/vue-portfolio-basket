@@ -18,7 +18,6 @@
 <script>
 import GitlabService from '@/services/GitlabService'
 import CommitGraph from './CommitGraph'
-import rc from './RandomChart'
 
 export default {
 	name: 'Repository',
@@ -26,8 +25,7 @@ export default {
 		member: {type: null}
 	},
 	components: {
-		CommitGraph,
-		rc
+		CommitGraph
 	},
 	data() {
 		return {
