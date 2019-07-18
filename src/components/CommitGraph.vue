@@ -6,13 +6,24 @@ export default {
 	name: 'CommitGraph',
   	extends: Bar,
 	props: {
-		commitByDate: {type: null},
-		startdate: {type: String},
-		lastdate: {type: String},
+		member: {type: null}
 	},
 	data() {
 		return {
-			datacollection: null,
+			myCommits: [],
+			startDate: '',
+			lastDate: '',
+			labelsData: new Map(),
+			datacollection: {
+          		labels: [],
+          		datasets: [
+            		{
+            			label: 'Commite By Date',
+            			backgroundColor: '#f87979',
+            			data: []
+					}
+          		]
+        	},
 			//Chart.js options that controls the appearance of the chart
 			options: {
 				scales: {
@@ -42,7 +53,6 @@ export default {
 		//renderChart function renders the chart with the datacollection and options object.
 		this.makeData()
 		this.fillData()
-		this.renderChart(this.datacollection, this.options)
 		// Chart.generateChart()
 		// var ctx = document.getElementById('cChart');
 		// var myBarChart = new Chart(ctx, {
@@ -53,30 +63,70 @@ export default {
     },
     methods: {
 		makeData() {
-			console.log(this.startdate)
-			var stdate = Date.parse(this.startdate.substring(0,10),'YYYY-MM-DD')
+			// var stdate = Date.parse(this.startdate.substring(0,10),'YYYY-MM-DD')
+			// var endate = Date.parse(this.lastdate.substring(0,10),'YYYY-MM-DD')
+			// console.log(this.stdate)
 		},
       	fillData () {
         	this.datacollection = {
-          		labels: [this.getRandomInt(), this.getRandomInt()],
+          		labels: [],
           		datasets: [
             		{
-            			label: 'Data One',
+            			label: 'Commite By Date',
             			backgroundColor: '#f87979',
-            			data: [this.getRandomInt(), this.getRandomInt()]
-					}, 
-					{
-            			label: 'Data One',
-            			backgroundColor: '#f87979',
-        				data: [this.getRandomInt(), this.getRandomInt()]
-            		}
+            			data: []
+					}
           		]
         	}
       	},
-      	getRandomInt () {
-        	return Math.floor(Math.random() * (50 - 5 + 1)) + 5
-      	}
-    }
+		selectCommit(commits){
+			for (let i = 0; i < commits.length; i++) {
+				if(commits[i].committer_name.toLowerCase() == this.member.name.toLowerCase()){
+					var date = Date.parse(commits[i].committed_date.substring(0,10),'YYYY-MM-DD')
+					date = Date.format(date,'YY/MM/DD')
+					this.myCommits.push(date)
+					this.labelsData.set(date,this.labelsData.get(date)+1)
+				}
+			}
+			console.log(this.myCommits)
+			
+			console.log(Array.from(this.labelsData.values()))
+			this.datacollection.datasets[0].data = Array.from(this.labelsData.values())
+			this.renderChart(this.datacollection, this.options)
+		},
+		setDate(repository){
+			this.startDate = Date.parse(repository.created_at.substring(0,10),'YYYY-MM-DD')
+			this.lastDate = Date.parse(repository.last_activity_at.substring(0,10),'YYYY-MM-DD')
+			console.log('startDate: '+this.startDate+'\nlastDate: '+this.lastDate)
+			var date = this.startDate
+			console.log(date)
+			var length = Date.subtract(this.lastDate, this.startDate).toDays();
+			console.log(length)
+			for (let i = 0; i <= length; i++) {
+				this.labelsData.set(Date.format(date,'YY/MM/DD'),0)
+				date = Date.addDays(date,1)
+			}
+			console.log(Array.from(this.labelsData.keys()))
+			this.datacollection.labels = Array.from(this.labelsData.keys())
+			
+		}
+    },
+	computed: {
+		getCommits(){
+			return this.$store.getters.getCommits
+		},
+		getRepositoryDate(){
+			return this.$store.getters.getRepository
+		}
+	},
+	watch: {
+		getCommits(val, oldVal){
+			this.selectCommit(val)
+		},
+		getRepositoryDate(val, oldVal){
+			this.setDate(val)
+		}
+	}
 }
 </script>
 <style>

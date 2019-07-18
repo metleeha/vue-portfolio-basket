@@ -14,6 +14,12 @@ export default new Vuex.Store({
   getters:{
     getMembers: state => {
       return state.members
+    },
+    getCommits: state => {
+      return state.commits
+    },
+    getRepository: state => {
+      return state.repository
     }
   }
 })
