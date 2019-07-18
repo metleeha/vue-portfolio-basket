@@ -136,6 +136,11 @@ export default {
                     name: 'Github',
                     color: 'black',
                     icon: 'fa-github'
+                },
+                {
+                    name: 'Anonymous',
+                    color: 'grey',
+                    icon: 'fa-user-secret'
                 }
             ]
         }
@@ -152,6 +157,9 @@ export default {
                     break;
                 case "Github":
                     this.signInWithGithub();
+                    break;
+                case "Anonymous":
+                    this.signInAnonymously();
                     break;
             }
         },
@@ -177,6 +185,16 @@ export default {
             this.$store.state.accessToken = result.credential.accessToken
             this.$store.state.user = result.user
             alert("Sign in with Github!");
+            this.dialog = false;
+            this.isSignIn = true;
+        },
+        async signInAnonymously() {
+            const result = await FirebaseService.signInAnonymously();
+            if (result == true) {
+                alert("Sign in Anonymously!");
+            }
+            this.$store.state.accessToken = "Annonymous"
+            this.$store.state.user = "Annonymous"
             this.dialog = false;
             this.isSignIn = true;
         },

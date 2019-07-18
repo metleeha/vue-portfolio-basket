@@ -120,12 +120,24 @@ export default {
 			var email = error.email;
 			// The firebase.auth.AuthCredential type that was used.
 			var credential = error.credential;
-			if(errorCode == "auth/account-exists-with-different-credential"){
-				alert("해당 이메일은 이미 가입되어 있습니다.");
+			if (errorCode == "auth/account-exists-with-different-credential") {
+				alert("이미 가입되어있는 이메일입니다.");
 			}
 			console.error('[Github Login Error]', error)
 			// ...
 		});
+	},
+	signInAnonymously() {
+		return firebase.auth().signInAnonymously().then(function(){
+			return true;
+		}).catch(function (error) {
+			// Handle Errors here.
+			var errorCode = error.code;
+			var errorMessage = error.message;
+			// ...
+			console.error('[anonymous] Login Error]', error)
+		});
+
 	},
 	signUp(email, password) {
 		if (email.length < 4) {
