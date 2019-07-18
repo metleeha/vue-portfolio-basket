@@ -7,7 +7,7 @@
       <!-- Add New Portfolio Button -->
       <v-layout xs12 justify-center>
         <v-flex xs12 text-xs-center mt-5>
-          <v-btn @click="newToggle = !newToggle" block outline large :color="newToggle? '#f0bebe':'#3a718c'"><v-icon left>fa-chevron-down</v-icon>New Portfolio</v-btn>
+          <v-btn @click="newToggle = !newToggle" block flat large :color="newToggle? '#f0bebe':'#3a718c'"><v-icon left>fa-chevron-down</v-icon>New Portfolio</v-btn>
         </v-flex>
       </v-layout>
       <!-- Portfolio Writer --->
@@ -16,7 +16,7 @@
           <PortfolioNew />
         </v-layout>
       </transition>
-
+      
       <!-- Portfolio -->
       <v-layout>
         <v-flex xs12>
@@ -53,10 +53,12 @@ export default {
         left: 0,
         behavior: 'smooth'
       });
-    }
+    },
+
   }
 }
 </script>
+
 <style scoped>
 .fade-enter-active, .fade-leave-active {
   transition: opacity .5s;

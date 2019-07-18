@@ -14,19 +14,18 @@
 					color="#112d4e"
 				>
 					<v-card-text>
+						
 						<v-layout xs12 align-center row>
 							<v-flex xs4>
 								<v-menu open-on-hover top offset-y>
 									<v-btn slot="activator">TODAY: {{todayView}}</v-btn>
-									<v-card class="visit-card" color="rgba(184,193,204,0.5)" width="230px">
-										<v-card-title>TODAY</v-card-title>
-										<v-card-text>{{todayView}}</v-card-text>
-										<v-card-title>TOTAL</v-card-title>
-										<v-card-text>{{totalView}}</v-card-text>				
-										<v-layout xs-2>
-										</v-layout>
-										<v-layout xs-2>
-										</v-layout>
+									<v-card class="visit-card" 
+											color="rgba(184,193,204, 0.7)" 
+											width="200px">
+										<v-card-title class="title font-weight-light justify-center pb-0">TODAY</v-card-title>
+										<v-card-text class="headline font-weight-bold">{{todayView}}</v-card-text>
+										<v-card-title class="title font-weight-light justify-center py-0">TOTAL</v-card-title>
+										<v-card-text class="headline font-weight-bold">{{totalView}}</v-card-text>				
 									</v-card>
 								</v-menu>
 							</v-flex>
@@ -115,14 +114,10 @@ export default {
 }
 </script>
 <style scoped>
+.visit-card{
+	text-align: center;
+}
 .footer-icons {
 	display: inline-flex;
 }
-.visit-card{
-	display:flex;
-	align-items: center;
-	justify-content: center;
-}
-
-
 </style>

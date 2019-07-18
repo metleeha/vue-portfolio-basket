@@ -12,7 +12,7 @@
     "chart.js": "^2.8.0",
     "core-js": "^2.6.5",
     "date-and-time": "^0.8.1",
-    "firebase": "^5.9.3",
+    "firebase": "^6.3.0",
     "firebaseui": "^4.1.0",
     "google-translate-api": "^2.3.0",
     "hchs-vue-charts": "^1.2.8",

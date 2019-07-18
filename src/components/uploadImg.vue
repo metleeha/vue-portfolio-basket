@@ -29,7 +29,7 @@ import * as firebase from 'firebase'
 // import { firestore } from '../services/firebaseService';
 
 export default {
-	name: 'uploadImg',
+	name: 'UploadImg',
   data(){
     var file = document.getElementById('file');
     var image = document.getElementById('image');
