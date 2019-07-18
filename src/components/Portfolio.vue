@@ -1,20 +1,61 @@
 <template>
-  <v-card v-on:click="gotoPortfolio()">
-    <v-img :src="imgSrc" height="200px">
-    </v-img>
-    <v-card-title primary-title>
-      <div class="cardtable">
-        <div class="headline">{{title}}</div>
-        <span class="grey--text">{{body}}</span>
-      </div>
-    </v-card-title>
-  </v-card>
+  <v-layout row justify-center>
+    <v-dialog v-model="dialog_portfolio" fullscreen hide-overlay transition="dialog-bottom-transition">
+      <!-- dialog acticator section --> 
+      <template v-slot:activator="{ on }">
+        <v-card v-on="on">
+          <v-img :src="imgSrc" height="200px">
+          </v-img>
+          <v-card-title primary-title>
+            <div class="cardtable">
+              <div class="headline">{{title}}</div>
+              <span class="grey--text">{{body}}</span>
+            </div>
+          </v-card-title>
+        </v-card>
+      </template>
+
+      <!-- dialog-portfoilo section --> 
+      <v-container grid-list-md class="portfolio--bg">
+        <v-layout row wrap>
+          <v-flex xs12 d-inline-flex justify-space-around class="px-0">
+            <v-flex xs2 >
+              <v-btn fab dark icon @click="dialog_portfolio = false"><v-icon>close</v-icon></v-btn>
+            </v-flex>
+            <v-flex xs10 class="px-0">
+              <v-card>
+                <v-img :src="imgSrc" max-height="350"></v-img>
+                <v-card-title primary-title>
+                  <div>
+                    <h1 class="portfolio--headline mb-0 mx-2">{{ title }}</h1>
+                  </div>
+                </v-card-title>
+                <v-divider></v-divider>
+                <v-card-text>
+                  <div class="portfolio--body">
+                    <div class="portfolio--date mb-3">{{ stringDate }}</div>
+                    {{ body }}
+                  </div>
+                  <v-card-actions>
+                    <v-btn flat>Share</v-btn>
+                    <v-btn flat>Comment</v-btn>
+                </v-card-actions>
+                </v-card-text>
+              </v-card>
+            </v-flex>
+          </v-flex>
+        </v-layout>
+      </v-container>
+    
+    </v-dialog>
+  </v-layout>
+
 </template>
 
 <script>
 
 export default {
-	name: 'Portfolio',
+	name: 'Porfolio',
 	props: {
 		date: {type: String},
 		title: {type: String},
@@ -23,22 +64,18 @@ export default {
 	},
 	data() {
 		return {
-
+      dialog_portfolio: false, 
+      stringDate: ''
 		}
 	},
   methods:{
-    gotoPortfolio(){
-      this.$router.push({name: 'portfolioview', params: { title: this.title, body: this.body, date: this.date, imgSrc: this.imgSrc}});
-      // this.$router.push({name: 'portfolioview'});
-      // eventBus.$emit('senddata',this.title, this.body, this.date, his.imgSrc);
-      window.scrollTo({
-        top: 0,
-        left: 0,
-        behavior: 'smooth'
-      });
-    },
+
+  },
+  created: function(){
+    this.stringDate = this.date.substring(0, 16)
   }
-}
+  }
+
 </script>
 <style>
 .cardtable {
@@ -55,11 +92,27 @@ export default {
   white-space: normal;
   line-height: 1.2;
   height: 4.8em;
-  text-align: left;
+  text-align: center;
   word-wrap: break-word;
   display: -webkit-box;
   -webkit-line-clamp: 4;
   -webkit-box-orient: vertical;
   overflow: hidden;
+}
+.portfolio--bg{
+  background-color: rgba(255,215,0,0.8);
+  width: 100vw;
+}
+
+.portfolio--headline{
+  padding-left: 2rem;
+  line-height: 3rem;
+}
+.portfolio-date{
+  line-height: 2rem;
+}
+.portfolio--body{
+  padding: 1rem 2rem;
+  text-align: justify;
 }
 </style>
