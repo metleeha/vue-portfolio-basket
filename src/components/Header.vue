@@ -3,9 +3,9 @@
     <!-- sidebar -->
     <v-navigation-drawer v-model="drawer" app fixed temporary>
         <v-list>
-            <v-list-tile v-for="item in menuItems" :key="item.title" router :to="item.link">
-                <v-icon>{{ item.emoji }}</v-icon>
-                <v-list-tile-content>{{ item.title }}</v-list-tile-content>
+            <v-list-tile to="portfolio">
+                <v-icon>assessment</v-icon>
+                <v-list-tile-content>Portfolio</v-list-tile-content>
             </v-list-tile>
         </v-list>
     </v-navigation-drawer>
@@ -25,15 +25,12 @@
         <TranslateBtn></TranslateBtn>
         <v-spacer></v-spacer>
         <v-toolbar-items class="hidden-xs-only">
-            <v-btn flat v-for="item in menuItems" :key="item.title" :to="item.link">
-                <v-icon left>{{ item.emoji }}</v-icon>
-                {{ item.title }}
+            <v-btn flat to="portfolio">
+                <v-icon left>assessment</v-icon>
+                Portfolio
             </v-btn>
-            <LoginDialog v-show="!isLogin"></LoginDialog>
-            <v-btn flat v-show="isLogin">
-                <v-icon left>cancel</v-icon>
-                Logout
-            </v-btn>
+            <LoginDialog></LoginDialog>
+            
         </v-toolbar-items>
     </v-toolbar>
     <!-- end navbar -->
@@ -56,38 +53,12 @@ export default {
     data() {
         return {
             fab: false,
-            drawer: false,
-            menuItems: [{
-                    emoji: 'assessment',
-                    title: 'Portfolio',
-                    link: '/portfolio'
-                },
-                {
-                    emoji: 'create',
-                    title: 'New',
-                    link: '/portfoliowriter'
-                }
-            ],
-            isLogin: false
+            drawer: false
         }
     },
     components: {
         TranslateBtn,
         LoginDialog
-    },
-    computed: {
-        loginCheck() {
-            return this.$store.state.user
-        }
-    },
-    watch: {
-        loginCheck(val, oldVal) {
-            if (val == '') {
-                this.isLogin = false;
-            } else {
-                this.isLogin = true;
-            }
-        }
     },
     methods: {
         onScroll() {

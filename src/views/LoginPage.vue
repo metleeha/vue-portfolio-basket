@@ -4,7 +4,11 @@
 
         <!-- Login Button -->
         <template v-slot:activator="{ on }">
-            <v-btn color="primary" dark >Login</v-btn>
+            <v-btn flat v-show="isLogin">
+                <v-icon left>cancel</v-icon>
+                Logout
+            </v-btn>
+            <v-btn color="primary" dark v-show="!isLogin">Login</v-btn>
             <v-btn flat v-on="on">
 				<v-icon left>input</v-icon>
 				Login
@@ -82,6 +86,7 @@ export default {
             email: '',
             password: '',
             confirmPassword: '',
+            isLogin:false
         }
     },
     components: {},
@@ -116,6 +121,10 @@ export default {
                 this.$store.state.user = result.user;
                 this.$router.replace('/');
             }
+        },
+        async logout(){
+            const result = await firebaseService.signOut();
+            console.log(result);
         }
     },
     mounted: function () {
@@ -124,6 +133,18 @@ export default {
     computed: {
         comparePasswords() {
             return this.password !== this.confirmPassword ? 'Passwords do not match' : ''
+        },
+        loginCheck() {
+            return this.$store.state.user
+        }
+    },
+    watch: {
+        loginCheck(val, oldVal) {
+            if (val == '') {
+                this.isLogin = false;
+            } else {
+                this.isLogin = true;
+            }
         }
     }
 }

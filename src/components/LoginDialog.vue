@@ -7,6 +7,10 @@
                 <v-icon left>input</v-icon>
                 Login
             </v-btn>
+            <v-btn flat v-show="isLogin" v-on:click="signOut">
+                <v-icon left>cancel</v-icon>
+                Logout
+            </v-btn>
         </template>
 
         <!-- Sign In modal -->
@@ -81,8 +85,8 @@
 
                         <v-layout wrap row>
 							<v-text-field class="input-with-icon" name='name' label='Name' id='name' v-model='name' type='text' prepend-icon="insert_emoticon" required></v-text-field>
-                            <v-text-field class="input-with-icon" name='email' label='E-Mail' id='email' v-model='email' type='email' prepend-icon="face" required></v-text-field>
-                            <v-text-field class="input-with-icon" name='password' label='Password' id='password' v-model='password' type='password' prepend-icon="lock" required></v-text-field>
+                            <v-text-field class="input-with-icon" name='signUpEmail' label='E-Mail' id='signUpEmail' v-model='signUpEmail' type='email' prepend-icon="face" required></v-text-field>
+                            <v-text-field class="input-with-icon" name='signUpPassword' label='Password' id='signUpPassword' v-model='signUpPassword' type='password' prepend-icon="lock" required></v-text-field>
 							<v-text-field class="input-with-icon" name='confirmPassword' label='confirmPassword' id='confirmPassword' v-model='confirmPassword' type='password' prepend-icon="check_circle" required></v-text-field>
 
                         </v-layout>
@@ -116,10 +120,12 @@ export default {
 			name: '',
             email: '',
             password: '',
+            signUpEmail: '',
+            signUpPassword: '',
 			confirmPassword: '',
 			confirmRule: false,
 			isLogin: false,
-			isSignUp: false
+            isSignUp: false
         }
     },
     components: {},
@@ -129,22 +135,22 @@ export default {
             this.$store.state.accessToken = result.accessToken
             this.$store.state.user = result.user
             this.$router.replace('/')
+            this.clear()
         },
         async loginWithFacebook() {
             const result = await FirebaseService.loginWithFacebook()
             this.$store.state.accessToken = result.credential.accessToken
             this.$store.state.user = result.user
             this.$router.replace('/')
+            this.clear()
         },
         async signUp() {
             const result = await FirebaseService.signUp(this.email, this.password)
             if (result) {
                 alert("가입완료!");
-                this.email = "";
-                this.password = "";
-                this.confirmPassword = "";
-                this.signUpDialog = false;
+                this.isSignUp = false;
             }
+            this.clear()
         },
         async signIn() {
             const result = await FirebaseService.signIn(this.email, this.password)
@@ -152,10 +158,29 @@ export default {
                 alert("로그인!");
                 this.$store.state.accessToken = result.user.accessToken;
                 this.$store.state.user = result.user.email;
-                console.log(this.$store);
                 this.dialog = false;
                 this.isLogin = true;
             }
+            this.clear()
+        },
+        async signOut(){
+            const result = await FirebaseService.signOut();
+            if(result){
+                this.$store.state.accessToken = '';
+                this.$store.state.user = '';
+                this.isLogin = false;
+                alert("로그아웃 되셨습니다!");
+            }
+            this.clear()
+        },
+        clear(){
+			this.name= '';
+            this.email= '';
+            this.signUpEmail= '';
+            this.signUpPassword= '';
+            this.password= '';
+			this.confirmPassword= '';
+			this.confirmRule= false;
         }
     },
     mounted: function () {
@@ -163,7 +188,7 @@ export default {
     },
     computed: {
         comparePasswords() {
-            return this.password !== this.confirmPassword ? 'Passwords do not match' : ''
+            return this.signUpPassword !== this.confirmPassword ? 'Passwords do not match' : ''
         },
         loginCheck() {
             return this.$store.state.accessToken;
@@ -173,6 +198,7 @@ export default {
 		dialog: function(val){
 			if(val == false){
 				this.isSignUp = false;
+                this.clear()
 			}
 		}
 	}

@@ -146,6 +146,14 @@ export default {
 			// [END_EXCLUDE]
 		});
 	},
+	signOut(){
+		return firebase.auth().signOut().then(function(){
+			return true;
+		}).catch(function(error) {
+			// An error happened.
+			alert("Error: "+error)
+		  });
+	},
 	currentUser(){
 		return firebase.auth().currentUser;
 	},
@@ -170,5 +178,6 @@ export default {
 			let TotalView = snapshot.val().View
 			return TotalView
 		})
-	}
+	},
+	
 }
