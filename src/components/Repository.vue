@@ -1,35 +1,44 @@
 <template>
   <div class="py-3">
     <v-layout>
-
-      <v-flex xs12>
-        <h2 class="font-weight-regular">{{repos.path_with_namespace}}</h2>
-        <p class="subheading mb-1 grey--text text--darken-1 font-weight-light">{{repos.namespace.name}}</p>
-      </v-flex>
-
+      	<v-flex xs12>
+        	<h2 class="font-weight-regular">{{repository.path_with_namespace}}</h2>
+        	<p class="subheading mb-1 grey--text text--darken-1 font-weight-light">@{{member.username}}</p>
+      	</v-flex>
+		<CommitGraph 	:member = member>
+		</CommitGraph>
+		<!-- <rc></rc> -->
     </v-layout>
   </div>
 </template>
 
 <script>
 import GitlabService from '@/services/GitlabService'
+import CommitGraph from './CommitGraph'
+import rc from './RandomChart'
 
 export default {
 	name: 'Repository',
 	props: {
-		repos: {type: null}
+		member: {type: null}
+	},
+	components: {
+		CommitGraph,
+		rc
 	},
 	data() {
 		return {
-			stats: {}
+			repository: {}
 		}
 	},
-  mounted() {
-		this.drawStatGraph()
-  },
-	methods: {
-		async drawStatGraph() {
-			this.commits = await GitlabService.getCommits(this.repos.id)
+	computed: {
+		getRepository(){
+			return this.$store.getters.getRepository
+		}
+	},
+	watch: {
+		getRepository(val, oldVal){
+			this.repository = val
 		}
 	}
 }
