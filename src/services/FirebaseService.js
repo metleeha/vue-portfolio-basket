@@ -140,6 +140,7 @@ export default {
 
 	},
 	signUp(email, password) {
+		
 		if (email.length < 4) {
 			alert('Please enter an email address.');
 			return;
@@ -190,6 +191,15 @@ export default {
 			alert("Error: " + error)
 		});
 	},
+	resetPW(email){
+		return firebase.auth().sendPasswordResetEmail(email).then(function() {
+			// Email sent.
+			return true;
+		  }).catch(function(error) {
+			// An error happened.
+			console.log("[Password reset error]: "+error);
+		  });
+	},
 	currentUser() {
 		return firebase.auth().currentUser;
 	},
@@ -218,6 +228,6 @@ export default {
 	async signInCheck() {
 		return firebase.auth().onAuthStateChanged();
 		return user;
-
-	}
+	},
+	
 }

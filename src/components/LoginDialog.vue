@@ -2,29 +2,28 @@
 <v-dialog v-model="dialog" max-width="400px">
     <!-- signIn Button -->
     <template v-slot:activator="{ on }">
-        <v-btn flat v-on="on" v-show="!isSignIn">
+        <v-btn flat v-on="on" v-show="!isSignedIn">
             <v-icon left>input</v-icon>
             Sign In
         </v-btn>
-        <v-btn flat v-show="isSignIn" v-on:click="signOut">
+        <v-btn flat v-show="isSignedIn" v-on:click="signOut">
             <v-icon left>cancel</v-icon>
             Logout
         </v-btn>
     </template>
 
-    <!-- Sign In modal -->
-    <v-card v-show="!isSignUp">
+    <v-card>
         <!-- header -->
-        <v-toolbar tabs color="secondary">
-            <v-toolbar-title><span class="headline">Sign in</span></v-toolbar-title>
+        <v-toolbar color="primary" dark>
+            <v-toolbar-title><span class="headline">{{ title }}</span></v-toolbar-title>
             <v-spacer></v-spacer>
             <v-btn icon dark @click="dialog = false">
                 <v-icon>close</v-icon>
             </v-btn>
         </v-toolbar>
 
-        <!-- contents -->
-        <v-card-text>
+        <v-card-media v-show="isSignIn">
+            <!-- contents -->
             <!-- signIn with E-mail -->
             <v-form>
                 <v-container grid-list-md text-xs-center>
@@ -33,18 +32,20 @@
                         <v-text-field class="input-with-icon" name='email' label='E-Mail' id='email' v-model='email' type='email' prepend-icon="face" required></v-text-field>
                         <v-text-field class="input-with-icon" name='password' label='Password' id='password' v-model='password' type='password' prepend-icon="lock" v-on:keyup.enter="signIn" required></v-text-field>
                     </v-layout>
-                    <v-layout wrap row>
-                        <v-flex>
-                            <small>ID/PW 찾기</small>
-                        </v-flex>
-                    </v-layout>
-                    <v-layout wrap row>
-                        <v-flex>
-                            <v-btn round color="info" style="width:100%;" @click="signIn">SignIn</v-btn>
-                            <v-btn round color="success" style="width:100%;" @click="isSignUp=true">SignUp</v-btn>
-                        </v-flex>
-                    </v-layout>
 
+                    <v-layout wrap row>
+                        <v-flex>
+                            <v-btn round color="primary" block @click="signIn">Sign In</v-btn>
+                        </v-flex>
+                    </v-layout>
+                    <v-layout wrap row>
+                        <v-flex xs6>
+                            <a @click="isForgot=true"><small>Forgot your password?</small></a>
+                        </v-flex>
+                        <v-flex xs6>
+                            <a @click="isSignUp=true"><small>Sign Up</small></a>
+                        </v-flex>
+                    </v-layout>
                 </v-container>
             </v-form>
             <!-- /signIn with E-mail -->
@@ -52,52 +53,72 @@
             <!-- signIn without E-mail -->
             <v-container grid-list-md text-xs-center>
                 <h4>Sign in with</h4>
-                <template v-for="service in socialServices">
-                    <v-layout justify-center :key="service.name">
-                        <v-btn round :color="service.color" dark v-on:click="socialLogin(service.name)" style="width:100%;">
-                            <v-icon size="25" class="mr-2">{{service.icon}}</v-icon>{{service.name}}
+                <v-layout row wrap justify-center>
+                    <!-- circle-button -->
+                    <template v-for="(service) in socialServices">
+                        <v-btn fab :color="service.color" dark class="hidden-md-and-up" :key="service.icon">
+                            <v-icon size="25">{{service.icon}}</v-icon>
                         </v-btn>
-                    </v-layout>
-                </template>
+
+                        <v-flex :key="service.name" xs6 class="hidden-sm-and-down">
+                            <!-- bar-button -->
+                            <v-btn round :color="service.color" dark v-on:click="socialLogin(service.name)" block>
+                                <v-icon size="25" class="mr-2">{{service.icon}}</v-icon>{{service.name}}
+                            </v-btn>
+                        </v-flex>
+                    </template>
+                </v-layout>
             </v-container>
-        </v-card-text>
-    </v-card>
-
-    <v-card v-show="isSignUp">
-        <!-- header -->
-        <v-toolbar tabs color="secondary">
-            <v-toolbar-title><span class="headline">Sign Up</span></v-toolbar-title>
-            <v-spacer></v-spacer>
-            <v-btn icon dark @click="dialog = false">
-                <v-icon>close</v-icon>
-            </v-btn>
-        </v-toolbar>
-
-        <!-- contents -->
-        <v-card-text>
-            <!-- sign up -->
+        </v-card-media>
+        <!-- /Sign In -->
+        <!-- sign up -->
+        <v-card-media v-show="isSignUp">
             <v-form>
                 <v-container grid-list-md text-xs-center>
 
                     <v-layout wrap row>
+                        <!--
                         <v-text-field class="input-with-icon" name='name' label='Name' id='name' v-model='name' type='text' prepend-icon="insert_emoticon" required></v-text-field>
-                        <v-text-field class="input-with-icon" name='signUpEmail' label='E-Mail' id='signUpEmail' v-model='signUpEmail' type='email' prepend-icon="face" required></v-text-field>
-                        <v-text-field class="input-with-icon" name='signUpPassword' label='Password' id='signUpPassword' v-model='signUpPassword' type='password' prepend-icon="lock" required></v-text-field>
-                        <v-text-field class="input-with-icon" name='confirmPassword' label='confirmPassword' id='confirmPassword' v-model='confirmPassword' type='password' prepend-icon="check_circle" required></v-text-field>
-
+                        -->
+                        <v-text-field class="input-with-icon" name='email' label='E-Mail' id='signUpEmail' v-model='email' type='email' prepend-icon="face" required></v-text-field>
+                        <v-text-field class="input-with-icon" name='password' label='Password' id='signUpPassword' v-model='password' type='password' prepend-icon="lock" required></v-text-field>
+                        <v-text-field class="input-with-icon" name='confirmPassword' label='confirmPassword' id='confirmPassword' v-model='confirmPassword' type='password' prepend-icon="check_circle" :rules="[comparePasswords]" required></v-text-field>
                     </v-layout>
                     <v-layout wrap row>
-                        <v-flex>
-                            <v-btn round color="info" style="width:100%;" @click="signUp">Sign Up</v-btn>
-                            <v-btn round color="success" style="width:100%;" @click="isSignUp = false">Back</v-btn>
+                        <v-flex xs6>
+                            <v-btn round color="primary" block @click="signUp">Sign Up</v-btn>
+                        </v-flex>
+                        <v-flex xs6>
+                            <v-btn round color="secondary" block @click="isSignUp = false">Back</v-btn>
                         </v-flex>
                     </v-layout>
 
                 </v-container>
             </v-form>
-            <!-- /sign up -->
+        </v-card-media>
+        <!-- /sign up -->
 
-        </v-card-text>
+        <!-- Forgot ID/PW -->
+        <v-card-media v-show="isForgot">
+            <v-form>
+                <v-container grid-list-md text-xs-left>
+                    <h4>가입시 사용하였던 이메일을 입력하시면, 패스워드 리셋 메일을 보내드립니다.</h4>
+                    <v-layout wrap row>
+                        <v-text-field class="input-with-icon" name='Email' label='E-Mail' id='forgot_Email' v-model='email' type='email' prepend-icon="face" required></v-text-field>
+                    </v-layout>
+                    <v-subheader>(5-10분정도 시간이 소요될 수 있습니다.)</v-subheader>
+                    <v-layout wrap row>
+                        <v-flex xs6>
+                            <v-btn round color="primary" block @click="resetPW">reset</v-btn>
+                        </v-flex>
+                        <v-flex xs6>
+                            <v-btn round color="secondary" block @click="isForgot = false">Back</v-btn>
+                        </v-flex>
+                    </v-layout>
+
+                </v-container>
+            </v-form>
+        </v-card-media>
     </v-card>
     <!-- end modal -->
 </v-dialog>
@@ -113,15 +134,16 @@ export default {
     data() {
         return {
             dialog: false,
+            title: 'Sign In',
             name: '',
             email: '',
             password: '',
-            signUpEmail: '',
-            signUpPassword: '',
             confirmPassword: '',
             confirmRule: false,
-            isSignIn: false,
+            isSignedIn: false,
+            isSignIn: true,
             isSignUp: false,
+            isForgot: false,
             socialServices: [{
                     name: 'Google',
                     color: '#df4a31',
@@ -169,7 +191,7 @@ export default {
             this.$store.state.user = result.user
             alert("Sign in with Google!");
             this.dialog = false;
-            this.isSignIn = true;
+            this.isSignedIn = true;
         },
         async signInWithFacebook() {
             const result = await FirebaseService.signInWithFacebook()
@@ -177,7 +199,7 @@ export default {
             this.$store.state.user = result.user
             alert("Sign in with Facebook!");
             this.dialog = false;
-            this.isSignIn = true;
+            this.isSignedIn = true;
         },
         async signInWithGithub() {
             const result = await FirebaseService.signInWithGithub();
@@ -185,7 +207,7 @@ export default {
             this.$store.state.user = result.user
             alert("Sign in with Github!");
             this.dialog = false;
-            this.isSignIn = true;
+            this.isSignedIn = true;
         },
         async signInAnonymously() {
             const result = await FirebaseService.signInAnonymously();
@@ -195,7 +217,7 @@ export default {
             this.$store.state.accessToken = "Annonymous"
             this.$store.state.user = "Annonymous"
             this.dialog = false;
-            this.isSignIn = true;
+            this.isSignedIn = true;
         },
         async signUp() {
             const result = await FirebaseService.signUp(this.email, this.password)
@@ -212,7 +234,7 @@ export default {
                 this.$store.state.accessToken = result.user.accessToken;
                 this.$store.state.user = result.user.email;
                 this.dialog = false;
-                this.isSignIn = true;
+                this.isSignedIn = true;
             }
         },
         async signOut() {
@@ -220,16 +242,22 @@ export default {
             if (result) {
                 this.$store.state.accessToken = '';
                 this.$store.state.user = '';
-                this.isSignIn = false;
+                this.isSignedIn = false;
                 alert("Sign out completed!");
                 this.clear()
+            }
+        },
+        async resetPW() {
+            const result = await FirebaseService.resetPW(this.email);
+            if (result) {
+                alert("이메일 전송 완료.");
+                this.clear();
+                this.isForgot = false;
             }
         },
         clear() {
             this.name = '';
             this.email = '';
-            this.signUpEmail = '';
-            this.signUpPassword = '';
             this.password = '';
             this.confirmPassword = '';
             this.confirmRule = false;
@@ -240,7 +268,7 @@ export default {
     },
     computed: {
         comparePasswords() {
-            return this.signUpPassword !== this.confirmPassword ? 'Passwords do not match' : ''
+            return this.password !== this.confirmPassword ? 'Passwords do not match' : ''
         },
         signInCheck() {
             return this.$store.state.user;
@@ -253,8 +281,33 @@ export default {
                 this.clear()
             }
         },
-        signInCheck(val, oldVal){
-            if(val){
+        signInCheck(val, oldVal) {
+            if (val) {
+                this.isSignedIn = true;
+            }
+        },
+        isSignIn: function (val) {
+            if (val == true) {
+                this.title = "Sign In";
+                this.isSignUp = false;
+                this.isForgot = false;
+            }
+        },
+        isForgot: function (val) {
+            if (val == true) {
+                this.title = "Forget Password?";
+                this.isSignUp = false;
+                this.isSignIn = false;
+            } else {
+                this.isSignIn = true;
+            }
+        },
+        isSignUp: function (val) {
+            if (val == true) {
+                this.title = "Sign Up";
+                this.isSignIn = false;
+                this.isForgot = false;
+            } else {
                 this.isSignIn = true;
             }
         }
