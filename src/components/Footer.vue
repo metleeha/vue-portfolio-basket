@@ -17,19 +17,12 @@
 						<v-layout xs12 align-center row>
 							<v-flex xs4>
 								<v-menu open-on-hover top offset-y>
-									<v-btn slot="activator">TODAY: 123</v-btn>
-									<v-card class="visit-card" color="rgba(184,193,204,0.5)" width="200px">
-										<v-flex xs12 d-flex justify-center>
-											<v-flex xs6 text-xs-center>
-												<v-card-text xs3>TODAY</v-card-text>
-												<p>123</p>	
-											</v-flex>
-											<v-flex xs6 text-xs-center>
-												<v-card-text xs3>TOTAL</v-card-text>
-												<p>9473</p>	
-											</v-flex>
-										</v-flex>
-			
+									<v-btn slot="activator">TODAY: {{todayView}}</v-btn>
+									<v-card class="visit-card" color="rgba(184,193,204,0.5)" width="230px">
+										<v-card-title>TODAY</v-card-title>
+										<v-card-text>{{todayView}}</v-card-text>
+										<v-card-title>TOTAL</v-card-title>
+										<v-card-text>{{totalView}}</v-card-text>				
 										<v-layout xs-2>
 										</v-layout>
 										<v-layout xs-2>
@@ -79,6 +72,7 @@
 <script>
 import WeatherApi from '../services/WeatherApi'
 import Weather from '../components/Weather'
+import FirebaseService from '../services/FirebaseService'
 
 export default {
 	name: 'Footer',
@@ -92,25 +86,32 @@ export default {
 			iconURL: '',
 			currentTemp: '',
 			description: '',
+			todayView: 0,
+			totalView: 0
 		}
 	},
 	components: {
 		Weather
 	},
 	methods:{
-
+		async initViewLog() {
+			this.todayView = await FirebaseService.getTodayView()
+			this.totalView = await FirebaseService.getTotalView()
+			this.totalView += this.todayView
+		}
 	},
 	created() {
+		this.initViewLog()
+
 		const weatherData = WeatherApi.loadCoords()        
         .then(data => {
 			this.iconURL = "http://openweathermap.org/img/w/" + data.weather[0].icon+ ".png";
 			this.description = data.weather[0].description;
 			this.currentTemp = Math.round(data.main.temp);
 			this.description = data.weather[0].description;
-        })
+		})
+		
 	}
-
-
 }
 </script>
 <style scoped>

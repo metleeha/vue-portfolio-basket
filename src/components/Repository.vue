@@ -3,12 +3,11 @@
     <v-layout>
       	<v-flex xs12>
         	<h2 class="font-weight-regular">{{repository.path_with_namespace}}</h2>
-        	<p class="subheading mb-1 grey--text text--darken-1 font-weight-light">@{{user.username}}</p>
+        	<p class="subheading mb-1 grey--text text--darken-1 font-weight-light">@{{member.username}}</p>
       	</v-flex>
-	  	<CommitGraph 	:commitByDate = myCommits 
-	  					:startdate = repository.created 
-						:lastdate = repository.last_activity_at>
+		<CommitGraph 	:member = member>
 		</CommitGraph>
+		<!-- <rc></rc> -->
     </v-layout>
   </div>
 </template>
@@ -16,47 +15,30 @@
 <script>
 import GitlabService from '@/services/GitlabService'
 import CommitGraph from './CommitGraph'
+import rc from './RandomChart'
 
 export default {
 	name: 'Repository',
 	props: {
-		projectID: {type: String},
-		repository: {type: null},
-		user: {type: null}
+		member: {type: null}
 	},
 	components: {
-		CommitGraph
+		CommitGraph,
+		rc
 	},
 	data() {
 		return {
-			stats: {},
-			commits: [],
-			myCommits: [],
+			repository: {}
 		}
 	},
-  	mounted() {
-		this.drawStatGraph()
-  	},
-	methods: {
-		async drawStatGraph() {
-			const commits = await GitlabService.getCommits(this.projectID)
-			if(commits.status !== 200){
-				return
-			}
-			this.commits = commits.data
-			console.log(this.commits)
-			console.log(this.user)
-			this.selectCommit()
-		},
-		selectCommit(){
-			for (let i = 0; i < this.commits.length; i++) {
-				if(this.commits[i].committer_name == this.user.name){
-					var date = this.commits[i].committed_date
-					
-					this.myCommits.push(date.substring(5,10))
-				}
-			}
-			console.log(this.myCommits)
+	computed: {
+		getRepository(){
+			return this.$store.getters.getRepository
+		}
+	},
+	watch: {
+		getRepository(val, oldVal){
+			this.repository = val
 		}
 	}
 }
