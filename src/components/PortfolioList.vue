@@ -7,7 +7,7 @@
           prepend-inner-icon="fa-search"
           v-model="search"
           placeholder="Search title.."
-          class="search-bar">
+          style="width:50%;">
         </v-text-field>
       </v-flex>
     </v-layout>
@@ -77,10 +77,6 @@ export default {
 </script>
 <style>
 
-  v-text-field{
-    width: 50%!important;
-    margin: auto;
-  }
   .mw-700 {
     max-width: 700px;
     margin: auto;

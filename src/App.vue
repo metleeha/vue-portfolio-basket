@@ -1,14 +1,14 @@
 <template>
-  <v-app class="bg-color">
-    <!-- header -->
-    <Header/>
-    <!-- main body-->
-    <v-content>
-     <router-view/>
-    </v-content>
-    <!-- footer -->
-    <Footer />
-  </v-app>
+    <v-app id="back">
+      <!-- header -->
+      <Header/>
+      <!-- main body-->
+      <v-content>
+      <router-view/>
+      </v-content>
+      <!-- footer -->
+      <Footer />
+    </v-app>
 </template>
 
 <script>
@@ -65,10 +65,15 @@ export default {
 }
 
 </script>
-<style>
-.bg-color {
-  background-color: #f6f6f6;
-}
-
+<style scoped>
+  #back {
+    /* background-color: #e8e8e8; */
+    background-color: #f4f6f6;
+  }
+  /* background-image: url('https://gitlab.com/hadongme/portfolio-vue-app/raw/master/cover.jpg');
+  background-size: cover;
+  background-repeat: repeat-y; */
+  /* height: 100vh; */
+  
 
 </style>

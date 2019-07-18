@@ -11,14 +11,14 @@
 					tile
 					class="darken-1 white--text text-xs-center"
 					width="100vw"
-					color="#112d4e"
+					color="#248ea9"
 				>
 					<v-card-text>
 						
 						<v-layout xs12 align-center row>
 							<v-flex xs4>
 								<v-menu open-on-hover top offset-y>
-									<v-btn slot="activator">TODAY: {{todayView}}</v-btn>
+									<v-btn slot="activator" color="#404969">TODAY: {{todayView}}</v-btn>
 									<v-card class="visit-card" 
 											color="rgba(184,193,204, 0.7)" 
 											width="200px">
@@ -44,7 +44,7 @@
 							<v-flex xs4>
 								<v-menu open-on-hover top offset-y>
 									<template slot="activator">
-										<v-avatar size="45px"><img :src="iconURL" alt="weather__avatar" style="backgroundColor:#dbe2ef;"></v-avatar>
+										<v-avatar size="45px"><img :src="iconURL" alt="weather__avatar" style="backgroundColor:#f4f6f6;"></v-avatar>
 										<span class="ml-2">{{ description }}, {{currentTemp}} &deg;</span>
 									</template>
 									<Weather />

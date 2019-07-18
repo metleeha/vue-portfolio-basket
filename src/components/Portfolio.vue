@@ -3,7 +3,7 @@
     <v-dialog v-model="dialog_portfolio" fullscreen hide-overlay transition="dialog-bottom-transition">
       <!-- dialog acticator section --> 
       <template v-slot:activator="{ on }">
-        <v-card v-on="on">
+        <v-card class="portfolio--card" v-on="on">
           <v-img :src="imgSrc" height="200px">
           </v-img>
           <v-card-title primary-title>
@@ -16,15 +16,15 @@
       </template>
 
       <!-- dialog-portfoilo section --> 
-      <v-container grid-list-md class="portfolio--bg">
+      <v-container grid-list-md>
         <v-layout row wrap>
           <v-flex xs12 d-inline-flex justify-space-around class="px-0">
             <v-flex xs2 >
-              <v-btn fab dark icon @click="dialog_portfolio = false"><v-icon>close</v-icon></v-btn>
+              <v-btn fab dark color="#1c2938" @click="dialog_portfolio = false"><v-icon>close</v-icon></v-btn>
             </v-flex>
             <v-flex xs10 class="px-0">
-              <v-card>
-                <v-img :src="imgSrc" max-height="350"></v-img>
+              <v-card dark white--text color="#1c2938">
+                <v-img :src="imgSrc" max-height="400"></v-img>
                 <v-card-title primary-title>
                   <div>
                     <h1 class="portfolio--headline mb-0 mx-2">{{ title }}</h1>
@@ -99,11 +99,13 @@ export default {
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
+.portfolio--card{
+  border-radius: 15px;
+}
 .portfolio--bg{
   background-color: rgba(255,215,0,0.8);
   width: 100vw;
 }
-
 .portfolio--headline{
   padding-left: 2rem;
   line-height: 3rem;

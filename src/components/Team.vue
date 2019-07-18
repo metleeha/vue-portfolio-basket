@@ -13,7 +13,7 @@
                     <!-- #8bcfcc -->
                     <v-card 
                         slot-scope="{ hover }"
-                        :color="hover ? 'primary' : '#FAFAFA'" 
+                        :color="hover ? 'primary' : '#f4f6f6'" 
                         class="team__card d-flex align-center my-2"
                         dark
                         height="35vh"
@@ -32,13 +32,13 @@
                                     <v-btn
                                     class="mr-1 profile-icons text-xs-center"
                                     icon
-                                    color="#e42c64"
+                                    color="#107595"
                                     @click="openGit(profile.git)"
                                     ><v-icon size="24px">fa-gitlab</v-icon></v-btn>
                                     <v-btn
                                     class="profile-icons text-xs-center pt-1"
                                     icon
-                                    color="#e42c64"
+                                    color="#107595"
                                     :href="'mailto:'+ `${profile.email}`"                                    
                                     ><v-icon size="24px">fa-envelope</v-icon></v-btn>
                                 </v-flex>
@@ -81,7 +81,6 @@ export default {
     font-family: 'Arvo', serif;
     margin: auto;
     border-radius: 15px;
-    
 }
 .profile__name{
     font-family: 'Lobster', cursive!important;        

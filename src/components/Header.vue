@@ -10,9 +10,9 @@
         </v-list>
     </v-navigation-drawer>
     <!-- end sidebar -->
-
+    <!-- #112d4e-->
     <!-- navbar -->
-    <v-toolbar color='#112d4e' fixed app temporary dark scroll-off-screen>
+    <v-toolbar color='#248ea9' fixed app temporary dark scroll-off-screen>
         <v-toolbar-side-icon @click.stop="drawer = !drawer" class="hidden-sm-and-up">
             <v-icon>fa-bars</v-icon>
         </v-toolbar-side-icon>
@@ -37,8 +37,8 @@
 
     <!-- backTotop button -->
     <v-fab-transition>
-        <v-btn v-show="fab" v-scroll="onScroll" class="md-5 mr-3 elevation-21" fab fixed bottom right color="#d6e4f0" @click="toTop">
-            <v-icon color="#112d4e">keyboard_arrow_up</v-icon>
+        <v-btn v-show="fab" v-scroll="onScroll" class="md-5 mr-3 elevation-21" fab fixed bottom right color="#aee7e8" @click="toTop">
+            <v-icon color="#248ea9">keyboard_arrow_up</v-icon>
         </v-btn>
     </v-fab-transition>
     <!-- end backTotop button -->
