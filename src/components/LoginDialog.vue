@@ -4,7 +4,7 @@
     <template v-slot:activator="{ on }">
         <v-btn flat v-on="on" v-show="!isSignIn">
             <v-icon left>input</v-icon>
-            signIn
+            Sign In
         </v-btn>
         <v-btn flat v-show="isSignIn" v-on:click="signOut">
             <v-icon left>cancel</v-icon>
@@ -136,6 +136,11 @@ export default {
                     name: 'Github',
                     color: 'black',
                     icon: 'fa-github'
+                },
+                {
+                    name: 'Anonymous',
+                    color: 'grey',
+                    icon: 'fa-user-secret'
                 }
             ]
         }
@@ -152,6 +157,9 @@ export default {
                     break;
                 case "Github":
                     this.signInWithGithub();
+                    break;
+                case "Anonymous":
+                    this.signInAnonymously();
                     break;
             }
         },
@@ -173,10 +181,19 @@ export default {
         },
         async signInWithGithub() {
             const result = await FirebaseService.signInWithGithub();
-            console.log(result)
             this.$store.state.accessToken = result.credential.accessToken
             this.$store.state.user = result.user
             alert("Sign in with Github!");
+            this.dialog = false;
+            this.isSignIn = true;
+        },
+        async signInAnonymously() {
+            const result = await FirebaseService.signInAnonymously();
+            if (result == true) {
+                alert("Sign in Anonymously!");
+            }
+            this.$store.state.accessToken = "Annonymous"
+            this.$store.state.user = "Annonymous"
             this.dialog = false;
             this.isSignIn = true;
         },
@@ -226,7 +243,7 @@ export default {
             return this.signUpPassword !== this.confirmPassword ? 'Passwords do not match' : ''
         },
         signInCheck() {
-            return this.$store.state.accessToken;
+            return this.$store.state.user;
         }
     },
     watch: {
@@ -234,6 +251,11 @@ export default {
             if (val == false) {
                 this.isSignUp = false;
                 this.clear()
+            }
+        },
+        signInCheck(val, oldVal){
+            if(val){
+                this.isSignIn = true;
             }
         }
     }

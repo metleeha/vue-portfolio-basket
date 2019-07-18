@@ -12,6 +12,8 @@ import './registerServiceWorker'
 
 import IncrementCnt from './services/IncrementCnt'
 
+import firebase from 'firebase'
+
 export const bus = new Vue()
 
 Vue.config.productionTip = false
@@ -28,11 +30,35 @@ Vue.use(Vuetify, {
 
 Vue.use(VueSimplemde)
 
-new Vue({
-  router,
-  store,
-  render: h => h(App)
-}).$mount('#app')
+let app;
+
+firebase.auth().onAuthStateChanged(function (user) {
+	if(!app){
+		app = new Vue({
+			router,
+			store,
+			render: h => h(App) 
+		}).$mount('#app')
+	}
+	if (user) {
+		// User is signed in.
+		console.log("!!!!!")
+		console.log(user);
+		console.log("!!!!!")
+		if(user.isAnonymous){
+			store.state.user = {name: 'Anonymous', email: 'None'}
+		}else{
+			store.state.user = {name: user.displayName, email: user.email }
+		}
+		
+	} else {
+		// User is signed out.
+		// ...
+		console.log("@@@@@");
+	}
+});
+
+
 
 router.beforeEach(function(to, from, next) {
 	IncrementCnt.Increment(to.name)
