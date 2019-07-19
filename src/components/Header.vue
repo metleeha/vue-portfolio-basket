@@ -18,17 +18,13 @@
         </v-toolbar-side-icon>
         <v-toolbar-title>
             <router-link to="/" tag="span" style="cursor: pointer">
-                <v-icon class="mr-1">free_breakfast</v-icon>
-                TEN
-            </router-link>
+                <v-icon class="mr-1">free_breakfast</v-icon>TEN</router-link>
         </v-toolbar-title>
         <TranslateBtn></TranslateBtn>
         <v-spacer></v-spacer>
         <v-toolbar-items class="hidden-xs-only">
             <v-btn flat to="portfolio">
-                <v-icon left>assessment</v-icon>
-                Portfolio
-            </v-btn>
+                <v-icon left>assessment</v-icon>Portfolio</v-btn>
             <LoginDialog></LoginDialog>
             
         </v-toolbar-items>
