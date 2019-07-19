@@ -3,10 +3,17 @@
     <!-- sidebar -->
     <v-navigation-drawer v-model="drawer" app fixed temporary>
         <v-list>
-            <v-list-tile to="portfolio">
-                <v-icon>assessment</v-icon>
-                <v-list-tile-content>Portfolio</v-list-tile-content>
-            </v-list-tile>
+            <v-container justify-center>
+                <v-btn flat to="/" style="cursor: pointer">
+                <v-icon class="mr-1">free_breakfast</v-icon>TEN</v-btn>
+                <v-flex>
+                <v-btn flat to="portfolio" style="cursor: pointer">
+                    <v-icon left>assessment</v-icon>Portfolio</v-btn>
+                </v-flex>
+                <v-flex>
+                    <LoginDialog></LoginDialog>
+                </v-flex>
+            </v-container>
         </v-list>
     </v-navigation-drawer>
     <!-- end sidebar -->

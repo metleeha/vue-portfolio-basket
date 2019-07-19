@@ -3,7 +3,7 @@
     <v-dialog v-model="dialog_portfolio" fullscreen hide-overlay transition="dialog-bottom-transition">
       <!-- dialog acticator section --> 
       <template v-slot:activator="{ on }">
-        <v-card class="portfolio--card" v-on="on">
+        <v-card max-width="270" class="portfolio--card" v-on="on">
           <v-img :src="imgSrc" height="200px">
           </v-img>
           <v-card-title primary-title>
