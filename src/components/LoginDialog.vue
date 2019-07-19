@@ -3,13 +3,9 @@
     <!-- signIn Button -->
     <template v-slot:activator="{ on }">
         <v-btn flat v-on="on" v-show="!isSignedIn">
-            <v-icon left>input</v-icon>
-            Sign In
-        </v-btn>
+            <v-icon left>input</v-icon>Sign In</v-btn>
         <v-btn flat v-show="isSignedIn" v-on:click="signOut">
-            <v-icon left>cancel</v-icon>
-            Logout
-        </v-btn>
+            <v-icon left>cancel</v-icon>Logout</v-btn>
     </template>
 
     <v-card>

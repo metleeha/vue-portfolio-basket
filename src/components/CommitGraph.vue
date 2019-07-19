@@ -72,6 +72,7 @@ export default {
 		setDate(repository){
 			this.startDate = Date.parse(repository.created_at.substring(0,10),'YYYY-MM-DD')
 			this.lastDate = Date.parse(repository.last_activity_at.substring(0,10),'YYYY-MM-DD')
+			console.log(this.startDate+"~~"+this.lastDate)
 			var date = this.startDate
 			var length = Date.subtract(this.lastDate, this.startDate).toDays();
 			for (let i = 0; i <= length; i++) {
