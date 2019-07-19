@@ -53,7 +53,7 @@
                     <!-- circle-button -->
                     <template v-for="(service) in socialServices">
                         <v-btn fab :color="service.color" dark class="hidden-md-and-up" :key="service.icon">
-                            <v-icon size="25">{{service.icon}}</v-icon>
+                            <v-icon size="25" v-on:click="socialLogin(service.name)">{{service.icon}}</v-icon>
                         </v-btn>
 
                         <v-flex :key="service.name" xs6 class="hidden-sm-and-down">
