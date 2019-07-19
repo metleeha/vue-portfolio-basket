@@ -4,7 +4,7 @@
       	<v-flex xs12>
         	<div class="project-text">
 			<h2 class="font-weight-regular" @click="goRepo()">{{repository.path_with_namespace}}</h2>
-        	<p class="username mb-1 grey--text text--darken-1 font-weight-light">@{{member.username}}</p>
+        	<p class="username mb-1 text--darken-1 font-weight-light">@{{member.username}}</p>
         	</div>
 			<div class="project-graph">
 			<CommitGraph 	:member = member class="graph hidden-xs-only"></CommitGraph>
@@ -57,6 +57,7 @@ export default {
 }
 .username {
 	height: 2.4em;
+	opacity: 0.8;
 }
 .project-text{
 	float: left;

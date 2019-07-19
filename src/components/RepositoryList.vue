@@ -1,18 +1,39 @@
-<template>
-  <v-layout column px-4>
-	<v-flex class="selecter">
-		<select v-model="projectID" @change="getGitlabRepos()">
+<template> 
+  <v-container fluid grid-list-xl>
+	  <v-layout wrap align-center>
+		  <v-flex xs12 sm4 offset-sm4 d-flex justify-center>
+			  <v-select v-model="projectID" @change="getGitlabRepos"
+				 :items="options"
+				 item-text="text"
+				 item-value="value"
+				 label="Select Repository"
+				 persistent-hint
+				 single-line
+				 append-icon="fa-caret-down"
+				 ></v-select>
+		  </v-flex>
+
+			<v-flex v-for="i in members.length" :key="i">
+				<v-divider v-if="i === 1"></v-divider>
+				<Repository :member = members[i-1]></Repository>
+				<v-divider></v-divider>
+			</v-flex>
+	  </v-layout>
+  </v-container>
+  <!-- <v-layout column px-5> -->
+	<!-- <v-flex xs-12 class="selecter">
+		<select text-xs-center v-model="projectID" @change="getGitlabRepos()">
 			<option v-for="option in options" v-bind:value="option.value" v-bind:key="option.text">
 				{{ option.text }}
 			</option>
 		</select>
-	</v-flex>
-    <v-flex v-for="i in members.length" :key="i">
+	</v-flex> -->
+    <!-- <v-flex v-for="i in members.length" :key="i">
       <v-divider v-if="i === 1"></v-divider>
       <Repository :member = members[i-1]></Repository>
       <v-divider></v-divider>
-    </v-flex>
-  </v-layout>
+    </v-flex> -->
+  <!-- </v-layout> -->
 </template>
 
 <script>
@@ -91,9 +112,5 @@ export default {
 }
 </script>
 <style>
-.selecter{
-	display: table;
-    text-align: center;
-	margin: 10px;
-}
+
 </style>

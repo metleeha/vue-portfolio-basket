@@ -19,7 +19,7 @@ export default {
           		datasets: [
             		{
             			label: 'Commite By Date',
-            			backgroundColor: '#248ea9',
+            			backgroundColor: '#ca5fa6',
             			data: []
 					}
           		]
