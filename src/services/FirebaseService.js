@@ -178,7 +178,6 @@ export default {
 			} else {
 				alert(errorMessage);
 			}
-			console.log(error);
 			document.getElementById('quickstart-sign-in').disabled = false;
 			// [END_EXCLUDE]
 		});

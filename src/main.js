@@ -42,9 +42,6 @@ firebase.auth().onAuthStateChanged(function (user) {
 	}
 	if (user) {
 		// User is signed in.
-		console.log("!!!!!")
-		console.log(user);
-		console.log("!!!!!")
 		if(user.isAnonymous){
 			store.state.user = {name: 'Anonymous', email: 'None'}
 		}else{
@@ -54,7 +51,6 @@ firebase.auth().onAuthStateChanged(function (user) {
 	} else {
 		// User is signed out.
 		// ...
-		console.log("@@@@@");
 	}
 });
 
@@ -62,6 +58,5 @@ firebase.auth().onAuthStateChanged(function (user) {
 
 router.beforeEach(function(to, from, next) {
 	IncrementCnt.Increment(to.name)
-	console.log(from.name+' -> '+to.name)
 	next()
 })

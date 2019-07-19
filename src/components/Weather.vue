@@ -68,7 +68,6 @@ export default {
     mounted(){
         const weatherData = WeatherApi.loadCoords()        
         .then(data => {
-            console.log(data)
             this.populate(data);
         })
     }

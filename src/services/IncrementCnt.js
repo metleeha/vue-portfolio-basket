@@ -24,16 +24,11 @@ export default {
                 firebase.database().ref('/Page/' + curDate + '/' + path).set({
                 View: curNo
                 })
-                
-                console.log(path+ '\t: '+ (curNo))
             }
             else {
-                console.log('the first visit of '+path)
                 firebase.database().ref('/Page/' + curDate + '/' + path).set({
                 View: 1
                 })
-    
-                console.log(path+ '\t: '+ 1)
             }
         })
       }

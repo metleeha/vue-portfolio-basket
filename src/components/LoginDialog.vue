@@ -18,7 +18,7 @@
             </v-btn>
         </v-toolbar>
 
-        <v-card-media v-show="isSignIn">
+        <v-responsive v-show="isSignIn">
             <!-- contents -->
             <!-- signIn with E-mail -->
             <v-form>
@@ -65,10 +65,10 @@
                     </template>
                 </v-layout>
             </v-container>
-        </v-card-media>
+        </v-responsive>
         <!-- /Sign In -->
         <!-- sign up -->
-        <v-card-media v-show="isSignUp">
+        <v-responsive v-show="isSignUp">
             <v-form>
                 <v-container grid-list-md text-xs-center>
 
@@ -91,11 +91,11 @@
 
                 </v-container>
             </v-form>
-        </v-card-media>
+        </v-responsive>
         <!-- /sign up -->
 
         <!-- Forgot ID/PW -->
-        <v-card-media v-show="isForgot">
+        <v-responsive v-show="isForgot">
             <v-form>
                 <v-container grid-list-md text-xs-left>
                     <h4>가입시 사용하였던 이메일을 입력하시면, 패스워드 리셋 메일을 보내드립니다.</h4>
@@ -114,7 +114,7 @@
 
                 </v-container>
             </v-form>
-        </v-card-media>
+        </v-responsive>
     </v-card>
     <!-- end modal -->
 </v-dialog>
@@ -260,7 +260,6 @@ export default {
         }
     },
     mounted: function () {
-        console.log(this.$store.state)
     },
     computed: {
         comparePasswords() {

@@ -56,9 +56,12 @@ export default {
 			// projectID: {type: String, default: ''},
 			projectID: '6047',
 			options: [
-				{ text: 'webmobile-sub2', value: '6047' },
-				{ text: 'webmobile-sub1/wsjeong', value: '5632' },
-				{ text: 'webmobile-sub1/Gilseong', value: '5602' }
+				{ text: 'webmobile-sub2-ten', value: '6047' },
+				{ text: 'webmobile-sub1-metleeha', value: '5626' },
+				{ text: 'webmobile-sub1-wsjeong', value: '5632' },
+				{ text: 'webmobile-sub1-Gilseong', value: '5602' },
+				{ text: 'webmobile-sub1-heabin', value: '5635' },
+				{ text: 'webmobile-sub1-jinhwan_nim', value: '5609' }
 			]
     	}
 	},
@@ -73,17 +76,14 @@ export default {
 			const members = await GitlabService.getMembers(this.projectID)
 			if(members.status !== 200) {return}
 			this.$store.state.members = members.data
-			console.log(members.data)
 			const response = await GitlabService.getRepos(this.projectID)
 			if(response.status !== 200) {return} 
 			this.$store.state.repository = response.data
-			console.log(this.$store.state.repository)
 			var count = 1
 			var tempCommits = []
 			while (true) {
 				const commits = await GitlabService.getCommits(this.projectID,count)
 				if(commits.status !== 200){return}
-				console.log(commits.data)
 				if(count === 1){
 					tempCommits = commits.data
 				}else{
@@ -91,13 +91,11 @@ export default {
 					commits.data.forEach(element => {
 						tempCommits.push(element)
 					});
-					console.log(tempCommits)
 				}
 				count++
 				if(commits.data.length < 100) break
 			}
 			this.$store.state.commits = tempCommits
-			console.log(this.$store.state.commits)
 		}
 	},
 	computed: {

@@ -70,14 +70,12 @@ export default {
 					this.labelsData.set(date,this.labelsData.get(date)+1)
 				}
 			}
-			console.log(this.myCommits)
 			this.datacollection.datasets[0].data = Array.from(this.labelsData.values())
 			this.renderChart(this.datacollection, this.options)
 		},
 		setDate(repository){
 			this.startDate = Date.parse(repository.created_at.substring(0,10),'YYYY-MM-DD')
 			this.lastDate = Date.parse(repository.last_activity_at.substring(0,10),'YYYY-MM-DD')
-			console.log(this.startDate+"~~"+this.lastDate)
 			var date = this.startDate
 			var length = Date.subtract(this.lastDate, this.startDate).toDays();
 			this.labelsData = new Map()
