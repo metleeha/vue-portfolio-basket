@@ -78,13 +78,14 @@ export default {
 }
 </script>
 <style>
-
+/* 
   .mw-700 {
     max-width: 700px;
     margin: auto;
-  }
+  } */
   #pfPan {
-    display: table;
+    display: inline-flex;
+    justify-content: center;
     text-align: center;
     width: 100%;
   }
