@@ -9,7 +9,7 @@ export default {
 		return Api(BASE_URL).get(`/projects/${projectID}`)
 	},
 	getCommits(fullName, count) {
-		return Api(BASE_URL).get(`/projects/${fullName}/repository/commits?per_page=100&ref_name=dev&page=${count}`)
+		return Api(BASE_URL).get(`/projects/${fullName}/repository/commits?per_page=100&page=${count}`)
 	},
 	getMembers(projectID) {
 		return Api(BASE_URL).get(`/projects/${projectID}/members`)
