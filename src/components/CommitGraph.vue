@@ -1,10 +1,10 @@
 <script>
-import { Bar } from 'vue-chartjs'
+import { Line } from 'vue-chartjs'
 import Date from 'date-and-time'
 
 export default {
 	name: 'CommitGraph',
-  	extends: Bar,
+  	extends: Line,
 	props: {
 		member: {type: null}
 	},
@@ -19,7 +19,7 @@ export default {
           		datasets: [
             		{
             			label: 'Commite By Date',
-            			backgroundColor: '#112d4e',
+            			backgroundColor: '#248ea9',
             			data: []
 					}
           		]
@@ -43,9 +43,13 @@ export default {
 					legend: {
 						display: false
 					},
+				elements: {
+					line: {
+						tension: 0
+					}
+				},
 				responsive: true,
-				maintainAspectRatio: false,
-				backgroundColor: '#dbe2ef'
+				maintainAspectRatio: false
 			}
 		}
 	},

@@ -1,10 +1,12 @@
 <template>
   <v-layout column px-4>
-	<select v-model="projectID" @change="getGitlabRepos()">
-  		<option v-for="option in options" v-bind:value="option.value" v-bind:key="option.text">
-    		{{ option.text }}
-  		</option>
-	</select>
+	<v-flex class="selecter">
+		<select v-model="projectID" @change="getGitlabRepos()">
+			<option v-for="option in options" v-bind:value="option.value" v-bind:key="option.text">
+				{{ option.text }}
+			</option>
+		</select>
+	</v-flex>
     <v-flex v-for="i in members.length" :key="i">
       <v-divider v-if="i === 1"></v-divider>
       <Repository :member = members[i-1]></Repository>
@@ -88,3 +90,10 @@ export default {
 	}
 }
 </script>
+<style>
+.selecter{
+	display: table;
+    text-align: center;
+	margin: 10px;
+}
+</style>
