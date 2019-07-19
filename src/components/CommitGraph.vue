@@ -28,7 +28,8 @@ export default {
 				scales: {
 					yAxes: [{
 						ticks: {
-						beginAtZero: true
+						beginAtZero: true,
+						max: 15
 						},
 						gridLines: {
 						display: false
@@ -39,10 +40,13 @@ export default {
 						display: false
 						}
 					}]
-					},
-					legend: {
-						display: false
-					},
+				},
+                hover: {
+                    mode: 'label'
+                },
+				legend: {
+					display: false
+				},
 				elements: {
 					line: {
 						tension: 0
@@ -55,6 +59,7 @@ export default {
 	},
     methods: {
 		selectCommit(commits){
+			this.myCommits = []
 			for (let i = 0; i < commits.length; i++) {
 				if((commits[i].committer_name.toLowerCase() == this.member.name.toLowerCase()) ||
 				(commits[i].committer_name.toLowerCase() == this.member.username.toLowerCase()) ||
@@ -75,6 +80,7 @@ export default {
 			console.log(this.startDate+"~~"+this.lastDate)
 			var date = this.startDate
 			var length = Date.subtract(this.lastDate, this.startDate).toDays();
+			this.labelsData = new Map()
 			for (let i = 0; i <= length; i++) {
 				this.labelsData.set(Date.format(date,'MM/DD'),0)
 				date = Date.addDays(date,1)
