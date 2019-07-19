@@ -34,7 +34,8 @@ export default {
 	},
 	methods:{
 		goRepo(){
-			location.href=this.repository.http_url_to_repo
+			// location.href=this.repository.http_url_to_repo
+			window.open(this.repository.http_url_to_repo, '_blank')
 		}
 	},
 	computed: {
