@@ -36,7 +36,8 @@ export default {
 			projectID: '6047',
 			options: [
 				{ text: 'webmobile-sub2', value: '6047' },
-				{ text: 'webmobile-sub1/wsjeong', value: '5632' }
+				{ text: 'webmobile-sub1/wsjeong', value: '5632' },
+				{ text: 'webmobile-sub1/Gilseong', value: '5602' }
 			]
     	}
 	},
