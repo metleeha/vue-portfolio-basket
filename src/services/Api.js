@@ -1,5 +1,5 @@
 import axios from 'axios'
-var token = require('../apikeys.json')
+var token = require('../ignore_apikeys.json')
 
 export default (baseURL) => {
 	return axios.create({

@@ -1,5 +1,5 @@
 import translate from 'translate'
-var token = require('../apikeys.json')
+var token = require('../ignore_apikeys.json')
 
 var translateState = false;
 
