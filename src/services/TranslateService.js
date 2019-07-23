@@ -1,5 +1,5 @@
 import translate from 'translate'
-var token = require('../ignore_apikeys.json')
+var googleKey = require('../../ignore/googleAPI.json')
 
 var translateState = false;
 
@@ -24,7 +24,7 @@ export default {
 						if(tags[i].childNodes[j].nodeValue == '')
 							continue;
 						var mytext = tags[i].childNodes[j].nodeValue;   
-						const translateText = await translate(mytext, { from:'en', to: 'ko', engine: 'google', key: token.googleAPIKey });
+						const translateText = await translate(mytext, { from:'en', to: 'ko', engine: 'google', key: googleKey.googleAPIKey });
 						
 						var tnode = document.createElement('font');          // font 엘리먼트 생성
 						var ttext = document.createTextNode(translateText); 	// translateText text 생성

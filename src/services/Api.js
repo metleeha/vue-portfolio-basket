@@ -1,5 +1,5 @@
 import axios from 'axios'
-var token = require('../ignore_apikeys.json')
+var token = require('../../ignore/ssafylabAPI.json')
 
 export default (baseURL) => {
 	return axios.create({
@@ -8,8 +8,6 @@ export default (baseURL) => {
 		headers: {
 			'Accept': 'application/json',
 			'Content-Type': 'application/json',
-			// 'Private-Token':'YyQhY6amWnc3F4supCjH',	// gitlab
-			// 'Private-Token':'jKzAYJGDh78mssL8Cjzj'	// ssafy.git
 			'Private-Token':token.ssafylabPrivateToken	// ssafy.git
 		}
 	})
