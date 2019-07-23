@@ -7,15 +7,7 @@ const PORTFOLIOS = 'portfolios'
 const BANNERIMAGE = 'bannerimage'
 
 // Setup Firebase
-const config = {
-	apiKey: "AIzaSyACLDe92JVp2hp2IcEWC6bc1oswsv4UzgY",
-	authDomain: "webmobile-sub2-ssafy.firebaseapp.com",
-	databaseURL: "https://webmobile-sub2-ssafy.firebaseio.com",
-	projectId: "webmobile-sub2-ssafy",
-	messagingSenderId: "49180175175",
-	appId: "1:49180175175:web:f6c4ec970a1b7ce1",
-	storageBucket: 'gs://webmobile-sub2-ssafy.appspot.com'
-}
+const config = require("../../ignore/firebaseAPI.json");
 
 firebase.initializeApp(config)
 const firestore = firebase.firestore()
