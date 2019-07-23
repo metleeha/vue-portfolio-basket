@@ -24,4 +24,4 @@ yarn-error.log*
 .firebase
 
 # GoogleAPIkey & ssafy.lab
-ignore_apikeys.json
+# ignore_apikeys.json
