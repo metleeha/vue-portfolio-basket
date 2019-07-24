@@ -41,6 +41,8 @@
                     <v-btn flat>Comment</v-btn>
                 </v-card-actions>
                 </v-card-text>
+                <Disqus/>
+                <Disqus/>
               </v-card>
             </v-flex>
           </v-flex>
@@ -53,6 +55,7 @@
 </template>
 
 <script>
+import Disqus from './Disqus'
 
 export default {
 	name: 'Porfolio',
@@ -62,6 +65,9 @@ export default {
 		body: {type: String},
 		imgSrc: {type: String},
 	},
+	components: {
+    Disqus
+  },
 	data() {
 		return {
       dialog_portfolio: false, 

@@ -1,4 +1,5 @@
 import Vue from 'vue'
+
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
 import VueSimplemde from 'vue-simplemde'
@@ -14,6 +15,7 @@ import IncrementCnt from './services/IncrementCnt'
 
 import firebase from 'firebase'
 
+import VueDisqus from 'vue-disqus'
 export const bus = new Vue()
 
 Vue.config.productionTip = false
@@ -30,6 +32,7 @@ Vue.use(Vuetify, {
 
 Vue.use(VueSimplemde)
 
+Vue.use(VueDisqus)
 let app;
 
 firebase.auth().onAuthStateChanged(function (user) {
