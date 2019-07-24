@@ -6,6 +6,7 @@ import PortfolioPage from './views/PortfolioPage.vue'
 import PortfolioViewPage from './views/PortfolioViewPage.vue'
 import PortfolioWriterPage from './views/PortfolioWriterPage.vue'
 import LoginPage from './views/LoginPage.vue'
+import AdminPage from './views/AdminPage.vue'
 
 Vue.use(Router)
 
@@ -50,6 +51,11 @@ const router = new Router({
 		// 	name: 'login',
 		// 	component: LoginPage
 		// },
+		{
+			path: '/admin',
+			name: 'admin',
+			component: AdminPage
+		}
 
   ]
 })
