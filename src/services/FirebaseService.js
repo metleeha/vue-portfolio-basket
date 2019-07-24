@@ -131,8 +131,8 @@ export default {
 		});
 
 	},
-	signUp(email, password) {
-		
+	signUp(email, password, name) {
+
 		if (email.length < 4) {
 			alert('Please enter an email address.');
 			return;
@@ -141,9 +141,22 @@ export default {
 			alert('Please enter a password.');
 			return;
 		}
+
+		if (name.length < 4) {
+			alert('Please enter name');
+			return;
+		}
 		// Sign in with email and pass.
 		// [START createwithemail]
-		return firebase.auth().createUserWithEmailAndPassword(email, password).catch(function (error) {
+		return firebase.auth().createUserWithEmailAndPassword(email, password).then(function (user) {
+			user.user.updateProfile({
+				displayName: name,
+			});
+			firebase.database().ref('users/'+user.user.uid).set({
+				authority: 'visitor'
+			});
+			return user.user;
+		}).catch(function (error) {
 			// Handle Errors here.
 			var errorCode = error.code;
 			var errorMessage = error.message;
@@ -182,14 +195,14 @@ export default {
 			alert("Error: " + error)
 		});
 	},
-	resetPW(email){
-		return firebase.auth().sendPasswordResetEmail(email).then(function() {
+	resetPW(email) {
+		return firebase.auth().sendPasswordResetEmail(email).then(function () {
 			// Email sent.
 			return true;
-		  }).catch(function(error) {
+		}).catch(function (error) {
 			// An error happened.
-			console.log("[Password reset error]: "+error);
-		  });
+			console.log("[Password reset error]: " + error);
+		});
 	},
 	currentUser() {
 		return firebase.auth().currentUser;
@@ -220,5 +233,5 @@ export default {
 		return firebase.auth().onAuthStateChanged();
 		return user;
 	},
-	
+
 }
