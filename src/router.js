@@ -8,14 +8,9 @@ import PortfolioWriterPage from './views/PortfolioWriterPage.vue'
 import LoginPage from './views/LoginPage.vue'
 import AdminPage from './views/AdminPage.vue'
 
-import VueAnalytics from 'vue-analytics'
 import { Verify } from 'crypto';
 
 Vue.use(Router)
-Vue.use(VueAnalytics, {
-	id: "UA-144465306-1",
-	router
-})
 
 const router = new Router({
   mode: 'history',
