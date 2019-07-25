@@ -25,7 +25,7 @@
                 <v-container grid-list-md text-xs-center>
 
                     <v-layout wrap row>
-                        <v-text-field class="input-with-icon" name='email' label='E-Mail' id='email' v-model='email' type='email' prepend-icon="face" required></v-text-field>
+                        <v-text-field class="input-with-icon" name='email' label='E-Mail' id='email' v-model='email' type='email' prepend-icon="mail_outline" required></v-text-field>
                         <v-text-field class="input-with-icon" name='password' label='Password' id='password' v-model='password' type='password' prepend-icon="lock" v-on:keyup.enter="signIn" required></v-text-field>
                     </v-layout>
 
@@ -73,10 +73,8 @@
                 <v-container grid-list-md text-xs-center>
 
                     <v-layout wrap row>
-                        <!--
-                        <v-text-field class="input-with-icon" name='name' label='Name' id='name' v-model='name' type='text' prepend-icon="insert_emoticon" required></v-text-field>
-                        -->
-                        <v-text-field class="input-with-icon" name='email' label='E-Mail' id='signUpEmail' v-model='email' type='email' prepend-icon="face" required></v-text-field>
+                        <v-text-field class="input-with-icon" name='email' label='E-Mail' id='signUpEmail' v-model='email' type='email' prepend-icon="mail_outline" required></v-text-field>
+                        <v-text-field class="input-with-icon" name='name' label='Name' id='name' v-model='name' type='text' prepend-icon="face" required></v-text-field>
                         <v-text-field class="input-with-icon" name='password' label='Password' id='signUpPassword' v-model='password' type='password' prepend-icon="lock" required></v-text-field>
                         <v-text-field class="input-with-icon" name='confirmPassword' label='confirmPassword' id='confirmPassword' v-model='confirmPassword' type='password' prepend-icon="check_circle" :rules="[comparePasswords]" required></v-text-field>
                     </v-layout>
@@ -100,7 +98,7 @@
                 <v-container grid-list-md text-xs-left>
                     <h4>가입시 사용하였던 이메일을 입력하시면, 패스워드 리셋 메일을 보내드립니다.</h4>
                     <v-layout wrap row>
-                        <v-text-field class="input-with-icon" name='Email' label='E-Mail' id='forgot_Email' v-model='email' type='email' prepend-icon="face" required></v-text-field>
+                        <v-text-field class="input-with-icon" name='Email' label='E-Mail' id='forgot_Email' v-model='email' type='email' prepend-icon="mail_outline" required></v-text-field>
                     </v-layout>
                     <v-subheader>(5-10분정도 시간이 소요될 수 있습니다.)</v-subheader>
                     <v-layout wrap row>
@@ -216,8 +214,9 @@ export default {
             this.isSignedIn = true;
         },
         async signUp() {
-            const result = await FirebaseService.signUp(this.email, this.password)
+            const result = await FirebaseService.signUp(this.email, this.password, this.name)
             if (result) {
+                FirebaseService.currentUser()
                 alert("Sign up Completed!");
                 this.isSignUp = false;
                 this.clear()
@@ -227,10 +226,12 @@ export default {
             const result = await FirebaseService.signIn(this.email, this.password)
             if (result) {
                 alert("Sign in with E-mail!");
-                this.$store.state.accessToken = result.user.accessToken;
-                this.$store.state.user = result.user.email;
+                this.$store.state.user = result.user;
                 this.dialog = false;
                 this.isSignedIn = true;
+                console.log("=======================================");
+				console.log(result);
+				console.log("=======================================");
             }
         },
         async signOut() {
