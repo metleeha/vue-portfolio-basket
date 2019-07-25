@@ -42,10 +42,28 @@ export default {
 			.then((docSnapshots) => {
 				return docSnapshots.docs.map((doc) => {
 					let data = doc.data()
+					data.id = doc.id			// 각 데이터 키값
 					data.created_at = new Date(data.created_at.toDate())
 					return data
 				})
 			})
+	},
+	getPortfolio(id) {
+		var cityRef = firestore.collection(PORTFOLIOS).doc(id);
+		var getDoc = cityRef.get()
+		.then(doc => {
+			if (!doc.exists) {
+				console.log('No such document!')
+			} else {
+				console.log(doc.data())
+				return doc.data()
+			}
+		})
+		.catch(err => {
+			console.log('Error getting document', err)
+		})
+
+		return getDoc
 	},
 	postPortfolio(title, body, img) {
 		return firestore.collection(PORTFOLIOS).add({

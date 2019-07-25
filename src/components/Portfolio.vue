@@ -37,12 +37,10 @@
                     {{ body }}
                   </div>
                   <v-card-actions>
-                    <v-btn flat>Share</v-btn>
+                    <v-btn flat @click="gotoPortfolio()">detail</v-btn>
                     <v-btn flat>Comment</v-btn>
                 </v-card-actions>
                 </v-card-text>
-                <Disqus/>
-                <Disqus/>
               </v-card>
             </v-flex>
           </v-flex>
@@ -55,19 +53,16 @@
 </template>
 
 <script>
-import Disqus from './Disqus'
 
 export default {
 	name: 'Porfolio',
 	props: {
+    id: {type:String},
 		date: {type: String},
 		title: {type: String},
 		body: {type: String},
 		imgSrc: {type: String},
 	},
-	components: {
-    Disqus
-  },
 	data() {
 		return {
       dialog_portfolio: false, 
@@ -75,13 +70,21 @@ export default {
 		}
 	},
   methods:{
-
+    async gotoPortfolio(){
+      this.$router.push({name: 'portfolioview', params: { id: this.id }});
+      // this.$router.push({name: 'portfolioview'});
+      // eventBus.$emit('senddata',this.title, this.body, this.date, this.imgSrc);
+      window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: 'smooth'
+      });
+    },
   },
   created: function(){
     this.stringDate = this.date.substring(0, 16)
   }
-  }
-
+}
 </script>
 <style>
 .cardtable {
