@@ -74,6 +74,5 @@ export default {
   background-size: cover;
   background-repeat: repeat-y; */
   /* height: 100vh; */
-  
 
 </style>
