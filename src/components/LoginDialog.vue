@@ -230,6 +230,10 @@ export default {
                 this.$store.state.user = result.user;
                 this.dialog = false;
                 this.isSignedIn = true;
+                console.log("============================================");
+                let ba = await FirebaseService.changeAuth("3CMEmOqX6PSsVGe6PLbd1Me5Vmt1", "member");
+                console.log(ba);
+                console.log("============================================");
             }
         },
         async signOut() {

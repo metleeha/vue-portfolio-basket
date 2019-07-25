@@ -187,7 +187,6 @@ export default {
 			} else {
 				alert(errorMessage);
 			}
-			document.getElementById('quickstart-sign-in').disabled = false;
 			// [END_EXCLUDE]
 		});
 	},
@@ -254,5 +253,57 @@ export default {
 					return false;
 				}
 		})
+	},
+	async changeAuthMember(uid){
+		if(this.checkAuthMaster){
+			let key =  firebase.database().ref('/users/').orderByChild('uid').equalTo(uid).once('value').then(function(snapshot){
+				snapshot.forEach(function(childSnapshot){
+					firebase.database().ref('/users/'+childSnapshot.key).update({authority: "member"});
+				});
+				
+			})
+		}else{
+			alert("권한 관리는 관리자 계정만 가능합니다.");
+			return;
+		}
+	},
+	async changeAuthMaster(uid){
+		if(this.checkAuthMaster){
+			let key =  firebase.database().ref('/users/').orderByChild('uid').equalTo(uid).once('value').then(function(snapshot){
+				snapshot.forEach(function(childSnapshot){
+					firebase.database().ref('/users/'+childSnapshot.key).update({authority: "master"});
+				});
+				
+			})
+		}else{
+			alert("권한 관리는 관리자 계정만 가능합니다.");
+			return;
+		}
+	},
+	async changeAuthMember(uid){
+		if(this.checkAuthMaster){
+			let key =  firebase.database().ref('/users/').orderByChild('uid').equalTo(uid).once('value').then(function(snapshot){
+				snapshot.forEach(function(childSnapshot){
+					firebase.database().ref('/users/'+childSnapshot.key).update({authority: "member"});
+				});
+				
+			})
+		}else{
+			alert("권한 관리는 관리자 계정만 가능합니다.");
+			return;
+		}
+	},
+	async changeAuthVisitor(uid){
+		if(this.checkAuthMaster){
+			let key =  firebase.database().ref('/users/').orderByChild('uid').equalTo(uid).once('value').then(function(snapshot){
+				snapshot.forEach(function(childSnapshot){
+					firebase.database().ref('/users/'+childSnapshot.key).update({authority: "visitor"});
+				});
+				
+			})
+		}else{
+			alert("권한 관리는 관리자 계정만 가능합니다.");
+			return;
+		}
 	}
 }
