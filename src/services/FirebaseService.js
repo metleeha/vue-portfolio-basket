@@ -146,14 +146,18 @@ export default {
 			alert('Please enter name');
 			return;
 		}
+
 		// Sign in with email and pass.
 		// [START createwithemail]
 		return firebase.auth().createUserWithEmailAndPassword(email, password).then(function (user) {
 			user.user.updateProfile({
 				displayName: name,
 			});
-			firebase.database().ref('users/'+user.user.uid).set({
-				authority: 'visitor'
+			firebase.database().ref('/users/').push({
+				name: name,
+				email: email,
+				authority: 'visitor',
+				uid: user.user.uid
 			});
 			return user.user;
 		}).catch(function (error) {
@@ -204,12 +208,6 @@ export default {
 			console.log("[Password reset error]: " + error);
 		});
 	},
-	currentUser() {
-		return firebase.auth().currentUser;
-	},
-	onAuthStateChanged() {
-		return firebase.auth().onAuthStateChanged();
-	},
 	getTodayView() {
 		let today = new Date()
 		let formattedToday = (today.getMonth() + 1) + '월 ' + today.getDate() + '일'
@@ -229,9 +227,32 @@ export default {
 			return TotalView
 		})
 	},
-	async signInCheck() {
-		return firebase.auth().onAuthStateChanged();
-		return user;
+	async checkAuthMaster(){
+		let user = firebase.auth().currentUser;
+		return firebase.database().ref('/users/')
+			.orderByChild('uid')
+			.equalTo(user.uid)
+			.once('value')
+			.then(function(snapshot){
+				if(snapshot.val().authority == 'master'){
+					return true;
+				} else{
+					return false;
+				}
+		})
 	},
-
+	async checkAuthMember(){
+		let user = firebase.auth().currentUser;
+		return firebase.database().ref('/users/')
+			.orderByChild('uid')
+			.equalTo(user.uid)
+			.once('value')
+			.then(function(snapshot){
+				if(snapshot.val().authority == 'member'){
+					return true;
+				} else{
+					return false;
+				}
+		})
+	}
 }
