@@ -19,6 +19,29 @@
 
 /* eslint-env browser, serviceworker, es6 */
 
+/* add src */
+self.addEventListener('install', function (e) {
+  self.skipWaiting();
+  console.log("[ServiceWorker]Install");
+  e.waitUntil(
+    caches.open('tenSPA').then(function (cache) {
+      return cache.addAll([
+        '/',
+        '/public/index.html'
+      ]);
+    })
+  );
+});
+
+/* fetch */
+self.addEventListener('fetch', event => {
+  console.log('[ServiceWorker]Fetch ' + event.request.url);
+  event.respondWith(
+    caches.match(event.request).then(function(response) {
+      return response || fetch(event.request);
+    })
+  );
+});
 
 'use strict';
 
@@ -47,26 +70,3 @@ self.addEventListener('notificationclick', function (event) {
 });
 
 
-/* add src */
-self.addEventListener('install', function (e) {
-  self.skipWaiting();
-  console.log("[ServiceWorker]Install");
-  e.waitUntil(
-    caches.open('tenSPA').then(function (cache) {
-      return cache.addAll([
-        '/',
-        '/public/index.html'
-      ]);
-    })
-  );
-});
-
-/* fetch */
-self.addEventListener('fetch', event => {
-  console.log('[ServiceWorker]Fetch ' + event.request.url);
-  event.respondWith(
-    caches.match(event.request).then(function(response) {
-      return response || fetch(event.request);
-    })
-  );
-});
