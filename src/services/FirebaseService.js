@@ -255,6 +255,9 @@ export default {
 			console.log("[Password reset error]: " + error);
 		});
 	},
+	setAuthPersistence() {
+		firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION);
+	},
 	getTodayView() {
 		let today = new Date()
 		let formattedToday = (today.getMonth() + 1) + '월 ' + today.getDate() + '일'

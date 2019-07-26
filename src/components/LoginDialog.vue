@@ -164,6 +164,7 @@ export default {
     components: {},
     methods: {
         socialLogin(service) {
+            FirebaseService.setAuthPersistence();
             switch (service) {
                 case "Google":
                     this.signInWithGoogle();
@@ -224,6 +225,7 @@ export default {
             }
         },
         async signIn() {
+            FirebaseService.setAuthPersistence();
             const result = await FirebaseService.signIn(this.email, this.password)
             if (result) {
                 alert("Sign in with E-mail!");
