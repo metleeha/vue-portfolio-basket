@@ -30,7 +30,7 @@
         <TranslateBtn></TranslateBtn>
         <v-spacer></v-spacer>
         <v-toolbar-items class="hidden-xs-only">
-            <v-btn flat to="portfolio">
+            <v-btn flat to="/portfolio">
                 <v-icon left>assessment</v-icon>Portfolio</v-btn>
             <LoginDialog></LoginDialog>
             

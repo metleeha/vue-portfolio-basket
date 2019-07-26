@@ -2,20 +2,34 @@
   <div>
 
     <v-container>
+      <!-- edit btn -->
+      <v-layout xs12 justify-center class="page-edit">
+        <v-flex xs12 text-xs-center mt-5>
+          <v-btn @click="newToggle = !newToggle" block flat large :color="newToggle? '#f0bebe':'#3a718c'"><v-icon left>fa-chevron-down</v-icon>Edit Portfolio</v-btn>
+        </v-flex>
+      </v-layout>
+      <!-- Portfolio Writer --->
+      <transition name="fade">
+        <v-layout v-if="newToggle" xs12 justify-center>
+          <PortfolioWriter  />
+        </v-layout>
+      </transition>
+      <!-- title -->
       <v-layout class="page-header" row>
-        <v-flex xs12>
+        <v-flex xs8>
           <h1 class="page-title">{{ title }}</h1>
         </v-flex>
       </v-layout>
-      <v-layout class="page-content">
-        <v-flex xs12>
-          <v-layout row class="page-author">
-            <v-flex xs12 justify-content-left>
-              <span><v-icon class="mr-1">fa-paperclip</v-icon>{{ date }}</span>
-              <span><v-icon class="mr-1">fa-user</v-icon>by admin</span>
-              <span><v-icon class="mr-1">fa-comments</v-icon>3 Comments</span>
-            </v-flex>
-          </v-layout>
+      <!-- author -->
+      <v-layout row class="page-author">
+        <v-flex xs8 justify-content-center>
+          <span><v-icon class="mr-1">fa-paperclip</v-icon>{{ date }}</span>
+          <span><v-icon class="mr-1">fa-user</v-icon>by admin</span>
+        </v-flex>
+      </v-layout>
+      <!-- img -->
+      <v-layout class="page-img">
+        <v-flex xs8>
           <v-img 
             :src='this.imgSrc'
             max-height="300"
@@ -23,13 +37,24 @@
           ></v-img>
         </v-flex>
       </v-layout>
-
+      <!-- body -->
       <v-layout>
-        <v-flex xs12 class="page-body">
+        <v-flex xs8 class="page-body">
           <h4>{{ body }}</h4>
         </v-flex>
       </v-layout>
-      <Disqus/>
+      <!-- btns -->
+      <v-layout>
+        <v-flex xs8 class="page-btns">
+          <v-btn @click="deletePortfolio()">삭제</v-btn>
+        </v-flex>
+      </v-layout>
+      <!-- disqus -->
+      <v-layout>
+        <v-flex xs8 class="page-disqus">
+          <Disqus/>
+        </v-flex>
+      </v-layout>
     </v-container>
   </div>
 </template>
@@ -40,14 +65,16 @@
 import FirebaseService from '../services/FirebaseService'
 import Datetime from 'date-and-time'
 import Disqus from '../components/Disqus'
+import PortfolioWriter from '../components/PortfolioWriter'
 
 export default {
   name: 'PortfolioViewPage',
   props: {
     id: {type:String},
-	},
+  },
 	data(){
     return{
+      newToggle: false,
 		  date: '언제더라...',
 		  title: '로딩중...',
 		  body: '뭐더라...',
@@ -55,7 +82,8 @@ export default {
     }
   },
 	components: {
-    Disqus
+    Disqus,
+    PortfolioWriter
   },
   mounted(){
       this.getPortfolioData()
@@ -73,6 +101,10 @@ export default {
       
       // this.stringDate = this.date.substring(0, 16)
       console.log(this.date)
+    },
+    deletePortfolio(){
+      FirebaseService.deletePortfolio(this.id)
+      this.$router.push({name: 'portfolio'})
     }
   },
   computed: {
@@ -115,5 +147,11 @@ export default {
 }
 .page-content{
   padding-top: 2vh;
+}
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
 }
 </style>

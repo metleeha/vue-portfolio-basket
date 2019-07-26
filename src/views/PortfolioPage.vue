@@ -13,14 +13,14 @@
       <!-- Portfolio Writer --->
       <transition name="fade">
         <v-layout v-if="newToggle" xs12 justify-center>
-          <PortfolioNew />
+          <PortfolioWriter />
         </v-layout>
       </transition>
       
       <!-- Portfolio -->
       <v-layout>
         <v-flex xs12>
-          <PortfolioList :limits="8" :load-more="true" v-on:portfolioWriterOn="routePFW"></PortfolioList>
+          <PortfolioList :limits="8" :load-more="true"></PortfolioList>
         </v-flex>
       </v-layout>
 
@@ -31,14 +31,14 @@
 <script>
 import ImgBanner from '../components/ImgBanner'
 import PortfolioList from '../components/PortfolioList'
-import PortfolioNew from '../components/PortfolioNew'
+import PortfolioWriter from '../components/PortfolioWriter'
 
 export default {
   name: 'PortfolioPage',
   components: {
 		ImgBanner,
     PortfolioList,
-    PortfolioNew
+    PortfolioWriter
   },
   data(){
     return {
@@ -46,15 +46,6 @@ export default {
     }
   },
   methods:{
-    routePFW(){
-      this.$router.push('portfoliowriter');
-      window.scrollTo({
-        top: 0,
-        left: 0,
-        behavior: 'smooth'
-      });
-    },
-
   }
 }
 </script>
