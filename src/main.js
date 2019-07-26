@@ -58,7 +58,6 @@ firebase.auth().onAuthStateChanged(function (user) {
 });
 
 
-
 router.beforeEach(function(to, from, next) {
 	IncrementCnt.Increment(to.name)
 	next()

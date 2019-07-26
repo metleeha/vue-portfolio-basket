@@ -19,28 +19,54 @@
 
 /* eslint-env browser, serviceworker, es6 */
 
+
 'use strict';
 
-self.addEventListener('push', function(event) {
-    console.log('[Service Worker] Push Received.');
-    console.log(`[Service Worker] Push had this data: "${event.data.text()}"`);
-  
-    const title = 'Push Codelab';
-    const options = {
-      body: 'Yay it works.',
-      icon: 'images/icon.png',
-      badge: 'images/badge.png'
-    };
-  
-    event.waitUntil(self.registration.showNotification(title, options));
-  });
+self.addEventListener('push', function (event) {
+  console.log('[Service Worker] Push Received.');
+  console.log(`[Service Worker] Push had this data: "${event.data.text()}"`);
 
-  self.addEventListener('notificationclick', function(event) {
-    console.log('[Service Worker] Notification click Received.');
-  
-    event.notification.close();
-  
-    event.waitUntil(
-      clients.openWindow('https://developers.google.com/web/')
-    );
-  });
+  const title = 'Push Codelab';
+  const options = {
+    body: 'Yay it works.',
+    icon: 'images/icon.png',
+    badge: 'images/badge.png'
+  };
+
+  event.waitUntil(self.registration.showNotification(title, options));
+});
+
+self.addEventListener('notificationclick', function (event) {
+  console.log('[Service Worker] Notification click Received.');
+
+  event.notification.close();
+
+  event.waitUntil(
+    clients.openWindow('https://developers.google.com/web/')
+  );
+});
+
+
+/* add src */
+self.addEventListener('install', function (e) {
+  self.skipWaiting();
+  console.log("[ServiceWorker]Install");
+  e.waitUntil(
+    caches.open('tenSPA').then(function (cache) {
+      return cache.addAll([
+        '/',
+        '/public/index.html'
+      ]);
+    })
+  );
+});
+
+/* fetch */
+self.addEventListener('fetch', event => {
+  console.log('[ServiceWorker]Fetch ' + event.request.url);
+  event.respondWith(
+    caches.match(event.request).then(function(response) {
+      return response || fetch(event.request);
+    })
+  );
+});
