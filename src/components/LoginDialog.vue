@@ -216,9 +216,10 @@ export default {
         async signUp() {
             const result = await FirebaseService.signUp(this.email, this.password, this.name)
             if (result) {
-                FirebaseService.currentUser()
                 alert("Sign up Completed!");
                 this.isSignUp = false;
+                this.dialog = false;
+                this.isSignedIn = true;
                 this.clear()
             }
         },
@@ -229,9 +230,6 @@ export default {
                 this.$store.state.user = result.user;
                 this.dialog = false;
                 this.isSignedIn = true;
-                console.log("=======================================");
-				console.log(result);
-				console.log("=======================================");
             }
         },
         async signOut() {

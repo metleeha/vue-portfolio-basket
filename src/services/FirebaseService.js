@@ -179,14 +179,18 @@ export default {
 			alert('Please enter name');
 			return;
 		}
+
 		// Sign in with email and pass.
 		// [START createwithemail]
 		return firebase.auth().createUserWithEmailAndPassword(email, password).then(function (user) {
 			user.user.updateProfile({
 				displayName: name,
 			});
-			firebase.database().ref('users/'+user.user.uid).set({
-				authority: 'visitor'
+			firebase.database().ref('/users/').push({
+				name: name,
+				email: email,
+				authority: 'visitor',
+				uid: user.user.uid
 			});
 			return user.user;
 		}).catch(function (error) {
@@ -216,7 +220,6 @@ export default {
 			} else {
 				alert(errorMessage);
 			}
-			document.getElementById('quickstart-sign-in').disabled = false;
 			// [END_EXCLUDE]
 		});
 	},
@@ -237,12 +240,6 @@ export default {
 			console.log("[Password reset error]: " + error);
 		});
 	},
-	currentUser() {
-		return firebase.auth().currentUser;
-	},
-	onAuthStateChanged() {
-		return firebase.auth().onAuthStateChanged();
-	},
 	getTodayView() {
 		let today = new Date()
 		let formattedToday = (today.getMonth() + 1) + '월 ' + today.getDate() + '일'
@@ -262,9 +259,84 @@ export default {
 			return TotalView
 		})
 	},
-	async signInCheck() {
-		return firebase.auth().onAuthStateChanged();
-		return user;
+	async checkAuthMaster(){
+		let user = firebase.auth().currentUser;
+		return firebase.database().ref('/users/')
+			.orderByChild('uid')
+			.equalTo(user.uid)
+			.once('value')
+			.then(function(snapshot){
+				if(snapshot.val().authority == 'master'){
+					return true;
+				} else{
+					return false;
+				}
+		})
 	},
-
+	async checkAuthMember(){
+		let user = firebase.auth().currentUser;
+		return firebase.database().ref('/users/')
+			.orderByChild('uid')
+			.equalTo(user.uid)
+			.once('value')
+			.then(function(snapshot){
+				if(snapshot.val().authority == 'member'){
+					return true;
+				} else{
+					return false;
+				}
+		})
+	},
+	async changeAuthMember(uid){
+		if(this.checkAuthMaster){
+			let key =  firebase.database().ref('/users/').orderByChild('uid').equalTo(uid).once('value').then(function(snapshot){
+				snapshot.forEach(function(childSnapshot){
+					firebase.database().ref('/users/'+childSnapshot.key).update({authority: "member"});
+				});
+				
+			})
+		}else{
+			alert("권한 관리는 관리자 계정만 가능합니다.");
+			return;
+		}
+	},
+	async changeAuthMaster(uid){
+		if(this.checkAuthMaster){
+			let key =  firebase.database().ref('/users/').orderByChild('uid').equalTo(uid).once('value').then(function(snapshot){
+				snapshot.forEach(function(childSnapshot){
+					firebase.database().ref('/users/'+childSnapshot.key).update({authority: "master"});
+				});
+				
+			})
+		}else{
+			alert("권한 관리는 관리자 계정만 가능합니다.");
+			return;
+		}
+	},
+	async changeAuthMember(uid){
+		if(this.checkAuthMaster){
+			let key =  firebase.database().ref('/users/').orderByChild('uid').equalTo(uid).once('value').then(function(snapshot){
+				snapshot.forEach(function(childSnapshot){
+					firebase.database().ref('/users/'+childSnapshot.key).update({authority: "member"});
+				});
+				
+			})
+		}else{
+			alert("권한 관리는 관리자 계정만 가능합니다.");
+			return;
+		}
+	},
+	async changeAuthVisitor(uid){
+		if(this.checkAuthMaster){
+			let key =  firebase.database().ref('/users/').orderByChild('uid').equalTo(uid).once('value').then(function(snapshot){
+				snapshot.forEach(function(childSnapshot){
+					firebase.database().ref('/users/'+childSnapshot.key).update({authority: "visitor"});
+				});
+				
+			})
+		}else{
+			alert("권한 관리는 관리자 계정만 가능합니다.");
+			return;
+		}
+	}
 }
