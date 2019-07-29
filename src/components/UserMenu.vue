@@ -7,8 +7,9 @@
         </v-btn>
     </template>
     <v-list>
-        <v-list-tile v-for="(item, i) in items" :key="i" @click="userMenu(item.method)">
-            <v-list-tile-title>{{ item.title }}</v-list-tile-title>
+        <ModiUserInfo></ModiUserInfo>
+        <v-list-tile @click="signOut()">
+            Sign Out
         </v-list-tile>
     </v-list>
 </v-menu>
@@ -17,33 +18,20 @@
 <script>
 import FirebaseService from '@/services/FirebaseService'
 import store from '../store'
+import ModiUserInfo from './ModiUserInfo'
 
 export default {
     name: 'userMenu',
     store,
     data() {
         return {
-            items: [{
-                    title: 'My Info',
-                    method: 'myInfo'
-                },
-                {
-                    title: 'Sign Out',
-                    method: 'signOut'
-                }
-            ]
+            
         }
     },
+    components: {
+        ModiUserInfo
+    },
     methods: {
-        userMenu(menu) {
-            switch (menu) {
-                case 'myInfo':
-                    break;
-                case 'signOut':
-                    this.signOut();
-                    break;
-            }
-        },
         async signOut() {
             const result = await FirebaseService.signOut();
             if (result) {
@@ -55,11 +43,7 @@ export default {
     },
     computed: {
         userName: function () {
-            let user = this.$store.getters.getUser;
-            console.log("================================");
-            console.log(user);
-            console.log("================================");
-            return user.name;
+            return (this.$store.getters.getUser).name;
         }
     }
 }
