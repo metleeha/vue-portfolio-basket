@@ -71,7 +71,7 @@ export default {
 	},
   methods:{
     async gotoPortfolio(){
-      this.$router.push({name: 'portfolioview', params: { id: this.id }});
+      this.$router.push({name: 'portfolioview', params: { id: this.id }})
       // this.$router.push({name: 'portfolioview'});
       // eventBus.$emit('senddata',this.title, this.body, this.date, this.imgSrc);
       window.scrollTo({

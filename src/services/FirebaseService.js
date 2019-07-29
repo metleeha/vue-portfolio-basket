@@ -52,6 +52,7 @@ export default {
 	getPortfolios() {
 		const postsCollection = firestore.collection(PORTFOLIOS)
 		return postsCollection
+			.where('deleted','==',false)
 			.orderBy('created_at', 'desc')
 			.get()
 			.then((docSnapshots) => {
@@ -85,7 +86,21 @@ export default {
 			title,
 			body,
 			img,
-			created_at: firebase.firestore.FieldValue.serverTimestamp()
+			created_at: firebase.firestore.FieldValue.serverTimestamp(),
+			deleted: false
+		})
+	},
+	updatePortfolio(id, title, body, img) {
+		return firestore.collection(PORTFOLIOS).doc(id).update({
+			"title": title,
+			"body": body,
+			"img": img,
+		})
+	},
+	deletePortfolio(id){
+		return firestore.collection(PORTFOLIOS).doc(id).update({
+			"deleted": true,
+			"deleted_at": firebase.firestore.FieldValue.serverTimestamp()
 		})
 	},
 	getBannerImage() {

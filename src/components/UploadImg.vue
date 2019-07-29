@@ -39,9 +39,14 @@ export default {
     }
   },
 	props: {
-		imgSrc: {type: String},
+		imgSrc: {type: String, default: ''},
 		text: {type: String}
-	},
+  },
+  mounted(){
+    if(this.imgSrc != ''){
+      image.src = this.imgSrc
+    }
+  },
 	methods: {
 
   onPickFile(){
