@@ -34,10 +34,10 @@
         </v-flex>
       </v-layout>
       <!-- img -->
-      <v-layout class="page-img">
+      <v-layout class="page-img" v-if="this.imgSrc != ''">
         <v-flex xs8>
           <v-img 
-            :src='this.imgSrc'
+            :src="this.imgSrc"
             cover
           ></v-img>
         </v-flex>
@@ -83,7 +83,7 @@ export default {
 		  date: '언제더라...',
 		  title: '로딩중...',
 		  body: '뭐더라...',
-		  imgSrc: '../assets/noimg.jpg',
+		  imgSrc: '',
     }
   },
 	components: {
@@ -111,6 +111,7 @@ export default {
       this.$router.push({name: 'portfolio'})
     },
     updatePortfolio(state){
+      console.log(state)
       if(state){
         this.$store.state.updatePortfolioDone = false
         this.newToggle = false
