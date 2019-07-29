@@ -197,10 +197,6 @@ export default {
                 alert("Sign in with E-mail!");
                 this.$store.state.user = result.user;
                 this.dialog = false;
-<<<<<<< HEAD:src/components/LoginDialog.vue
-                this.isSignedIn = true;
-=======
->>>>>>> d218576... Add: divide signin button/userInfo:src/components/SignInMenu.vue
             }
         },
         async signOut() {

@@ -14,17 +14,11 @@
         <TranslateBtn></TranslateBtn>
         <v-spacer></v-spacer>
         <v-toolbar-items class="hidden-xs-only">
-<<<<<<< HEAD
-            <v-btn flat to="/portfolio">
-                <v-icon left>assessment</v-icon>Portfolio</v-btn>
-            <LoginDialog></LoginDialog>
-=======
             <v-btn flat to="portfolio">
                 <v-icon left>assessment</v-icon>Portfolio
             </v-btn>
             <UserMenu v-if="this.isSignined"></UserMenu>
             <SignInMenu v-else></SignInMenu>
->>>>>>> d218576... Add: divide signin button/userInfo
             
 
         </v-toolbar-items>
@@ -95,7 +89,7 @@ export default {
     },
     computed: {
         isSignined: function () {
-            return this.$store.getters.getuser=="" ? false : true;
+            return this.$store.getters.getUser=="" ? false : true;
         }
     }
 

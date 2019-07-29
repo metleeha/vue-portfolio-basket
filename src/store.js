@@ -28,16 +28,14 @@ export default new Vuex.Store({
     getRepository: state => {
       return state.repository
     },
-<<<<<<< HEAD
     getPortfolioDetail: state => {
       return state.portfolioDetail
     },
     getUpdatePortfolioDone: state => {
       return state.updatePortfolioDone
-=======
-    getuser: state => {
+    },
+    getUser: state => {
       return state.user
->>>>>>> d218576... Add: divide signin button/userInfo
     }
   }
 })

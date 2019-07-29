@@ -1,8 +1,9 @@
 <template>
-<v-menu transition="slide-y-transition" bottom>
+<v-menu transition="slide-y-transition" bottom offset-y>
     <template v-slot:activator="{ on }">
         <v-btn flat dark v-on="on">
             <v-icon left>account_circle</v-icon>
+        {{ userName }}
         </v-btn>
     </template>
     <v-list>
@@ -34,15 +35,6 @@ export default {
         }
     },
     methods: {
-        async signOut() {
-            const result = await FirebaseService.signOut();
-            if (result) {
-                this.$store.state.accessToken = '';
-                this.$store.state.user = '';
-                alert("Sign out completed!");
-
-            }
-        },
         userMenu(menu) {
             switch (menu) {
                 case 'myInfo':
@@ -51,13 +43,23 @@ export default {
                     this.signOut();
                     break;
             }
+        },
+        async signOut() {
+            const result = await FirebaseService.signOut();
+            if (result) {
+                this.$store.commit("setUser", '');
+                alert("Sign out completed!");
+
+            }
         }
     },
     computed: {
         userName: function () {
-            let user = this.$store.getters.getuser;
+            let user = this.$store.getters.getUser;
+            console.log("================================");
             console.log(user);
-            return user.displayName;
+            console.log("================================");
+            return user.name;
         }
     }
 }
