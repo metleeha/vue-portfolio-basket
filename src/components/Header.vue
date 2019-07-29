@@ -7,8 +7,12 @@
                 <v-btn flat to="/" style="cursor: pointer">
                 <v-icon class="mr-1">free_breakfast</v-icon>TEN</v-btn>
                 <v-flex>
-                <v-btn flat to="portfolio" style="cursor: pointer">
-                    <v-icon left>assessment</v-icon>Portfolio</v-btn>
+                    <v-btn flat to="portfolio" style="cursor: pointer">
+                        <v-icon left>assessment</v-icon>Portfolio</v-btn>
+                </v-flex>
+                <v-flex>
+                    <v-btn flat to="post" style="cursor: pointer">
+                        <v-icon left>assessment</v-icon>Post</v-btn>
                 </v-flex>
                 <v-flex>
                     <LoginDialog></LoginDialog>
@@ -32,6 +36,8 @@
         <v-toolbar-items class="hidden-xs-only">
             <v-btn flat to="/portfolio">
                 <v-icon left>assessment</v-icon>Portfolio</v-btn>
+            <v-btn flat to="/post">
+                <v-icon left>assessment</v-icon>Post</v-btn>
             <LoginDialog></LoginDialog>
             
         </v-toolbar-items>

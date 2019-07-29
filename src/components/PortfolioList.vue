@@ -66,7 +66,6 @@ export default {
       this.showPortfoliosLimits+=4;
     },
     updatePortfolio(state){
-      console.log(state)
       if(state){
         this.$store.state.updatePortfolioDone = false
         this.$store.state.newTogglePortfolio = true

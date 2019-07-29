@@ -14,6 +14,7 @@ export default new Vuex.Store({
     updatePortfolioDone: false,
     postPortfolioDone: false,
     newTogglePortfolio: false,
+    postDetail: {},
     updatePostDone: false,
     postPostDone: false,
     newTogglePost: false,
@@ -39,6 +40,9 @@ export default new Vuex.Store({
     },
     getNewTogglePortfolio: state => {
       return state.newTogglePortfolio
+    },
+    getPostDetail: state => {
+      return state.postDetail
     },
     getUpdatePostDone: state => {
       return state.updatePostDone

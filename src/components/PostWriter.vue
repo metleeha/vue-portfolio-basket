@@ -39,7 +39,7 @@ export default {
   methods:{
     posting(event){
       if(this.update){
-        FirebaseService.updatPost(this.id, this.title, this.contents)
+        FirebaseService.updatePost(this.id, this.title, this.contents)
         // 페이지 리로딩
         this.$store.state.updatePostDone = true
       }else{

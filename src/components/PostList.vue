@@ -64,7 +64,6 @@ export default {
 			this.showPostLimits+=4;
     	},
 		updatePost(state){
-			console.log(state)
 			if(state){
 				this.$store.state.postPostDone = false
 				this.$store.state.newTogglePost = true

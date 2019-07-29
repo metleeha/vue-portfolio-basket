@@ -47,7 +47,6 @@ export default {
   },
   methods:{
     updatePortfolio(state){
-      console.log("page "+state)
       if(state){
         this.$store.state.newTogglePortfolio = false
         this.newToggle = false

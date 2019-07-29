@@ -1,6 +1,6 @@
 <template>
   <v-layout py-4 h-100>
-    <v-flex row>
+    <v-flex row @click="gotoPortfolio()">
       <div class="caption">{{formatedDate}}</div>
       <h2 class="color-333 headline font-weight-light">{{title}}</h2>
       <p class="mb-1 color-666 font-weight-light subheading">{{body}}</p>
@@ -25,7 +25,7 @@ export default {
   },
   methods:{
     async gotoPortfolio(){
-      this.$router.push({name: 'portfolioview', params: { id: this.id }})
+      this.$router.push({name: 'postview', params: { id: this.id }})
       // this.$router.push({name: 'portfolioview'});
       // eventBus.$emit('senddata',this.title, this.body, this.date, this.imgSrc);
       window.scrollTo({

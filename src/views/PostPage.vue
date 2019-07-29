@@ -46,7 +46,6 @@ export default {
   },
   methods:{
     updatePost(state){
-      console.log("page "+state)
       if(state){
         this.$store.state.newTogglePost = false
         this.newToggle = false
