@@ -109,19 +109,30 @@ export default {
     deletePortfolio(){
       FirebaseService.deletePortfolio(this.id)
       this.$router.push({name: 'portfolio'})
+    },
+    updatePortfolio(state){
+      if(state){
+        this.$store.state.updatePortfolioDone = false
+        this.newToggle = false
+        this.getPortfolioData()
+      }
     }
   },
   computed: {
     getPortfolioDetail(){
 			return this.$store.getters.getPortfolioDetail
+		},
+    getUpdatePortfolioDone(){
+			return this.$store.getters.getUpdatePortfolioDone
 		}
   },
   watch: {
     getPortfolioDetail(val, oldVal){
-      console.log('change!!')
-      console.log(val)
 			this.setPortfolioData(val)
-		}
+    },
+    getUpdatePortfolioDone(val, oldVal){
+      this.updatePortfolio(val)
+    }
   }
   
 }

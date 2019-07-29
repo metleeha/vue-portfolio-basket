@@ -11,6 +11,7 @@ export default new Vuex.Store({
     members: {},
     repository: {},
     portfolioDetail: {},
+    updatePortfolioDone: false,
   },
   getters:{
     getMembers: state => {
@@ -24,6 +25,9 @@ export default new Vuex.Store({
     },
     getPortfolioDetail: state => {
       return state.portfolioDetail
+    },
+    getUpdatePortfolioDone: state => {
+      return state.updatePortfolioDone
     }
   }
 })

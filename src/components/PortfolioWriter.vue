@@ -48,9 +48,11 @@ export default {
   methods:{
     posting(event){
       // component에서 이미지 불러오기
-      this.img = document.getElementById('image').src;
+      this.img = document.getElementById('image').src
       if(this.update){
         FirebaseService.updatePortfolio(this.id, this.title, this.contents, this.img)
+        // 페이지 리로딩
+        this.$store.state.updatePortfolioDone = true
       }else{
         //파이어베이스 디비에 넣는 작업
         FirebaseService.postPortfolio(this.title,this.contents,this.img)
