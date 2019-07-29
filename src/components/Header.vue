@@ -40,7 +40,7 @@
 
     <!-- backTotop button -->
     <v-fab-transition>
-        <v-btn v-show="fab" v-scroll="onScroll" class="md-5 mr-3 elevation-21" fab fixed bottom right color="#aee7e8" @click="toTop">
+        <v-btn id="totop-button" v-show="fab" v-scroll="onScroll" class="md-5 mr-3 elevation-21" fab fixed bottom right color="#aee7e8" @click="toTop">
             <v-icon color="#248ea9">keyboard_arrow_up</v-icon>
         </v-btn>
     </v-fab-transition>
@@ -85,5 +85,9 @@ export default {
 </script>
 
 <style scoped>
-
+#totop-button{
+    position: fixed;
+    right: 5px; 
+    bottom: 100px;
+}
 </style>

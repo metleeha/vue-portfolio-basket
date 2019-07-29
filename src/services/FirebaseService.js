@@ -7,7 +7,7 @@ const PORTFOLIOS = 'portfolios'
 const BANNERIMAGE = 'bannerimage'
 
 // Setup Firebase
-const config = require("../../ignore/firebaseAPI.json");
+var config = require("../../ignore/firebaseAPI.json");
 
 firebase.initializeApp(config)
 

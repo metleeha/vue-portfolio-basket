@@ -8,6 +8,8 @@
       </v-content>
       <!-- footer -->
       <Footer />
+      <!-- Chatbot -->
+      <Chatbot />
     </v-app>
 </template>
 
@@ -15,13 +17,15 @@
 import store from './store'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
+import Chatbot from '@/components/Chatbot'
 
 export default {
 	name: 'App',
   store,
   components: {
     Header,
-    Footer
+    Footer,
+    Chatbot
 	},
   data() {
     return {
@@ -67,12 +71,7 @@ export default {
 </script>
 <style scoped>
   #back {
-    /* background-color: #e8e8e8; */
     background-color: #f4f6f6;
   }
-  /* background-image: url('https://gitlab.com/hadongme/portfolio-vue-app/raw/master/cover.jpg');
-  background-size: cover;
-  background-repeat: repeat-y; */
-  /* height: 100vh; */
 
 </style>
