@@ -11,9 +11,15 @@
       <!-- Portfolio Writer --->
       <transition name="fade">
         <v-layout v-if="newToggle" xs12 justify-center>
-          <PortfolioWriter  />
+          <PortfolioWriter 
+            :id="id"
+            :ti="title"
+            :body="body"
+            :imgSrc="imgSrc"
+            :update=true />
         </v-layout>
       </transition>
+      <!-- Portfolio contents -->
       <!-- title -->
       <v-layout class="page-header" row>
         <v-flex xs8>
@@ -32,7 +38,6 @@
         <v-flex xs8>
           <v-img 
             :src='this.imgSrc'
-            max-height="300"
             cover
           ></v-img>
         </v-flex>
@@ -78,7 +83,7 @@ export default {
 		  date: '언제더라...',
 		  title: '로딩중...',
 		  body: '뭐더라...',
-		  imgSrc: '어디더라...',
+		  imgSrc: '../assets/noimg.jpg',
     }
   },
 	components: {
@@ -97,10 +102,9 @@ export default {
       this.title = portfolio.title
       this.body = portfolio.body
       this.imgSrc = portfolio.img
-      this.date = new Date(portfolio.created_at.seconds*1000)
+      var fulldate = new Date(portfolio.created_at.seconds*1000)
       
-      // this.stringDate = this.date.substring(0, 16)
-      console.log(this.date)
+      this.date = fulldate.toString().substring(0, 25)
     },
     deletePortfolio(){
       FirebaseService.deletePortfolio(this.id)

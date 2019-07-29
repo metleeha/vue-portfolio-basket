@@ -75,6 +75,13 @@ export default {
 			deleted: false
 		})
 	},
+	updatePortfolio(id, title, body, img) {
+		return firestore.collection(PORTFOLIOS).doc(id).update({
+			"title": title,
+			"body": body,
+			"img": img,
+		})
+	},
 	deletePortfolio(id){
 		return firestore.collection(PORTFOLIOS).doc(id).update({
 			"deleted": true,
