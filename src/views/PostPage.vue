@@ -43,6 +43,25 @@ export default {
     return {
       newToggle: false,
     }
+  },
+  methods:{
+    updatePost(state){
+      console.log("page "+state)
+      if(state){
+        this.$store.state.newTogglePost = false
+        this.newToggle = false
+      }
+    }
+  },
+  computed: {
+    getNewTogglePost(){
+			return this.$store.getters.getNewTogglePost
+		}
+  },
+  watch: {
+    getNewTogglePost(val, oldVal){
+      this.updatePost(val)
+    }
   }
 }
 </script>

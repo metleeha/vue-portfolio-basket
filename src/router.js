@@ -28,11 +28,11 @@ const router = new Router({
 			name: 'home',
 			component: HomePage
 		},
-		// {
-		// 	path: '/post',
-		// 	name: 'post',
-		// 	component: PostPage
-		// },
+		{
+			path: '/post',
+			name: 'post',
+			component: PostPage
+		},
 		{
 			path: '/portfolio',
 			name: 'portfolio',

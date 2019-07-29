@@ -12,10 +12,29 @@
 export default {
 	name: 'Post',
 	props: {
+    id: {type:String},
 		date: {type: Date},
 		title: {type: String},
 		body: {type: String}
-	},
+  },
+  data() {
+		return {
+      dialog_portfolio: false, 
+      stringDate: ''
+		}
+  },
+  methods:{
+    async gotoPortfolio(){
+      this.$router.push({name: 'portfolioview', params: { id: this.id }})
+      // this.$router.push({name: 'portfolioview'});
+      // eventBus.$emit('senddata',this.title, this.body, this.date, this.imgSrc);
+      window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: 'smooth'
+      });
+    },
+  },
   computed: {
 		formatedDate() {
 			return `${this.date.getFullYear()}년 ${this.date.getMonth()}월 ${this.date.getDate()}일`

@@ -5,8 +5,6 @@
           <v-flex xs9>
             <v-text-field label="title" v-model="title"></v-text-field>
             <v-btn icon @click="posting"><v-icon>send</v-icon></v-btn>
-            <UploadImg 
-              :imgSrc="img"/>
           </v-flex>
           <v-flex xs10>
             <markdown-editor v-model="contents"></markdown-editor>
@@ -18,46 +16,37 @@
 
 
 <script>
-import UploadImg from '../components/UploadImg'
 import FirebaseService from '@/services/FirebaseService'
 
 export default {
-  name: 'PortfolioWriterPage',
+  name: 'PostWriterPage',
   props:{
     id: {type:String, default: ''},
     ti: {type:String, default: ''},
     body: {type:String, default: ''},
-    imgSrc: {type:String, default: ''},
     update: {type:Boolean, default: false}
   },
   data(){
     return {
         title : '',
-        img : '',
         contents : '',
       }
   },
   created(){
     this.title = this.ti
-    this.img = this.imgSrc
     this.contents = this.body
   },
-	components: {
-        UploadImg
-	},
   methods:{
     posting(event){
-      // component에서 이미지 불러오기
-      this.img = document.getElementById('image').src
       if(this.update){
-        FirebaseService.updatePortfolio(this.id, this.title, this.contents, this.img)
+        FirebaseService.updatPost(this.id, this.title, this.contents)
         // 페이지 리로딩
-        this.$store.state.updatePortfolioDone = true
+        this.$store.state.updatePostDone = true
       }else{
         //파이어베이스 디비에 넣는 작업
-        FirebaseService.postPortfolio(this.title,this.contents,this.img)
+        FirebaseService.postPost(this.title,this.contents)
         // 페이지 리로딩
-        this.$store.state.postPortfolioDone = true
+        this.$store.state.postPostDone = true
       }
     },
 

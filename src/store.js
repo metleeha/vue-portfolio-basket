@@ -12,6 +12,11 @@ export default new Vuex.Store({
     repository: {},
     portfolioDetail: {},
     updatePortfolioDone: false,
+    postPortfolioDone: false,
+    newTogglePortfolio: false,
+    updatePostDone: false,
+    postPostDone: false,
+    newTogglePost: false,
   },
   getters:{
     getMembers: state => {
@@ -28,6 +33,21 @@ export default new Vuex.Store({
     },
     getUpdatePortfolioDone: state => {
       return state.updatePortfolioDone
-    }
+    },
+    getPostPortfolioDone: state => {
+      return state.postPortfolioDone
+    },
+    getNewTogglePortfolio: state => {
+      return state.newTogglePortfolio
+    },
+    getUpdatePostDone: state => {
+      return state.updatePostDone
+    },
+    getPostPostDone: state => {
+      return state.postPostDone
+    },
+    getNewTogglePost: state => {
+      return state.newTogglePost
+    },
   }
 })
