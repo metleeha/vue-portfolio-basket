@@ -3,7 +3,8 @@
 </template>
 
 <script>
-var config = require("../../ignore/firebaseAPI.json");
+
+import config from "../../ignore/firebaseAPI.json"
 
 export default {
     methods: {
