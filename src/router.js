@@ -38,11 +38,12 @@ const router = new Router({
 			name: 'portfolio',
 			component: PortfolioPage
 		},
-		// {
-		// 	path: '/portfolioview/:title/:body/:date/:imgSrc',
-		// 	name: 'portfolioview',
-		// 	component: PortfolioViewPage
-		// },
+		{
+			path: '/portfolioview/:id?/',
+			name: 'portfolioview',
+			component: PortfolioViewPage,
+			props: true,
+		},
 		// {
 		// 	path: '/portfoliowriter',
 		// 	name: 'portfoliowriter',

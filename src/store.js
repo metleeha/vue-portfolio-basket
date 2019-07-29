@@ -10,6 +10,7 @@ export default new Vuex.Store({
     commits: [],
     members: {},
     repository: {},
+    portfolioDetail: {},
   },
   getters:{
     getMembers: state => {
@@ -20,6 +21,9 @@ export default new Vuex.Store({
     },
     getRepository: state => {
       return state.repository
+    },
+    getPortfolioDetail: state => {
+      return state.portfolioDetail
     }
   }
 })

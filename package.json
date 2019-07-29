@@ -9,6 +9,7 @@
   "dependencies": {
     "@google-cloud/translate": "^4.1.1",
     "axios": "^0.18.0",
+    "cache-polyfill": "^1.0.1",
     "chart.js": "^2.8.0",
     "core-js": "^2.6.5",
     "date-and-time": "^0.8.1",
@@ -22,6 +23,7 @@
     "vue": "^2.6.10",
     "vue-chartjs": "^3.4.2",
     "vue-chartkick": "^0.5.1",
+    "vue-disqus": "^3.0.5",
     "vue-router": "^3.0.1",
     "vue-simplemde": "^0.5.2",
     "vuetify": "^1.5.5",

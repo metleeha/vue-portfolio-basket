@@ -16,6 +16,7 @@
     <v-layout mt-5 wrap id="pfPan">
         <v-flex v-for="i in filteredPortfolios.length > showPortfoliosLimits ? showPortfoliosLimits : filteredPortfolios.length" class="pflist" :key="i">
           <Portfolio class="ma-3"
+                :id="filteredPortfolios[i - 1].id"
                 :date="filteredPortfolios[i - 1].created_at.toString()"
                 :title="filteredPortfolios[i - 1].title"
                 :body="filteredPortfolios[i - 1].body"
@@ -57,7 +58,8 @@ export default {
 	},
 	methods: {
 		async getPortfolios() {
-			this.portfolios = await FirebaseService.getPortfolios()
+      this.portfolios = await FirebaseService.getPortfolios()
+      console.log(this.portfolios)
       // if(this.portfolios.size >= this.limits)
       //   loadMore = true
 		},

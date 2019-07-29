@@ -10,6 +10,21 @@ const BANNERIMAGE = 'bannerimage'
 const config = require("../../ignore/firebaseAPI.json");
 
 firebase.initializeApp(config)
+
+/* Firebase PWA enable */
+firebase.firestore().enablePersistence()
+  .catch(function(err) {
+      if (err.code == 'failed-precondition') {
+          // Multiple tabs open, persistence can only be enabled
+          // in one tab at a a time.
+          // ...
+      } else if (err.code == 'unimplemented') {
+          // The current browser does not support all of the
+          // features required to enable persistence
+          // ...
+      }
+  });
+
 const firestore = firebase.firestore()
 
 export default {
@@ -42,10 +57,28 @@ export default {
 			.then((docSnapshots) => {
 				return docSnapshots.docs.map((doc) => {
 					let data = doc.data()
+					data.id = doc.id			// 각 데이터 키값
 					data.created_at = new Date(data.created_at.toDate())
 					return data
 				})
 			})
+	},
+	getPortfolio(id) {
+		var cityRef = firestore.collection(PORTFOLIOS).doc(id);
+		var getDoc = cityRef.get()
+		.then(doc => {
+			if (!doc.exists) {
+				console.log('No such document!')
+			} else {
+				console.log(doc.data())
+				return doc.data()
+			}
+		})
+		.catch(err => {
+			console.log('Error getting document', err)
+		})
+
+		return getDoc
 	},
 	postPortfolio(title, body, img) {
 		return firestore.collection(PORTFOLIOS).add({
@@ -146,14 +179,18 @@ export default {
 			alert('Please enter name');
 			return;
 		}
+
 		// Sign in with email and pass.
 		// [START createwithemail]
 		return firebase.auth().createUserWithEmailAndPassword(email, password).then(function (user) {
 			user.user.updateProfile({
 				displayName: name,
 			});
-			firebase.database().ref('users/'+user.user.uid).set({
-				authority: 'visitor'
+			firebase.database().ref('/users/').push({
+				name: name,
+				email: email,
+				authority: 'visitor',
+				uid: user.user.uid
 			});
 			return user.user;
 		}).catch(function (error) {
@@ -183,7 +220,6 @@ export default {
 			} else {
 				alert(errorMessage);
 			}
-			document.getElementById('quickstart-sign-in').disabled = false;
 			// [END_EXCLUDE]
 		});
 	},
@@ -204,12 +240,6 @@ export default {
 			console.log("[Password reset error]: " + error);
 		});
 	},
-	currentUser() {
-		return firebase.auth().currentUser;
-	},
-	onAuthStateChanged() {
-		return firebase.auth().onAuthStateChanged();
-	},
 	getTodayView() {
 		let today = new Date()
 		let formattedToday = (today.getMonth() + 1) + '월 ' + today.getDate() + '일'
@@ -229,9 +259,84 @@ export default {
 			return TotalView
 		})
 	},
-	async signInCheck() {
-		return firebase.auth().onAuthStateChanged();
-		return user;
+	async checkAuthMaster(){
+		let user = firebase.auth().currentUser;
+		return firebase.database().ref('/users/')
+			.orderByChild('uid')
+			.equalTo(user.uid)
+			.once('value')
+			.then(function(snapshot){
+				if(snapshot.val().authority == 'master'){
+					return true;
+				} else{
+					return false;
+				}
+		})
 	},
-
+	async checkAuthMember(){
+		let user = firebase.auth().currentUser;
+		return firebase.database().ref('/users/')
+			.orderByChild('uid')
+			.equalTo(user.uid)
+			.once('value')
+			.then(function(snapshot){
+				if(snapshot.val().authority == 'member'){
+					return true;
+				} else{
+					return false;
+				}
+		})
+	},
+	async changeAuthMember(uid){
+		if(this.checkAuthMaster){
+			let key =  firebase.database().ref('/users/').orderByChild('uid').equalTo(uid).once('value').then(function(snapshot){
+				snapshot.forEach(function(childSnapshot){
+					firebase.database().ref('/users/'+childSnapshot.key).update({authority: "member"});
+				});
+				
+			})
+		}else{
+			alert("권한 관리는 관리자 계정만 가능합니다.");
+			return;
+		}
+	},
+	async changeAuthMaster(uid){
+		if(this.checkAuthMaster){
+			let key =  firebase.database().ref('/users/').orderByChild('uid').equalTo(uid).once('value').then(function(snapshot){
+				snapshot.forEach(function(childSnapshot){
+					firebase.database().ref('/users/'+childSnapshot.key).update({authority: "master"});
+				});
+				
+			})
+		}else{
+			alert("권한 관리는 관리자 계정만 가능합니다.");
+			return;
+		}
+	},
+	async changeAuthMember(uid){
+		if(this.checkAuthMaster){
+			let key =  firebase.database().ref('/users/').orderByChild('uid').equalTo(uid).once('value').then(function(snapshot){
+				snapshot.forEach(function(childSnapshot){
+					firebase.database().ref('/users/'+childSnapshot.key).update({authority: "member"});
+				});
+				
+			})
+		}else{
+			alert("권한 관리는 관리자 계정만 가능합니다.");
+			return;
+		}
+	},
+	async changeAuthVisitor(uid){
+		if(this.checkAuthMaster){
+			let key =  firebase.database().ref('/users/').orderByChild('uid').equalTo(uid).once('value').then(function(snapshot){
+				snapshot.forEach(function(childSnapshot){
+					firebase.database().ref('/users/'+childSnapshot.key).update({authority: "visitor"});
+				});
+				
+			})
+		}else{
+			alert("권한 관리는 관리자 계정만 가능합니다.");
+			return;
+		}
+	}
 }
