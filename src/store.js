@@ -13,6 +13,11 @@ export default new Vuex.Store({
     portfolioDetail: {},
     updatePortfolioDone: false,
   },
+  mutations: {
+    setUser: function(state, user){
+      state.user = user
+    }
+  },
   getters:{
     getMembers: state => {
       return state.members
@@ -23,11 +28,16 @@ export default new Vuex.Store({
     getRepository: state => {
       return state.repository
     },
+<<<<<<< HEAD
     getPortfolioDetail: state => {
       return state.portfolioDetail
     },
     getUpdatePortfolioDone: state => {
       return state.updatePortfolioDone
+=======
+    getuser: state => {
+      return state.user
+>>>>>>> d218576... Add: divide signin button/userInfo
     }
   }
 })
