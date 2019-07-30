@@ -1,6 +1,6 @@
 <template>
   <v-layout py-4 h-100>
-    <v-flex row>
+    <v-flex row @click="gotoPortfolio()">
       <div class="caption">{{formatedDate}}</div>
       <h2 class="color-333 headline font-weight-light">{{title}}</h2>
       <p class="mb-1 color-666 font-weight-light subheading">{{body}}</p>
@@ -12,10 +12,29 @@
 export default {
 	name: 'Post',
 	props: {
+    id: {type:String},
 		date: {type: Date},
 		title: {type: String},
 		body: {type: String}
-	},
+  },
+  data() {
+		return {
+      dialog_portfolio: false, 
+      stringDate: ''
+		}
+  },
+  methods:{
+    async gotoPortfolio(){
+      this.$router.push({name: 'postview', params: { id: this.id }})
+      // this.$router.push({name: 'portfolioview'});
+      // eventBus.$emit('senddata',this.title, this.body, this.date, this.imgSrc);
+      window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: 'smooth'
+      });
+    },
+  },
   computed: {
 		formatedDate() {
 			return `${this.date.getFullYear()}년 ${this.date.getMonth()}월 ${this.date.getDate()}일`
