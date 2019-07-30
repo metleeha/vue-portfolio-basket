@@ -1,7 +1,16 @@
 <template>
   <div>
-
-    <v-container>
+    <v-container v-if="!loading">
+      <v-layout xs12 justify-center align-content-center>
+        <flower-spinner 
+          :animation-duration="2500"
+          :size="70"
+          color="#555A9C"
+          class="load-spinner"
+        />
+      </v-layout>
+    </v-container>
+    <v-container v-if="loading">
       <!-- edit btn -->
       <v-layout xs12 justify-center class="page-edit">
         <v-flex xs12 text-xs-center my-5>
@@ -69,6 +78,7 @@ import FirebaseService from '../services/FirebaseService'
 import Datetime from 'date-and-time'
 import Disqus from '../components/Disqus'
 import PortfolioWriter from '../components/PortfolioWriter'
+import { FlowerSpinner } from 'epic-spinners'
 
 export default {
   name: 'PortfolioViewPage',
@@ -81,16 +91,24 @@ export default {
 		  date: '언제더라...',
 		  title: '로딩중...',
 		  body: '뭐더라...',
-		  imgSrc: '',
+      imgSrc: '',
+      loading: false,
     }
   },
 	components: {
     Disqus,
-    PortfolioWriter
+    PortfolioWriter,
+    FlowerSpinner,
   },
   mounted(){
       this.getPortfolioData()
-    },
+  },
+  beforeCreate(){
+    this.FlowerSpinner.show();
+    setTimeout(function(){
+      this.FlowerSpinner.hide();
+    }.bind(this), 5000);
+  },
   methods: {
     async getPortfolioData(){
       const pf = await FirebaseService.getPortfolio(this.id)
@@ -103,6 +121,7 @@ export default {
       var fulldate = new Date(portfolio.created_at.seconds*1000)
       
       this.date = fulldate.toString().substring(4, 15)
+      this.loading = true
     },
     deletePortfolio(){
       FirebaseService.deletePortfolio(this.id)
@@ -138,6 +157,10 @@ export default {
 </script>
 
 <style scoped>
+.load-spinner{
+  position: absolute;
+  top: 30vh;
+}
 .page-header{
   height: 15vh;
   border-bottom-style: solid;

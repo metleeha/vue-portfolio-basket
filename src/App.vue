@@ -10,7 +10,6 @@
       <Footer />
       <!-- Chatbot -->
       <!-- <Chatbot /> -->
-
     </v-app>
 </template>
 
@@ -29,7 +28,6 @@ export default {
 	},
   data() {
     return {
-
     }
   },
   created: function(){
