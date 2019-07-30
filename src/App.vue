@@ -9,7 +9,7 @@
       <!-- footer -->
       <Footer />
       <!-- Chatbot -->
-      <Chatbot />
+      <!-- <Chatbot /> -->
     </v-app>
 </template>
 
@@ -17,7 +17,7 @@
 import store from './store'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
-import Chatbot from '@/components/Chatbot'
+
 
 export default {
 	name: 'App',
@@ -25,11 +25,9 @@ export default {
   components: {
     Header,
     Footer,
-    Chatbot
 	},
   data() {
     return {
-
     }
   },
   created: function(){
@@ -63,9 +61,7 @@ export default {
     // Opera Mini      : Opera/9.80 (J2ME/MIDP; Opera Mini/5.0.18302/1114; U; en) Presto/2.4.15
 
   },
-  methods:{
-    
-  }
+
 }
 
 </script>
