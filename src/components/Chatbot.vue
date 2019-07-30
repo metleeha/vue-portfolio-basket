@@ -14,9 +14,9 @@ export default {
             js.src = "https://danbee.ai/js/plugins/frogue-embed/frogue-embed.min.js";
             fjs.parentNode.insertBefore(js, fjs);
             getChatbot(document, 'script', 'frogue-embed');
-        },
-        
+        }
     },
+    
     mounted(){
         this.setChatbot()
     }
