@@ -57,8 +57,9 @@
           <p>{{ body }}</p>
         </v-flex>
         <!-- btns -->
-        <v-flex xs12 class="page-btn">
+        <v-flex xs12 row class="page-btn">
           <v-btn large outline color="red" @click="deletePortfolio()">DELETE</v-btn>
+          <v-btn large outline color="green" @click="goToPortfolio()">Back</v-btn>
         </v-flex>
       </v-layout>
       <!-- disqus -->
@@ -134,6 +135,9 @@ export default {
         this.newToggle = false
         this.getPortfolioData()
       }
+    },
+    goToPortfolio(){
+      this.$router.push({name: 'portfolio'})
     }
   },
   computed: {
@@ -200,6 +204,7 @@ export default {
   font-size: 1vw;
   padding-left: 0.5em;
   margin-bottom: 2em;
+  text-decoration: none;
 
 }
 .fade-enter-active, .fade-leave-active {
