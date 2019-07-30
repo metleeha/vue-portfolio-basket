@@ -302,7 +302,8 @@ export default {
 			.equalTo(user.uid)
 			.once('value')
 			.then(function(snapshot){
-				if(snapshot.val().authority == 'member'){
+				const auth = snapshot.val().authority;
+				if(auth == 'member' || auth == 'master'){
 					return true;
 				} else{
 					return false;
