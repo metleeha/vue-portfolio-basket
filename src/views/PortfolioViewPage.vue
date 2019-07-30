@@ -104,12 +104,6 @@ export default {
   mounted(){
       this.getPortfolioData()
   },
-  beforeCreate(){
-    this.FlowerSpinner.show();
-    setTimeout(function(){
-      this.FlowerSpinner.hide();
-    }.bind(this), 5000);
-  },
   methods: {
     async getPortfolioData(){
       const pf = await FirebaseService.getPortfolio(this.id)
