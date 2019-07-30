@@ -4,7 +4,7 @@
     <v-container>
       <!-- edit btn -->
       <v-layout xs12 justify-center class="page-edit">
-        <v-flex xs12 text-xs-center mt-5>
+        <v-flex xs12 text-xs-center my-5>
           <v-btn @click="newToggle = !newToggle" block flat large :color="newToggle? '#f0bebe':'#3a718c'"><v-icon left>fa-chevron-down</v-icon>Edit Portfolio</v-btn>
         </v-flex>
       </v-layout>
@@ -19,23 +19,23 @@
             :update=true />
         </v-layout>
       </transition>
-      <!-- Portfolio contents -->
-      <!-- title -->
-      <v-layout class="page-header" row>
-        <v-flex xs8>
-          <h1 class="page-title">{{ title }}</h1>
+
+      <!-- Portfolio detail view -->
+      <!-- title --> 
+      <v-layout xs12 justify-center class="page-header">
+        <v-flex xs12>
+          <span class="page-title">{{ title }} </span>
         </v-flex>
       </v-layout>
-      <!-- author -->
+      <!-- Created: Date, Author -->
       <v-layout row class="page-author">
-        <v-flex xs8 justify-content-center>
-          <span><v-icon class="mr-1">fa-paperclip</v-icon>{{ date }}</span>
-          <span><v-icon class="mr-1">fa-user</v-icon>by admin</span>
+        <v-flex xs12 justify-center>
+          <p>by admin, {{ date }}</p>
         </v-flex>
       </v-layout>
-      <!-- img -->
+      <!-- Img -->
       <v-layout class="page-img" v-if="this.imgSrc != ''">
-        <v-flex xs8>
+        <v-flex xs12 justify-center>
           <v-img 
             :src="this.imgSrc"
             cover
@@ -43,20 +43,18 @@
         </v-flex>
       </v-layout>
       <!-- body -->
-      <v-layout>
-        <v-flex xs8 class="page-body">
-          <h4>{{ body }}</h4>
+      <v-layout wrap>
+        <v-flex xs12 class="page-body">
+          <p>{{ body }}</p>
         </v-flex>
-      </v-layout>
-      <!-- btns -->
-      <v-layout>
-        <v-flex xs8 class="page-btns">
-          <v-btn @click="deletePortfolio()">삭제</v-btn>
+        <!-- btns -->
+        <v-flex xs12 class="page-btn">
+          <v-btn large outline color="red" @click="deletePortfolio()">DELETE</v-btn>
         </v-flex>
       </v-layout>
       <!-- disqus -->
       <v-layout>
-        <v-flex xs8 class="page-disqus">
+        <v-flex xs12 class="page-disqus mt-3">
           <Disqus/>
         </v-flex>
       </v-layout>
@@ -104,7 +102,7 @@ export default {
       this.imgSrc = portfolio.img
       var fulldate = new Date(portfolio.created_at.seconds*1000)
       
-      this.date = fulldate.toString().substring(0, 25)
+      this.date = fulldate.toString().substring(4, 15)
     },
     deletePortfolio(){
       FirebaseService.deletePortfolio(this.id)
@@ -139,30 +137,47 @@ export default {
 }
 </script>
 
-
 <style scoped>
-@media screen and (max-width:960px) {
-
-}
-@media screen and (max-width:600px) {
-
-}
 .page-header{
-  height: 20vh;
+  height: 15vh;
   border-bottom-style: solid;
   border-bottom-width: 1px;
   border-bottom-color: black;
+  text-align: center;
+  vertical-align: middle;
 }
 .page-title{
-  margin: 0 0 5px;
-  padding-top: 10vh;
-  font-family: Roboto;
-  font-size: 50px;
-  text-align: center;
-  line-height: 40px;
+  font-family: 'Literata', 'Noto Serif KR', serif;
+  font-weight: 700;
+  font-style: italic;
+  font-size: 5vw;
 }
-.page-content{
-  padding-top: 2vh;
+.page-author{
+  text-align: left;
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+.page-author p {
+  font-family: 'Literata', 'Noto Serif KR', serif;
+  font-size: 2vw;
+  margin-bottom: 2em;
+}
+.page-img{
+  margin-bottom: 2em;
+}
+.page-body p{
+  font-family: 'Literata', 'Noto Serif KR', serif;
+  font-size: 1.5em;
+  word-break: normal;
+  padding: 0.5em 0.5em;
+  margin-bottom: 1em;
+}
+.page-btn{
+  text-align: left;
+  font-size: 1vw;
+  padding-left: 0.5em;
+  margin-bottom: 2em;
+
 }
 .fade-enter-active, .fade-leave-active {
   transition: opacity .5s;
