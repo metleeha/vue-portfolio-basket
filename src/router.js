@@ -61,9 +61,6 @@ const router = new Router({
 			name: 'admin',
 			component: AdminPage,
 			beforeEnter: async (to, from, next)=>{
-				console.log("========================================");
-				console.log("admin 이동합니당")
-				console.log("========================================");
 				const check = await FirebaseService.checkAuthMaster();
 				if(check){
 					next();
