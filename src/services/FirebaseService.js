@@ -39,7 +39,7 @@ export default {
 				return docSnapshots.docs.map((doc) => {
 					let data = doc.data()
 					data.id = doc.id			// 각 데이터 키값
-					data.created_at = new Date(data.created_at)
+					data.created_at = new Date(data.created_at.seconds*1000)
 					return data
 				})
 			})
@@ -90,7 +90,7 @@ export default {
 				return docSnapshots.docs.map((doc) => {
 					let data = doc.data()
 					data.id = doc.id			// 각 데이터 키값
-					data.created_at = new Date(data.created_at)
+					data.created_at = new Date(data.created_at.seconds*1000).toString()
 					return data
 				})
 			})

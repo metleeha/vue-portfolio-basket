@@ -17,7 +17,7 @@
       <v-flex v-for="i in filteredPortfolios.length > showPortfoliosLimits ? showPortfoliosLimits : filteredPortfolios.length" class="pflist" :key="i">
         <Portfolio class="ma-3"
               :id="filteredPortfolios[i - 1].id"
-              :date="filteredPortfolios[i - 1].created_at.toString()"
+              :date="filteredPortfolios[i - 1].created_at"
               :title="filteredPortfolios[i - 1].title"
               :body="filteredPortfolios[i - 1].body"
               :imgSrc="filteredPortfolios[i - 1].img"
@@ -58,6 +58,7 @@ export default {
 	methods: {
 		async getPortfolios() {
       this.portfolios = await FirebaseService.getPortfolios()
+      console.log(this.portfolios)
 		},
     loadWriter(){
       this.$emit('portfolioWriterOn');
