@@ -57,11 +57,20 @@ firebase.auth().onAuthStateChanged(function (user) {
 	}
 });
 
+if(!app){
+	app = new Vue({
+		router,
+		store,
+		render: h => h(App) 
+	}).$mount('#app')
+};
 
 router.beforeEach(function(to, from, next) {
 	IncrementCnt.Increment(to.name)
 	next()
 })
+
+
 
 const applicationServerPublicKey = 'BC1hwgbyv5m4x6yWj8I0V5hqir__Pa7Wu4FOwNJkc_jn31CcfpSFrJc7Mk55mTT-r-3bExBZJ0kWsZqGKnfXD70';
 

@@ -278,12 +278,16 @@ export default {
 		})
 	},
 	async checkAuthMaster(){
-		let user = firebase.auth().currentUser;
-		return firebase.database().ref('/users/')
+		const user = await firebase.auth().currentUser;
+		if(!user){
+			return false;
+		}
+		return await firebase.database().ref('/users/')
 			.orderByChild('uid')
 			.equalTo(user.uid)
 			.once('value')
 			.then(function(snapshot){
+				console.log(snapshot.val());
 				if(snapshot.val().authority == 'master'){
 					return true;
 				} else{
