@@ -46,6 +46,22 @@ export default {
     }
   },
   methods:{
+    updatePortfolio(state){
+      if(state){
+        this.$store.state.newTogglePortfolio = false
+        this.newToggle = false
+      }
+    }
+  },
+  computed: {
+    getNewTogglePortfolio(){
+			return this.$store.getters.getNewTogglePortfolio
+		}
+  },
+  watch: {
+    getNewTogglePortfolio(val, oldVal){
+      this.updatePortfolio(val)
+    }
   }
 }
 </script>

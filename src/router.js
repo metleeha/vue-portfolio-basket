@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import HomePage from './views/HomePage.vue'
 import PostPage from './views/PostPage.vue'
+import PostViewPage from './views/PostViewPage.vue'
 import PortfolioPage from './views/PortfolioPage.vue'
 import PortfolioViewPage from './views/PortfolioViewPage.vue'
 import PortfolioWriterPage from './views/PortfolioWriterPage.vue'
@@ -28,11 +29,6 @@ const router = new Router({
 			name: 'home',
 			component: HomePage
 		},
-		// {
-		// 	path: '/post',
-		// 	name: 'post',
-		// 	component: PostPage
-		// },
 		{
 			path: '/portfolio',
 			name: 'portfolio',
@@ -42,6 +38,17 @@ const router = new Router({
 			path: '/portfolioview/:id?/',
 			name: 'portfolioview',
 			component: PortfolioViewPage,
+			props: true,
+		},
+		{
+			path: '/post',
+			name: 'post',
+			component: PostPage
+		},
+		{
+			path: '/postview/:id?/',
+			name: 'postview',
+			component: PostViewPage,
 			props: true,
 		},
 		// {
