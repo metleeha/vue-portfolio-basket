@@ -19,6 +19,11 @@ export default new Vuex.Store({
     postPostDone: false,
     newTogglePost: false,
   },
+  mutations: {
+    setUser: function(state, user){
+      state.user = user
+    }
+  },
   getters:{
     getMembers: state => {
       return state.members
@@ -53,5 +58,8 @@ export default new Vuex.Store({
     getNewTogglePost: state => {
       return state.newTogglePost
     },
+    getUser: state => {
+      return state.user
+    }
   }
 })

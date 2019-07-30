@@ -21,6 +21,7 @@
         </v-list>
     </v-navigation-drawer>
     <!-- end sidebar -->
+
     <!-- #112d4e-->
     <!-- navbar -->
     <v-toolbar color='#248ea9' fixed app temporary dark scroll-off-screen>
@@ -29,7 +30,8 @@
         </v-toolbar-side-icon>
         <v-toolbar-title>
             <router-link to="/" tag="span" style="cursor: pointer">
-                <v-icon class="mr-1">free_breakfast</v-icon>TEN</router-link>
+                <v-icon class="mr-1">free_breakfast</v-icon>TEN
+            </router-link>
         </v-toolbar-title>
         <TranslateBtn></TranslateBtn>
         <v-spacer></v-spacer>
@@ -38,12 +40,33 @@
                 <v-icon left>assessment</v-icon>Portfolio</v-btn>
             <v-btn flat to="/post">
                 <v-icon left>assessment</v-icon>Post</v-btn>
-            <LoginDialog></LoginDialog>
-            
+
+            <UserMenu v-if="this.isSignined"></UserMenu>
+            <SignInMenu v-else></SignInMenu>
+
+
         </v-toolbar-items>
     </v-toolbar>
     <!-- end navbar -->
-
+    <!-- sidebar -->
+    <v-navigation-drawer v-model="drawer" app fixed temporary>
+        <v-list>
+            <v-container justify-center>
+                <v-btn flat to="/" style="cursor: pointer">
+                    <v-icon class="mr-1">free_breakfast</v-icon>TEN
+                </v-btn>
+                <v-flex>
+                    <v-btn flat to="portfolio" style="cursor: pointer">
+                        <v-icon left>assessment</v-icon>Portfolio
+                    </v-btn>
+                </v-flex>
+                <v-flex v-show="!this.isSignined">
+                    <SignInMenu></SignInMenu>
+                </v-flex>
+            </v-container>
+        </v-list>
+    </v-navigation-drawer>
+    <!-- end sidebar -->
     <!-- backTotop button -->
     <v-fab-transition>
         <v-btn id="totop-button" v-show="fab" v-scroll="onScroll" class="md-5 mr-3 elevation-21" fab fixed bottom right color="#aee7e8" @click="toTop">
@@ -56,7 +79,9 @@
 
 <script>
 import TranslateBtn from './TranslateBtn'
-import LoginDialog from '@/components/LoginDialog'
+import SignInMenu from './SignInMenu'
+import UserMenu from './UserMenu'
+
 export default {
     name: 'Header',
     data() {
@@ -67,7 +92,8 @@ export default {
     },
     components: {
         TranslateBtn,
-        LoginDialog
+        SignInMenu,
+        UserMenu
     },
     methods: {
         onScroll() {
@@ -84,7 +110,11 @@ export default {
             this.$vuetify.goTo(0)
             behavior: "smooth"
         }
-
+    },
+    computed: {
+        isSignined: function () {
+            return this.$store.getters.getUser=="" ? false : true;
+        }
     }
 
 }
