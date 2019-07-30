@@ -13,7 +13,7 @@
       <!-- Post Writer --->
       <transition name="fade">
         <v-layout v-if="newToggle" xs12 justify-center>
-          <PostWriter />
+          <PostWriter v-show="isMember"/>
         </v-layout>
       </transition>
       <!-- Post -->
@@ -31,6 +31,7 @@
 import ImgBanner from '../components/ImgBanner'
 import PostList from '../components/PostList'
 import PostWriter from '../components/PostWriter'
+import FirebaseService from '@/services/FirebaseService'
 
 export default {
 	name: 'PostPage',
@@ -55,7 +56,15 @@ export default {
   computed: {
     getNewTogglePost(){
 			return this.$store.getters.getNewTogglePost
-		}
+    },
+    isMember(){
+      auth = this.$store.getter.getUser.Auth;
+      if( auth == 'member' || auth == 'master'){
+        return true;
+      }else{
+        return false;
+      }
+    }
   },
   watch: {
     getNewTogglePost(val, oldVal){
