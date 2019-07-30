@@ -1,6 +1,6 @@
 <template>
 	<v-container>
-		<!-- Portfolio Search Bar -->
+		<!-- Post Search Bar -->
 		<v-layout row wrap justify-center text-xs-center>
 			<v-flex xs12>
 				<v-text-field 
@@ -11,7 +11,7 @@
 				</v-text-field>
 			</v-flex>
 		</v-layout>
-		<!-- Portfolio List -->
+		<!-- Post List -->
     	<v-layout mt-5 wrap id="pfPan">
 			<v-flex v-for="i in filteredPosts.length > showPostLimits ? showPostLimits : filteredPosts.length" class="pflist" :key="i">
 				<Post

@@ -40,7 +40,6 @@
                 <v-icon left>assessment</v-icon>Portfolio</v-btn>
             <v-btn flat to="/post">
                 <v-icon left>assessment</v-icon>Post</v-btn>
-
             <UserMenu v-if="this.isSignined"></UserMenu>
             <SignInMenu v-else></SignInMenu>
 
