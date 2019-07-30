@@ -1,6 +1,7 @@
 <template>
   <v-layout row justify-center>
     <v-dialog v-model="dialog_portfolio" fullscreen hide-overlay transition="dialog-bottom-transition">
+      
       <!-- dialog acticator section --> 
       <template v-slot:activator="{ on }">
         <v-card max-width="260" class="portfolio--card" v-on="on">
@@ -38,7 +39,7 @@
                   </div>
                   <v-card-actions>
                     <v-btn flat @click="gotoPortfolio()">detail</v-btn>
-                    <v-btn flat>Comment</v-btn>
+                    <!-- <v-btn flat>Comment</v-btn> -->
                 </v-card-actions>
                 </v-card-text>
               </v-card>

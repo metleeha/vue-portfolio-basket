@@ -32,21 +32,52 @@ export default {
 	getPosts() {
 		const postsCollection = firestore.collection(POSTS)
 		return postsCollection
+			.where('deleted','==',false)
 			.orderBy('created_at', 'desc')
 			.get()
 			.then((docSnapshots) => {
 				return docSnapshots.docs.map((doc) => {
 					let data = doc.data()
-					data.created_at = new Date(data.created_at.toDate())
+					data.id = doc.id			// 각 데이터 키값
+					data.created_at = new Date(data.created_at.seconds*1000)
 					return data
 				})
 			})
+	},
+	getPost(id) {
+		var cityRef = firestore.collection(POSTS).doc(id);
+		var getDoc = cityRef.get()
+		.then(doc => {
+			if (!doc.exists) {
+				console.log('No such document!')
+			} else {
+				return doc.data()
+			}
+		})
+		.catch(err => {
+			console.log('Error getting document', err)
+		})
+
+		return getDoc
 	},
 	postPost(title, body) {
 		return firestore.collection(POSTS).add({
 			title,
 			body,
-			created_at: firebase.firestore.FieldValue.serverTimestamp()
+			created_at: firebase.firestore.FieldValue.serverTimestamp(),
+			deleted: false
+		})
+	},
+	updatePost(id, title, body) {
+		return firestore.collection(POSTS).doc(id).update({
+			"title": title,
+			"body": body,
+		})
+	},
+	deletePost(id){
+		return firestore.collection(POSTS).doc(id).update({
+			"deleted": true,
+			"deleted_at": firebase.firestore.FieldValue.serverTimestamp()
 		})
 	},
 	getPortfolios() {
@@ -59,7 +90,7 @@ export default {
 				return docSnapshots.docs.map((doc) => {
 					let data = doc.data()
 					data.id = doc.id			// 각 데이터 키값
-					data.created_at = new Date(data.created_at.toDate())
+					data.created_at = new Date(data.created_at.seconds*1000).toString()
 					return data
 				})
 			})
@@ -71,7 +102,6 @@ export default {
 			if (!doc.exists) {
 				console.log('No such document!')
 			} else {
-				console.log(doc.data())
 				return doc.data()
 			}
 		})
@@ -254,6 +284,9 @@ export default {
 			// An error happened.
 			console.log("[Password reset error]: " + error);
 		});
+	},
+	setAuthPersistence() {
+		firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION);
 	},
 	getTodayView() {
 		let today = new Date()

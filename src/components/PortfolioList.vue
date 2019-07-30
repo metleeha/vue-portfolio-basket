@@ -14,17 +14,16 @@
 
   <!-- Portfolio List -->
     <v-layout mt-5 wrap id="pfPan">
-        <v-flex v-for="i in filteredPortfolios.length > showPortfoliosLimits ? showPortfoliosLimits : filteredPortfolios.length" class="pflist" :key="i">
-          <Portfolio class="ma-3"
-                :id="filteredPortfolios[i - 1].id"
-                :date="filteredPortfolios[i - 1].created_at.toString()"
-                :title="filteredPortfolios[i - 1].title"
-                :body="filteredPortfolios[i - 1].body"
-                :imgSrc="filteredPortfolios[i - 1].img"
-                >
-          </Portfolio>
-        </v-flex>
-
+      <v-flex v-for="i in filteredPortfolios.length > showPortfoliosLimits ? showPortfoliosLimits : filteredPortfolios.length" class="pflist" :key="i">
+        <Portfolio class="ma-3"
+              :id="filteredPortfolios[i - 1].id"
+              :date="filteredPortfolios[i - 1].created_at"
+              :title="filteredPortfolios[i - 1].title"
+              :body="filteredPortfolios[i - 1].body"
+              :imgSrc="filteredPortfolios[i - 1].img"
+              >
+        </Portfolio>
+      </v-flex>
       <v-flex xs12 text-xs-center round my-5 v-if="loadMore">
         <v-btn color="#3a718c" dark large v-on:click="loadMorePortfolios()"><v-icon size="25" class="mr-2">fa-plus</v-icon>더 보기</v-btn><br>
         <!-- <v-btn color="info" dark v-on:click="loadWriter"><v-icon size="25" class="mr-2">create</v-icon>추가</v-btn> -->
@@ -60,14 +59,19 @@ export default {
 		async getPortfolios() {
       this.portfolios = await FirebaseService.getPortfolios()
       console.log(this.portfolios)
-      // if(this.portfolios.size >= this.limits)
-      //   loadMore = true
 		},
     loadWriter(){
       this.$emit('portfolioWriterOn');
     },
 		loadMorePortfolios() {
       this.showPortfoliosLimits+=4;
+    },
+    updatePortfolio(state){
+      if(state){
+        this.$store.state.updatePortfolioDone = false
+        this.$store.state.newTogglePortfolio = true
+        this.getPortfolios()
+      }
     }
   },
   computed: {
@@ -75,6 +79,14 @@ export default {
       return this.portfolios.filter((portfolio)=>{
         return portfolio.title.match(this.search);
       });
+    },
+    getPostPortfolioDone(){
+			return this.$store.getters.getPostPortfolioDone
+		}
+  },
+  watch: {
+    getPostPortfolioDone(val, oldVal){
+      this.updatePortfolio(val)
     }
   }
 }

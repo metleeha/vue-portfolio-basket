@@ -7,7 +7,8 @@
       <!-- Add New Portfolio Button -->
       <v-layout xs12 justify-center>
         <v-flex xs12 text-xs-center mt-5>
-          <v-btn @click="newToggle = !newToggle" block flat large :color="newToggle? '#f0bebe':'#3a718c'"><v-icon left>fa-chevron-down</v-icon>New Portfolio</v-btn>
+          <v-btn @click="newToggle = !newToggle" block flat large :color="newToggle? '#f0bebe':'#3a718c'">
+            <v-icon left>fa-chevron-down</v-icon>New Portfolio</v-btn>
         </v-flex>
       </v-layout>
       <!-- Portfolio Writer --->
@@ -16,14 +17,12 @@
           <PortfolioWriter />
         </v-layout>
       </transition>
-      
       <!-- Portfolio -->
       <v-layout>
         <v-flex xs12>
           <PortfolioList :limits="8" :load-more="true"></PortfolioList>
         </v-flex>
       </v-layout>
-
     </v-container>
   </div>
 </template>
@@ -46,6 +45,22 @@ export default {
     }
   },
   methods:{
+    updatePortfolio(state){
+      if(state){
+        this.$store.state.newTogglePortfolio = false
+        this.newToggle = false
+      }
+    }
+  },
+  computed: {
+    getNewTogglePortfolio(){
+			return this.$store.getters.getNewTogglePortfolio
+		}
+  },
+  watch: {
+    getNewTogglePortfolio(val, oldVal){
+      this.updatePortfolio(val)
+    }
   }
 }
 </script>

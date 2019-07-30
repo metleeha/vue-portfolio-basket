@@ -21,6 +21,14 @@
         </v-flex>
       </v-layout>
 
+      <!-- Post -->
+      <v-layout my-5>
+        <v-flex xs12 sm12>
+          <router-link to="/post" tag="span"><div class="main-title display-2 my-5 text-xs-center">Post</div></router-link>
+          <PostList></PostList>
+        </v-flex>
+      </v-layout>
+
 
       <!-- Github -->
       <v-layout my-5>
@@ -38,6 +46,7 @@
 import ImgBanner from '../components/ImgBanner'
 import Team from '../components/Team'
 import PortfolioList from '../components/PortfolioList'
+import PostList from '../components/PostList'
 import RepositoryList from '../components/RepositoryList'
 import PageViewChart from '../components/PageViewChart'
 import PageViewChartForToday from '../components/PageViewChartForToday'
@@ -47,7 +56,8 @@ export default {
 	components: {
     ImgBanner,
     Team,
-		PortfolioList,
+    PortfolioList,
+    PostList,
     RepositoryList,
     PageViewChart,
     PageViewChartForToday

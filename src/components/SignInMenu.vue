@@ -2,12 +2,10 @@
 <v-dialog v-model="dialog" max-width="400px">
     <!-- signIn Button -->
     <template v-slot:activator="{ on }">
-        <v-btn flat v-on="on" v-show="!isSignedIn">
-            <v-icon left>input</v-icon>Sign In</v-btn>
-        <v-btn flat v-show="isSignedIn" v-on:click="signOut">
-            <v-icon left>cancel</v-icon>Logout</v-btn>
+        <v-btn flat v-on="on">
+            <v-icon left>input</v-icon>Sign In
+        </v-btn>
     </template>
-
     <v-card>
         <!-- header -->
         <v-toolbar color="primary" dark>
@@ -123,7 +121,7 @@ import FirebaseService from '@/services/FirebaseService'
 import store from '../store'
 
 export default {
-    name: 'signInPage',
+    name: 'signInMenu',
     store,
     data() {
         return {
@@ -134,7 +132,6 @@ export default {
             password: '',
             confirmPassword: '',
             confirmRule: false,
-            isSignedIn: false,
             isSignIn: true,
             isSignUp: false,
             isForgot: false,
@@ -163,55 +160,25 @@ export default {
     },
     components: {},
     methods: {
-        socialLogin(service) {
+        async socialLogin(service) {
+            FirebaseService.setAuthPersistence();
+            let result = null;
             switch (service) {
                 case "Google":
-                    this.signInWithGoogle();
+                    result = await FirebaseService.signInWithGoogle()
                     break;
                 case "Facebook":
-                    this.signInWithFacebook();
+                    result = await FirebaseService.signInWithFacebook()
                     break;
                 case "Github":
-                    this.signInWithGithub();
+                    result = await FirebaseService.signInWithGithub();
                     break;
                 case "Anonymous":
-                    this.signInAnonymously();
+                    result = await FirebaseService.signInAnonymously();
                     break;
             }
-        },
-        async signInWithGoogle() {
-            const result = await FirebaseService.signInWithGoogle()
-            this.$store.state.accessToken = result.accessToken
-            this.$store.state.user = result.user
-            alert("Sign in with Google!");
+            this.$store.state.user = result.user;
             this.dialog = false;
-            this.isSignedIn = true;
-        },
-        async signInWithFacebook() {
-            const result = await FirebaseService.signInWithFacebook()
-            this.$store.state.accessToken = result.credential.accessToken
-            this.$store.state.user = result.user
-            alert("Sign in with Facebook!");
-            this.dialog = false;
-            this.isSignedIn = true;
-        },
-        async signInWithGithub() {
-            const result = await FirebaseService.signInWithGithub();
-            this.$store.state.accessToken = result.credential.accessToken
-            this.$store.state.user = result.user
-            alert("Sign in with Github!");
-            this.dialog = false;
-            this.isSignedIn = true;
-        },
-        async signInAnonymously() {
-            const result = await FirebaseService.signInAnonymously();
-            if (result == true) {
-                alert("Sign in Anonymously!");
-            }
-            this.$store.state.accessToken = "Annonymous"
-            this.$store.state.user = "Annonymous"
-            this.dialog = false;
-            this.isSignedIn = true;
         },
         async signUp() {
             const result = await FirebaseService.signUp(this.email, this.password, this.name)
@@ -224,20 +191,18 @@ export default {
             }
         },
         async signIn() {
+            FirebaseService.setAuthPersistence();
             const result = await FirebaseService.signIn(this.email, this.password)
             if (result) {
                 alert("Sign in with E-mail!");
-                this.$store.state.user = result.user;
+                this.$store.state.commit("setUser", result.user);
                 this.dialog = false;
-                this.isSignedIn = true;
             }
         },
         async signOut() {
             const result = await FirebaseService.signOut();
             if (result) {
-                this.$store.state.accessToken = '';
-                this.$store.state.user = '';
-                this.isSignedIn = false;
+                this.$store.state.commit("setUser", '');
                 alert("Sign out completed!");
                 this.clear()
             }
@@ -258,14 +223,10 @@ export default {
             this.confirmRule = false;
         }
     },
-    mounted: function () {
-    },
+    mounted: function () {},
     computed: {
         comparePasswords() {
             return this.password !== this.confirmPassword ? 'Passwords do not match' : ''
-        },
-        signInCheck() {
-            return this.$store.state.user;
         }
     },
     watch: {
@@ -273,11 +234,6 @@ export default {
             if (val == false) {
                 this.isSignUp = false;
                 this.clear()
-            }
-        },
-        signInCheck(val, oldVal) {
-            if (val) {
-                this.isSignedIn = true;
             }
         },
         isSignIn: function (val) {
