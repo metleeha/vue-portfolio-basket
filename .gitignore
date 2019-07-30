@@ -25,4 +25,4 @@ yarn-error.log*
 
 # GoogleAPIkey & ssafy.lab
 ignore_apikeys.json
-ignore/
+/ignore
