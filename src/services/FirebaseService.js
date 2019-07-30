@@ -5,6 +5,7 @@ import 'firebase/auth'
 const POSTS = 'posts'
 const PORTFOLIOS = 'portfolios'
 const BANNERIMAGE = 'bannerimage'
+const SUBSCRIPTION = 'subscription'
 
 // Setup Firebase
 var config = require("../../ignore/firebaseAPI.json");
@@ -353,5 +354,22 @@ export default {
 			alert("권한 관리는 관리자 계정만 가능합니다.");
 			return;
 		}
+	},
+	getSubscription() {
+		const postsCollection = firestore.collection(SUBSCRIPTION)
+		return postsCollection
+			.get()
+			.then((docSnapshots) => {
+				return docSnapshots.docs.map((doc) => {
+					let data = doc.data()
+					return data
+				})
+			})
+	},
+	postSubscription(subscription) {
+		return firestore.collection(SUBSCRIPTION).add({
+			subscription : JSON.stringify(subscription)
+		})
 	}
+
 }
