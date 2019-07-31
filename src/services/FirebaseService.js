@@ -1,6 +1,7 @@
 import * as firebase from 'firebase/app'
 import 'firebase/firestore'
 import 'firebase/auth'
+import 'firebase/database'
 
 const POSTS = 'posts'
 const PORTFOLIOS = 'portfolios'
@@ -25,21 +26,24 @@ firebase.firestore().enablePersistence()
 		}
 	});
 
-const firestore = firebase.firestore()
+firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION);
+
+const firestore = firebase.firestore();
+const database = firebase.database();
 
 export default {
 
 	getPosts() {
 		const postsCollection = firestore.collection(POSTS)
 		return postsCollection
-			.where('deleted','==',false)
+			.where('deleted', '==', false)
 			.orderBy('created_at', 'desc')
 			.get()
 			.then((docSnapshots) => {
 				return docSnapshots.docs.map((doc) => {
 					let data = doc.data()
 					data.id = doc.id			// 각 데이터 키값
-					data.created_at = new Date(data.created_at.seconds*1000)
+					data.created_at = new Date(data.created_at.seconds * 1000)
 					return data
 				})
 			})
@@ -47,16 +51,16 @@ export default {
 	getPost(id) {
 		var cityRef = firestore.collection(POSTS).doc(id);
 		var getDoc = cityRef.get()
-		.then(doc => {
-			if (!doc.exists) {
-				console.log('No such document!')
-			} else {
-				return doc.data()
-			}
-		})
-		.catch(err => {
-			console.log('Error getting document', err)
-		})
+			.then(doc => {
+				if (!doc.exists) {
+					console.log('No such document!')
+				} else {
+					return doc.data()
+				}
+			})
+			.catch(err => {
+				console.log('Error getting document', err)
+			})
 
 		return getDoc
 	},
@@ -74,7 +78,7 @@ export default {
 			"body": body,
 		})
 	},
-	deletePost(id){
+	deletePost(id) {
 		return firestore.collection(POSTS).doc(id).update({
 			"deleted": true,
 			"deleted_at": firebase.firestore.FieldValue.serverTimestamp()
@@ -90,7 +94,7 @@ export default {
 				return docSnapshots.docs.map((doc) => {
 					let data = doc.data()
 					data.id = doc.id			// 각 데이터 키값
-					data.created_at = new Date(data.created_at.seconds*1000).toString()
+					data.created_at = new Date(data.created_at.seconds * 1000).toString()
 					return data
 				})
 			})
@@ -98,16 +102,16 @@ export default {
 	getPortfolio(id) {
 		var cityRef = firestore.collection(PORTFOLIOS).doc(id);
 		var getDoc = cityRef.get()
-		.then(doc => {
-			if (!doc.exists) {
-				console.log('No such document!')
-			} else {
-				return doc.data()
-			}
-		})
-		.catch(err => {
-			console.log('Error getting document', err)
-		})
+			.then(doc => {
+				if (!doc.exists) {
+					console.log('No such document!')
+				} else {
+					return doc.data()
+				}
+			})
+			.catch(err => {
+				console.log('Error getting document', err)
+			})
 
 		return getDoc
 	},
@@ -227,17 +231,16 @@ export default {
 
 		// Sign in with email and pass.
 		// [START createwithemail]
-		return firebase.auth().createUserWithEmailAndPassword(email, password).then(function (user) {
-			user.user.updateProfile({
+		return firebase.auth().createUserWithEmailAndPassword(email, password).then(function (data) {
+			data.user.updateProfile({
 				displayName: name,
 			});
-			firebase.database().ref('/users/').push({
+			database.ref('/users/'+data.user.uid).set ({
 				name: name,
 				email: email,
 				authority: 'visitor',
-				uid: user.user.uid
 			});
-			return user.user;
+			return data.user;
 		}).catch(function (error) {
 			// Handle Errors here.
 			var errorCode = error.code;
@@ -285,9 +288,6 @@ export default {
 			console.log("[Password reset error]: " + error);
 		});
 	},
-	setAuthPersistence() {
-		firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION);
-	},
 	getTodayView() {
 		let today = new Date()
 		let formattedToday = (today.getMonth() + 1) + '월 ' + today.getDate() + '일'
@@ -307,36 +307,36 @@ export default {
 			return TotalView
 		})
 	},
-	async checkAuthMaster(){
+	async checkAuthMaster() {
 		const user = await firebase.auth().currentUser;
-		if(!user){
+		if (!user) {
 			return false;
 		}
 		return await firebase.database().ref('/users/')
 			.orderByChild('uid')
 			.equalTo(user.uid)
 			.once('value')
-			.then(function(snapshot){
+			.then(function (snapshot) {
 				console.log(snapshot.val());
-				if(snapshot.val().authority == 'master'){
+				if (snapshot.val().authority == 'master') {
 					return true;
 				} else {
 					return false;
 				}
 			})
 	},
-	async checkAuthMember(){
+	async checkAuthMember() {
 		const user = await firebase.auth().currentUser;
-		if(!user){
+		if (!user) {
 			return false;
 		}
 		return await firebase.database().ref('/users/')
 			.orderByChild('uid')
 			.equalTo(user.uid)
 			.once('value')
-			.then(function(snapshot){
+			.then(function (snapshot) {
 				const auth = snapshot.val().authority;
-				if(auth == 'member' || auth == 'master'){
+				if (auth == 'member' || auth == 'master') {
 					return true;
 				} else {
 					return false;
@@ -397,14 +397,10 @@ export default {
 	},
 	async getUser(uid) {
 		if (uid != null) {
-			let user = await firebase.database().ref('/users/').orderByChild('uid').equalTo(uid).once('value').then(function (snapshot) {
-				return snapshot.val();	
+			let user = await database.ref('/users/'+uid).once('value').then(function (snapshot) {
+				return snapshot.val();
 			})
-			console.log("===================================================================");
-			console.log(uid);
-			console.log(user);
-			console.log("===================================================================");
-			return { name: user.name, email: user.email, authority: user.authority };
+			return user;
 		} else {
 			return { name: 'Anonymous', email: 'None', authority: 'visitor' };
 		}
