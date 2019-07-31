@@ -1,11 +1,13 @@
 import * as firebase from 'firebase/app'
 import 'firebase/firestore'
 import 'firebase/auth'
+import 'firebase/messaging'
 
 const POSTS = 'posts'
 const PORTFOLIOS = 'portfolios'
 const BANNERIMAGE = 'bannerimage'
 const SUBSCRIPTION = 'subscription'
+const TOPIC_TOKEN = 'topic_token'
 
 // Setup Firebase
 var config = require("../../ignore/firebaseAPI.json");
@@ -27,6 +29,82 @@ firebase.firestore().enablePersistence()
   });
 
 const firestore = firebase.firestore()
+const messaging = firebase.messaging();
+messaging.usePublicVapidKey("BC1hwgbyv5m4x6yWj8I0V5hqir__Pa7Wu4FOwNJkc_jn31CcfpSFrJc7Mk55mTT-r-3bExBZJ0kWsZqGKnfXD70")
+
+Notification.requestPermission().then(function(permission){
+  if(permission === 'granted'){
+    console.log("firebase permission granted");
+  }else{
+    console.log("firebase permission rejected");
+  }
+})
+
+messaging.onTokenRefresh(function() {
+  messaging.getToken().then(function(refreshedToken) {
+	console.log('Token refreshed.');
+	
+	
+  }).catch(function(err) {
+    console.log('Unable to retrieve refreshed token ', err);
+  });
+});
+
+messaging.getToken().then(function(currentToken) {
+	console.log(currentToken)
+  if (currentToken) {
+	var flag = false;
+	console.log("getted" , currentToken);
+	getTopics().then(function (data){
+	  data.forEach(function (elem){
+		if(elem.token == currentToken){
+		  flag = true
+		  throw "Already Saved";
+		}
+	  })
+	  if(!flag){
+		firestore.collection(TOPIC_TOKEN).add({
+		  token : currentToken,
+		  created_at : firebase.firestore.FieldValue.serverTimestamp()
+		})
+		console.log("Saved")
+	  }
+	})
+  } else {
+	console.log('No Instance ID token available. Request permission to generate one.');
+  }
+}).catch(function(err) {
+  console.log('An error occurred while retrieving token. ', err);
+})
+
+messaging.onMessage(function(payload) {
+  console.log('[firebase-messaging-sw.js] Received background message ', payload);
+  // Customize notification here
+  var notificationTitle =  payload.data.title;
+  var notificationOptions = {
+    body: payload.data.str,
+    icon: '/firebase-logo.png'
+  };
+
+  return self.registration.showNotification(notificationTitle,
+    notificationOptions);
+})
+
+function getTopics(){
+  const postsCollection = firestore.collection(TOPIC_TOKEN)
+  return postsCollection
+    .orderBy('created_at', 'desc')
+    .get()
+    .then((docSnapshots) => {
+      return docSnapshots.docs.map((doc) => {
+        let data = doc.data()
+        data.created_at = new Date(data.created_at.toDate())
+        return data
+      })
+    })
+}
+
+
 
 export default {
 

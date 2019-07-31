@@ -12,7 +12,8 @@ import './registerServiceWorker'
 
 import IncrementCnt from './services/IncrementCnt'
 
-import firebase from 'firebase'
+import firebase from 'firebase/app'
+import firebaseMessaging from 'firebase/messaging'
 import firebaseService from './services/FirebaseService'
 
 export const bus = new Vue()
@@ -56,36 +57,34 @@ firebase.auth().onAuthStateChanged(function (user) {
 });
 
 
-
 router.beforeEach(function(to, from, next) {
 	IncrementCnt.Increment(to.name)
 	next()
 })
 
+const applicationServerPublicKey = 'BC1hwgbyv5m4x6yWj8I0V5hqir__Pa7Wu4FOwNJkc_jn31CcfpSFrJc7Mk55mTT-r-3bExBZJ0kWsZqGKnfXD70';
 
-// const cors = require('cors');
-// const applicationServerPublicKey = 'BC1hwgbyv5m4x6yWj8I0V5hqir__Pa7Wu4FOwNJkc_jn31CcfpSFrJc7Mk55mTT-r-3bExBZJ0kWsZqGKnfXD70';
+// // var express = require('express')
+// var pushapp = express.Router()
 
-// var express = require('express')
-// var pushapp = express()
 
 // let isSubscribed = false;
 // let swRegistration = null;
 
-// function urlB64ToUint8Array(base64String) {
-// 	const padding = '='.repeat((4 - base64String.length % 4) % 4);
-// 	const base64 = (base64String + padding)
-// 	  .replace(/\-/g, '+')
-// 	  .replace(/_/g, '/');
+function urlB64ToUint8Array(base64String) {
+	const padding = '='.repeat((4 - base64String.length % 4) % 4);
+	const base64 = (base64String + padding)
+	  .replace(/\-/g, '+')
+	  .replace(/_/g, '/');
   
-// 	const rawData = window.atob(base64);
-// 	const outputArray = new Uint8Array(rawData.length);
+	const rawData = window.atob(base64);
+	const outputArray = new Uint8Array(rawData.length);
   
-// 	for (let i = 0; i < rawData.length; ++i) {
-// 	  outputArray[i] = rawData.charCodeAt(i);
-// 	}
-// 	return outputArray;
-//   }
+	for (let i = 0; i < rawData.length; ++i) {
+	  outputArray[i] = rawData.charCodeAt(i);
+	}
+	return outputArray;
+  }
 
 // if ('serviceWorker' in navigator && 'PushManager' in window) {
 // 	console.log('Service Worker and Push is supported');
@@ -169,6 +168,8 @@ router.beforeEach(function(to, from, next) {
 // 	  }
 // 	});
 //   }
+
+  
 
 //   pushapp.post('/api/save-subscription/', function (req, res) {
 // 	  return saveSubscriptionToDatabase(req.body)
