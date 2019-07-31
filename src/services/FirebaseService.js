@@ -1,10 +1,14 @@
 import * as firebase from 'firebase/app'
 import 'firebase/firestore'
 import 'firebase/auth'
+import 'firebase/messaging'
+import 'firebase/database'
 
 const POSTS = 'posts'
 const PORTFOLIOS = 'portfolios'
 const BANNERIMAGE = 'bannerimage'
+const SUBSCRIPTION = 'subscription'
+const TOPIC_TOKEN = 'topic_token'
 
 // Setup Firebase
 var config = require("../../ignore/firebaseAPI.json");
@@ -13,33 +17,112 @@ firebase.initializeApp(config)
 
 /* Firebase PWA enable */
 firebase.firestore().enablePersistence()
-  .catch(function(err) {
-      if (err.code == 'failed-precondition') {
-          // Multiple tabs open, persistence can only be enabled
-          // in one tab at a a time.
-          // ...
-      } else if (err.code == 'unimplemented') {
-          // The current browser does not support all of the
-          // features required to enable persistence
-          // ...
-      }
-  });
+	.catch(function (err) {
+		if (err.code == 'failed-precondition') {
+			// Multiple tabs open, persistence can only be enabled
+			// in one tab at a a time.
+			// ...
+		} else if (err.code == 'unimplemented') {
+			// The current browser does not support all of the
+			// features required to enable persistence
+			// ...
+		}
+	});
 
-const firestore = firebase.firestore()
+firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION);
+
+const firestore = firebase.firestore();
+const database = firebase.database();
+const messaging = firebase.messaging();
+
+messaging.usePublicVapidKey("BC1hwgbyv5m4x6yWj8I0V5hqir__Pa7Wu4FOwNJkc_jn31CcfpSFrJc7Mk55mTT-r-3bExBZJ0kWsZqGKnfXD70")
+
+Notification.requestPermission().then(function(permission){
+  if(permission === 'granted'){
+    console.log("firebase permission granted");
+  }else{
+    console.log("firebase permission rejected");
+  }
+})
+
+messaging.onTokenRefresh(function() {
+  messaging.getToken().then(function(refreshedToken) {
+	console.log('Token refreshed.');
+	
+	
+  }).catch(function(err) {
+    console.log('Unable to retrieve refreshed token ', err);
+  });
+});
+
+messaging.getToken().then(function(currentToken) {
+	console.log(currentToken)
+  if (currentToken) {
+	var flag = false;
+	console.log("getted" , currentToken);
+	getTopics().then(function (data){
+	  data.forEach(function (elem){
+		if(elem.token == currentToken){
+		  flag = true
+		  throw "Already Saved";
+		}
+	  })
+	  if(!flag){
+		firestore.collection(TOPIC_TOKEN).add({
+		  token : currentToken,
+		  created_at : firebase.firestore.FieldValue.serverTimestamp()
+		})
+		console.log("Saved")
+	  }
+	})
+  } else {
+	console.log('No Instance ID token available. Request permission to generate one.');
+  }
+}).catch(function(err) {
+  console.log('An error occurred while retrieving token. ', err);
+})
+
+messaging.onMessage(function(payload) {
+  console.log('[firebase-messaging-sw.js] Received background message ', payload);
+  // Customize notification here
+  var notificationTitle =  payload.data.title;
+  var notificationOptions = {
+    body: payload.data.str,
+    icon: '/firebase-logo.png'
+  };
+
+  return self.registration.showNotification(notificationTitle,
+    notificationOptions);
+})
+
+function getTopics(){
+  const postsCollection = firestore.collection(TOPIC_TOKEN)
+  return postsCollection
+    .orderBy('created_at', 'desc')
+    .get()
+    .then((docSnapshots) => {
+      return docSnapshots.docs.map((doc) => {
+        let data = doc.data()
+        data.created_at = new Date(data.created_at.toDate())
+        return data
+      })
+    })
+}
+
 
 export default {
 
 	getPosts() {
 		const postsCollection = firestore.collection(POSTS)
 		return postsCollection
-			.where('deleted','==',false)
+			.where('deleted', '==', false)
 			.orderBy('created_at', 'desc')
 			.get()
 			.then((docSnapshots) => {
 				return docSnapshots.docs.map((doc) => {
 					let data = doc.data()
 					data.id = doc.id			// 각 데이터 키값
-					data.created_at = new Date(data.created_at.seconds*1000)
+					data.created_at = new Date(data.created_at.seconds * 1000)
 					return data
 				})
 			})
@@ -47,16 +130,16 @@ export default {
 	getPost(id) {
 		var cityRef = firestore.collection(POSTS).doc(id);
 		var getDoc = cityRef.get()
-		.then(doc => {
-			if (!doc.exists) {
-				console.log('No such document!')
-			} else {
-				return doc.data()
-			}
-		})
-		.catch(err => {
-			console.log('Error getting document', err)
-		})
+			.then(doc => {
+				if (!doc.exists) {
+					console.log('No such document!')
+				} else {
+					return doc.data()
+				}
+			})
+			.catch(err => {
+				console.log('Error getting document', err)
+			})
 
 		return getDoc
 	},
@@ -74,7 +157,7 @@ export default {
 			"body": body,
 		})
 	},
-	deletePost(id){
+	deletePost(id) {
 		return firestore.collection(POSTS).doc(id).update({
 			"deleted": true,
 			"deleted_at": firebase.firestore.FieldValue.serverTimestamp()
@@ -83,7 +166,7 @@ export default {
 	getPortfolios() {
 		const postsCollection = firestore.collection(PORTFOLIOS)
 		return postsCollection
-			.where('deleted','==',false)
+			.where('deleted', '==', false)
 			.orderBy('created_at', 'desc')
 			.get()
 			.then((docSnapshots) => {
@@ -91,8 +174,7 @@ export default {
 					console.log(doc.data())
 					let data = doc.data()
 					data.id = doc.id			// 각 데이터 키값
-					// data.created_at = doc.created_at
-					// data.created_at = data.created_at.toString()
+					data.created_at = new Date(data.created_at.seconds * 1000).toString()
 					return data
 				})
 			})
@@ -100,16 +182,16 @@ export default {
 	getPortfolio(id) {
 		var cityRef = firestore.collection(PORTFOLIOS).doc(id);
 		var getDoc = cityRef.get()
-		.then(doc => {
-			if (!doc.exists) {
-				console.log('No such document!')
-			} else {
-				return doc.data()
-			}
-		})
-		.catch(err => {
-			console.log('Error getting document', err)
-		})
+			.then(doc => {
+				if (!doc.exists) {
+					console.log('No such document!')
+				} else {
+					return doc.data()
+				}
+			})
+			.catch(err => {
+				console.log('Error getting document', err)
+			})
 
 		return getDoc
 	},
@@ -129,7 +211,7 @@ export default {
 			"img": img,
 		})
 	},
-	deletePortfolio(id){
+	deletePortfolio(id) {
 		return firestore.collection(PORTFOLIOS).doc(id).update({
 			"deleted": true,
 			"deleted_at": firebase.firestore.FieldValue.serverTimestamp()
@@ -229,17 +311,16 @@ export default {
 
 		// Sign in with email and pass.
 		// [START createwithemail]
-		return firebase.auth().createUserWithEmailAndPassword(email, password).then(function (user) {
-			user.user.updateProfile({
+		return firebase.auth().createUserWithEmailAndPassword(email, password).then(function (data) {
+			data.user.updateProfile({
 				displayName: name,
 			});
-			firebase.database().ref('/users/').push({
+			database.ref('/users/'+data.user.uid).set ({
 				name: name,
 				email: email,
 				authority: 'visitor',
-				uid: user.user.uid
 			});
-			return user.user;
+			return data.user;
 		}).catch(function (error) {
 			// Handle Errors here.
 			var errorCode = error.code;
@@ -287,9 +368,6 @@ export default {
 			console.log("[Password reset error]: " + error);
 		});
 	},
-	setAuthPersistence() {
-		firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION);
-	},
 	getTodayView() {
 		let today = new Date()
 		let formattedToday = (today.getMonth() + 1) + '월 ' + today.getDate() + '일'
@@ -309,84 +387,106 @@ export default {
 			return TotalView
 		})
 	},
-	async checkAuthMaster(){
-		let user = firebase.auth().currentUser;
-		return firebase.database().ref('/users/')
+	async checkAuthMaster() {
+		const user = await firebase.auth().currentUser;
+		if (!user) {
+			return false;
+		}
+		return await firebase.database().ref('/users/')
 			.orderByChild('uid')
 			.equalTo(user.uid)
 			.once('value')
-			.then(function(snapshot){
-				if(snapshot.val().authority == 'master'){
+			.then(function (snapshot) {
+				console.log(snapshot.val());
+				if (snapshot.val().authority == 'master') {
 					return true;
-				} else{
+				} else {
 					return false;
 				}
-		})
+			})
 	},
-	async checkAuthMember(){
-		let user = firebase.auth().currentUser;
-		return firebase.database().ref('/users/')
+	async checkAuthMember() {
+		const user = await firebase.auth().currentUser;
+		if (!user) {
+			return false;
+		}
+		return await firebase.database().ref('/users/')
 			.orderByChild('uid')
 			.equalTo(user.uid)
 			.once('value')
-			.then(function(snapshot){
-				if(snapshot.val().authority == 'member'){
+			.then(function (snapshot) {
+				const auth = snapshot.val().authority;
+				if (auth == 'member' || auth == 'master') {
 					return true;
-				} else{
+				} else {
 					return false;
 				}
-		})
-	},
-	async changeAuthMember(uid){
-		if(this.checkAuthMaster){
-			let key =  firebase.database().ref('/users/').orderByChild('uid').equalTo(uid).once('value').then(function(snapshot){
-				snapshot.forEach(function(childSnapshot){
-					firebase.database().ref('/users/'+childSnapshot.key).update({authority: "member"});
-				});
-				
 			})
-		}else{
+	},
+	async changeAuthMember(uid) {
+		if (this.checkAuthMaster) {
+			let key = firebase.database().ref('/users/').orderByChild('uid').equalTo(uid).once('value').then(function (snapshot) {
+				snapshot.forEach(function (childSnapshot) {
+					firebase.database().ref('/users/' + childSnapshot.key).update({ authority: "member" });
+				});
+
+			})
+		} else {
 			alert("권한 관리는 관리자 계정만 가능합니다.");
 			return;
 		}
 	},
-	async changeAuthMaster(uid){
-		if(this.checkAuthMaster){
-			let key =  firebase.database().ref('/users/').orderByChild('uid').equalTo(uid).once('value').then(function(snapshot){
-				snapshot.forEach(function(childSnapshot){
-					firebase.database().ref('/users/'+childSnapshot.key).update({authority: "master"});
+	async changeAuthMaster(uid) {
+		if (this.checkAuthMaster) {
+			let key = firebase.database().ref('/users/').orderByChild('uid').equalTo(uid).once('value').then(function (snapshot) {
+				snapshot.forEach(function (childSnapshot) {
+					firebase.database().ref('/users/' + childSnapshot.key).update({ authority: "master" });
 				});
-				
+
 			})
-		}else{
+		} else {
 			alert("권한 관리는 관리자 계정만 가능합니다.");
 			return;
 		}
 	},
-	async changeAuthMember(uid){
-		if(this.checkAuthMaster){
-			let key =  firebase.database().ref('/users/').orderByChild('uid').equalTo(uid).once('value').then(function(snapshot){
-				snapshot.forEach(function(childSnapshot){
-					firebase.database().ref('/users/'+childSnapshot.key).update({authority: "member"});
+	async changeAuthMember(uid) {
+		if (this.checkAuthMaster) {
+			let key = firebase.database().ref('/users/').orderByChild('uid').equalTo(uid).once('value').then(function (snapshot) {
+				snapshot.forEach(function (childSnapshot) {
+					firebase.database().ref('/users/' + childSnapshot.key).update({ authority: "member" });
 				});
-				
+
 			})
-		}else{
+		} else {
 			alert("권한 관리는 관리자 계정만 가능합니다.");
 			return;
 		}
 	},
-	async changeAuthVisitor(uid){
-		if(this.checkAuthMaster){
-			let key =  firebase.database().ref('/users/').orderByChild('uid').equalTo(uid).once('value').then(function(snapshot){
-				snapshot.forEach(function(childSnapshot){
-					firebase.database().ref('/users/'+childSnapshot.key).update({authority: "visitor"});
+	async changeAuthVisitor(uid) {
+		if (this.checkAuthMaster) {
+			let key = firebase.database().ref('/users/').orderByChild('uid').equalTo(uid).once('value').then(function (snapshot) {
+				snapshot.forEach(function (childSnapshot) {
+					firebase.database().ref('/users/' + childSnapshot.key).update({ authority: "visitor" });
 				});
-				
+
 			})
-		}else{
+		} else {
 			alert("권한 관리는 관리자 계정만 가능합니다.");
 			return;
 		}
+	},
+	async getUser(uid) {
+		if (uid != null) {
+			let user = await database.ref('/users/'+uid).once('value').then(function (snapshot) {
+				return snapshot.val();
+			})
+			return user;
+		} else {
+			return { name: 'Anonymous', email: 'None', authority: 'visitor' };
+		}
+	},
+	onAuthStateChanged(f) {
+		return firebase.auth().onAuthStateChanged(f);
 	}
+
 }
