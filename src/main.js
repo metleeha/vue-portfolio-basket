@@ -33,10 +33,12 @@ Vue.use(VueSimplemde)
 
 Vue.use(VueDisqus)
 
-firebaseService.onAuthStateChanged(async function (user) {
-	let uid = user.uid;
-	let userInfo = await firebaseService.getUser(uid);
-	store.commit('setUser', userInfo);
+firebaseService.onAuthStateChanged(function (user) {
+	if(user){
+		let uid = user.uid;
+		let userInfo = firebaseService.getUser(uid);
+		store.commit('setUser', userInfo);
+	}
 
 	new Vue({
 		router,
