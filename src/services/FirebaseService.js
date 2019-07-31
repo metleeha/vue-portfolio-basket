@@ -307,28 +307,36 @@ export default {
 			return TotalView
 		})
 	},
-	async checkAuthMaster() {
-		let user = firebase.auth().currentUser;
-		return firebase.database().ref('/users/')
+	async checkAuthMaster(){
+		const user = await firebase.auth().currentUser;
+		if(!user){
+			return false;
+		}
+		return await firebase.database().ref('/users/')
 			.orderByChild('uid')
 			.equalTo(user.uid)
 			.once('value')
-			.then(function (snapshot) {
-				if (snapshot.val().authority == 'master') {
+			.then(function(snapshot){
+				console.log(snapshot.val());
+				if(snapshot.val().authority == 'master'){
 					return true;
 				} else {
 					return false;
 				}
 			})
 	},
-	async checkAuthMember() {
-		let user = firebase.auth().currentUser;
-		return firebase.database().ref('/users/')
+	async checkAuthMember(){
+		const user = await firebase.auth().currentUser;
+		if(!user){
+			return false;
+		}
+		return await firebase.database().ref('/users/')
 			.orderByChild('uid')
 			.equalTo(user.uid)
 			.once('value')
-			.then(function (snapshot) {
-				if (snapshot.val().authority == 'member') {
+			.then(function(snapshot){
+				const auth = snapshot.val().authority;
+				if(auth == 'member' || auth == 'master'){
 					return true;
 				} else {
 					return false;

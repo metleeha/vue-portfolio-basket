@@ -37,7 +37,12 @@ export default {
     this.contents = this.body
   },
   methods:{
-    posting(event){
+    async posting(event){
+      const authCheck = await FirebaseService.checkAuthMember();
+      if(!authCheck){
+        alert("작성 권한이 없습니다.");
+        return;
+      }
       if(this.update){
         FirebaseService.updatePost(this.id, this.title, this.contents)
         // 페이지 리로딩
