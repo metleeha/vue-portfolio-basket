@@ -61,7 +61,7 @@ export default {
         UploadImg
     },
     methods: {
-        async posting(event) {
+        posting(event) {
             const authCheck = await FirebaseService.checkAuthMember();
             if (!authCheck) {
                 alert("작성 권한이 없습니다.");
