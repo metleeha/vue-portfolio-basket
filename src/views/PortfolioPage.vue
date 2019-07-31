@@ -46,16 +46,16 @@ export default {
         }
     },
     methods: {
-        updatePortfolio(state) {
+        updatePortfolios(state) {
             if (state) {
-                this.$store.state.newTogglePortfolio = false
+                this.$store.state.newTogglePortfolios = false
                 this.newToggle = false
             }
         }
     },
     computed: {
-        getNewTogglePortfolio() {
-            return this.$store.getters.getNewTogglePortfolio
+        getNewTogglePortfolios() {
+            return this.$store.getters.getNewTogglePortfolios
         },
         authCheck() {
             const user = this.$store.getters.getUser;
@@ -71,8 +71,8 @@ export default {
         }
     },
     watch: {
-        getNewTogglePortfolio(val, oldVal) {
-            this.updatePortfolio(val)
+        getNewTogglePortfolios(val, oldVal) {
+            this.updatePortfolios(val)
         }
     }
 }

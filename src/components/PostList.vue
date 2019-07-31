@@ -51,23 +51,30 @@ export default {
 	},
 	mounted() {
 		this.showPostLimits = this.limits
-		this.getPosts()
+		this.getPostsFirebase()
 	},
 	methods: {
-		async getPosts() {
-			this.posts = await FirebaseService.getPosts()
+		async getPostsFirebase() {
+			var ps = await FirebaseService.getPosts()
+			while (ps[0].created_at == null) {
+				ps = await FirebaseService.getPortfolios()
+			}
+			this.$store.state.posts = ps
 		},
 		loadWriter(){
 			this.$emit('postWriterOn');
 		},
 		loadMorePosts() {
 			this.showPostLimits+=4;
-    	},
-		updatePost(state){
+		},
+		setPosts(posts){
+			this.posts = posts
+		},
+		updatePosts(state){
 			if(state){
 				this.$store.state.postPostDone = false
 				this.$store.state.newTogglePost = true
-				this.getPosts()
+				this.getPostsFirebase()
 			}
 		}
 	},
@@ -77,13 +84,19 @@ export default {
 				return post.title.match(this.search);
 			});
 		},
+		getPosts(){
+			return this.$store.getters.getPosts
+		},
     	getPostPostDone(){
 			return this.$store.getters.getPostPostDone
 		}
 	},
 	watch: {
+		getPosts(val,oldVal){
+			this.setPosts(val)
+		},
 		getPostPostDone(val, oldVal){
-		this.updatePost(val)
+		this.updatePosts(val)
 		}
 	}
 }

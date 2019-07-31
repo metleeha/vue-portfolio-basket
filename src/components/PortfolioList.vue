@@ -17,7 +17,7 @@
       <v-flex v-for="i in filteredPortfolios.length > showPortfoliosLimits ? showPortfoliosLimits : filteredPortfolios.length" class="pflist" :key="i">
         <Portfolio class="ma-3"
               :id="filteredPortfolios[i - 1].id"
-              :date="filteredPortfolios[i - 1].created_at"
+              :date="new Date(filteredPortfolios[i - 1].created_at.seconds*1000).toString().substring(0, 16)"
               :title="filteredPortfolios[i - 1].title"
               :body="filteredPortfolios[i - 1].body"
               :imgSrc="filteredPortfolios[i - 1].img"
@@ -53,12 +53,15 @@ export default {
 	},
 	mounted() {
     this.showPortfoliosLimits = this.limits
-		this.getPortfolios()
+		this.getPortfoliosFirebase()
 	},
 	methods: {
-		async getPortfolios() {
-      this.portfolios = await FirebaseService.getPortfolios()
-      console.log(this.portfolios)
+		async getPortfoliosFirebase() {
+      var ps = await FirebaseService.getPortfolios()
+      while (ps[0].created_at == null) {
+        ps = await FirebaseService.getPortfolios()
+      }
+      this.$store.state.portfolios = ps
 		},
     loadWriter(){
       this.$emit('portfolioWriterOn');
@@ -66,11 +69,14 @@ export default {
 		loadMorePortfolios() {
       this.showPortfoliosLimits+=4;
     },
-    updatePortfolio(state){
+    setPortfolios(portfolios){
+      this.portfolios = portfolios
+    },
+    updatePortfolios(state){
       if(state){
-        this.$store.state.updatePortfolioDone = false
-        this.$store.state.newTogglePortfolio = true
-        this.getPortfolios()
+        this.$store.state.postPortfolioDone = false
+        this.$store.state.newTogglePortfolios = true
+        this.getPortfoliosFirebase()
       }
     }
   },
@@ -80,13 +86,19 @@ export default {
         return portfolio.title.match(this.search);
       });
     },
+    getPortfolios(){
+			return this.$store.getters.getPortfolios
+    },
     getPostPortfolioDone(){
 			return this.$store.getters.getPostPortfolioDone
 		}
   },
   watch: {
+    getPortfolios(val, oldVal){
+			this.setPortfolios(val)
+    },
     getPostPortfolioDone(val, oldVal){
-      this.updatePortfolio(val)
+      this.updatePortfolios(val)
     }
   }
 }
