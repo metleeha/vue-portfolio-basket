@@ -13,6 +13,7 @@ import './registerServiceWorker'
 import IncrementCnt from './services/IncrementCnt'
 
 import firebaseService from './services/FirebaseService'
+import VueDisqus from 'vue-disqus'
 
 export const bus = new Vue()
 

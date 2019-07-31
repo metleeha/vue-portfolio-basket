@@ -5,7 +5,5 @@
 	"projectId": "webmobile-sub2-ssafy",
 	"messagingSenderId": "49180175175",
 	"appId": "1:49180175175:web:f6c4ec970a1b7ce1",
-	"storageBucket": "gs://webmobile-sub2-ssafy.appspot.com",
-	"messagingSenderId": "49180175175"
-
+	"storageBucket": "gs://webmobile-sub2-ssafy.appspot.com"
 }
