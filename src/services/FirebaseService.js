@@ -1,11 +1,8 @@
 import * as firebase from 'firebase/app'
 import 'firebase/firestore'
 import 'firebase/auth'
-<<<<<<< HEAD
 import 'firebase/messaging'
-=======
 import 'firebase/database'
->>>>>>> 9722fb85c08e844c9a4080eb2d90e9b122708380
 
 const POSTS = 'posts'
 const PORTFOLIOS = 'portfolios'
@@ -32,9 +29,12 @@ firebase.firestore().enablePersistence()
 		}
 	});
 
-<<<<<<< HEAD
-const firestore = firebase.firestore()
+firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION);
+
+const firestore = firebase.firestore();
+const database = firebase.database();
 const messaging = firebase.messaging();
+
 messaging.usePublicVapidKey("BC1hwgbyv5m4x6yWj8I0V5hqir__Pa7Wu4FOwNJkc_jn31CcfpSFrJc7Mk55mTT-r-3bExBZJ0kWsZqGKnfXD70")
 
 Notification.requestPermission().then(function(permission){
@@ -109,13 +109,6 @@ function getTopics(){
     })
 }
 
-
-=======
-firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION);
-
-const firestore = firebase.firestore();
-const database = firebase.database();
->>>>>>> 9722fb85c08e844c9a4080eb2d90e9b122708380
 
 export default {
 
