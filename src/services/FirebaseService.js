@@ -88,9 +88,11 @@ export default {
 			.get()
 			.then((docSnapshots) => {
 				return docSnapshots.docs.map((doc) => {
+					console.log(doc.data())
 					let data = doc.data()
 					data.id = doc.id			// 각 데이터 키값
-					data.created_at = new Date(data.created_at.seconds*1000).toString()
+					// data.created_at = doc.created_at
+					// data.created_at = data.created_at.toString()
 					return data
 				})
 			})

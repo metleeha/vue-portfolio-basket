@@ -56,13 +56,13 @@ export default {
       }else{
         //파이어베이스 디비에 넣는 작업
         FirebaseService.postPortfolio(this.title,this.contents,this.img)
+        
         // 페이지 리로딩
         this.$store.state.postPortfolioDone = true
       }
     },
-
-    }
   }
+}
 
 </script>
 <style>

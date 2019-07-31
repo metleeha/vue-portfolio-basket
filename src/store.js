@@ -10,10 +10,12 @@ export default new Vuex.Store({
     commits: [],
     members: {},
     repository: {},
+    portfolios: {},
     portfolioDetail: {},
     updatePortfolioDone: false,
     postPortfolioDone: false,
-    newTogglePortfolio: false,
+    newTogglePortfolios: false,
+    posts: {},
     postDetail: {},
     updatePostDone: false,
     postPostDone: false,
@@ -34,6 +36,9 @@ export default new Vuex.Store({
     getRepository: state => {
       return state.repository
     },
+    getPortfolios: state => {
+      return state.portfolios
+    },
     getPortfolioDetail: state => {
       return state.portfolioDetail
     },
@@ -43,8 +48,11 @@ export default new Vuex.Store({
     getPostPortfolioDone: state => {
       return state.postPortfolioDone
     },
-    getNewTogglePortfolio: state => {
-      return state.newTogglePortfolio
+    getNewTogglePortfolios: state => {
+      return state.newTogglePortfolios
+    },
+    getPosts: state => {
+      return state.posts
     },
     getPostDetail: state => {
       return state.postDetail

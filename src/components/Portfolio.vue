@@ -83,7 +83,7 @@ export default {
     },
   },
   created: function(){
-    this.stringDate = this.date.substring(0, 16)
+    this.stringDate = this.date
   }
 }
 </script>

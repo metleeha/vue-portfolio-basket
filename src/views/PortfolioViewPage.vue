@@ -110,6 +110,7 @@ export default {
       this.$store.state.portfolioDetail = pf
     },
     setPortfolioData(portfolio) {
+      console.log(portfolio)
       this.title = portfolio.title
       this.body = portfolio.body
       this.imgSrc = portfolio.img
