@@ -1,17 +1,17 @@
 <template>
-    <v-container>
-      <v-layout>
-        <div class="markdown">
-          <v-flex xs9>
-            <v-text-field label="title" v-model="title"></v-text-field>
+    <v-layout wrap xs12 justify-center>
+      <div class="markdown">
+        <v-flex xs8 wrap row class="my-1">
+          <v-flex xs7 >
+            <v-text-field label="title" v-model="title" class="mr-1"></v-text-field>
             <v-btn icon @click="posting"><v-icon>send</v-icon></v-btn>
           </v-flex>
-          <v-flex xs10>
-            <markdown-editor v-model="contents"></markdown-editor>
-          </v-flex>
-        </div>
-      </v-layout>
-    </v-container>
+        </v-flex>
+        <v-flex xs8 class="mt-4">
+          <markdown-editor v-model="contents"></markdown-editor>
+        </v-flex>
+      </div>
+    </v-layout>
 </template>
 
 

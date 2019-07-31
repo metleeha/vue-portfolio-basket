@@ -10,11 +10,13 @@
       <!-- Post Writer --->
       <transition name="fade">
         <v-layout v-if="newToggle" xs12 justify-center>
-          <PostWriter 
-            :id="id"
-            :ti="title"
-            :body="body"
-            :update=true />
+          <v-flex xs8>
+            <PostWriter 
+              :id="id"
+              :ti="title"
+              :body="body"
+              :update=true />
+          </v-flex>
         </v-layout>
       </transition>
       <!-- Post contents -->

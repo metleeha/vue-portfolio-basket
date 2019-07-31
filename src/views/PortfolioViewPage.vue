@@ -171,7 +171,7 @@ export default {
   font-family: 'Literata', 'Noto Serif KR', serif;
   font-weight: 700;
   font-style: italic;
-  font-size: 5vw;
+  font-size: 40px;
 }
 .page-author{
   text-align: left;
@@ -180,7 +180,7 @@ export default {
 }
 .page-author p {
   font-family: 'Literata', 'Noto Serif KR', serif;
-  font-size: 2vw;
+  font-size: 2.0vw;
   margin-bottom: 2em;
 }
 .page-img{
@@ -188,7 +188,7 @@ export default {
 }
 .page-body p{
   font-family: 'Literata', 'Noto Serif KR', serif;
-  font-size: 1.5em;
+  font-size: 1.2em;
   word-break: normal;
   padding: 0.5em 0.5em;
   margin-bottom: 1em;

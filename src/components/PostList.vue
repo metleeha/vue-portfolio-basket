@@ -2,7 +2,7 @@
 	<v-container>
 		<!-- Post Search Bar -->
 		<v-layout row wrap justify-center text-xs-center>
-			<v-flex xs12>
+			<v-flex xs8>
 				<v-text-field 
 				prepend-inner-icon="fa-search"
 				v-model="search"
@@ -12,8 +12,8 @@
 			</v-flex>
 		</v-layout>
 		<!-- Post List -->
-    	<v-layout mt-5 wrap id="pfPan">
-			<v-flex v-for="i in filteredPosts.length > showPostLimits ? showPostLimits : filteredPosts.length" class="pflist" :key="i">
+    	<v-layout xs12 mt-5 wrap id="pfPan">
+			<v-flex xs8 v-for="i in filteredPosts.length > showPostLimits ? showPostLimits : filteredPosts.length" class="pflist" :key="i">
 				<Post
 				:id="filteredPosts[i - 1].id"
 				:date="filteredPosts[i - 1].created_at"
@@ -22,8 +22,7 @@
 				<v-divider></v-divider>
 			</v-flex>
     		<v-flex xs12 text-xs-center round my-5 v-if="loadMore">
-      			        <v-btn color="#3a718c" dark large v-on:click="loadMorePosts()"><v-icon size="25" class="mr-2">fa-plus</v-icon>더 보기</v-btn><br>
-				<!-- <v-btn color="info" dark v-on:click="loadMorePosts"><v-icon size="25" class="mr-2">fa-plus</v-icon> 더 보기</v-btn> -->
+				<v-btn color="#3a718c" dark large v-on:click="loadMorePosts()"><v-icon size="25" class="mr-2">fa-plus</v-icon>더 보기</v-btn><br>
     		</v-flex>
   		</v-layout>
 	</v-container>
