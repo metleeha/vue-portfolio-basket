@@ -1,5 +1,4 @@
 import Vue from 'vue'
-
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
 import VueSimplemde from 'vue-simplemde'
@@ -15,7 +14,6 @@ import IncrementCnt from './services/IncrementCnt'
 
 import firebaseService from './services/FirebaseService'
 
-import VueDisqus from 'vue-disqus'
 export const bus = new Vue()
 
 Vue.config.productionTip = false
@@ -55,8 +53,12 @@ router.beforeEach(function (to, from, next) {
 
 const applicationServerPublicKey = 'BC1hwgbyv5m4x6yWj8I0V5hqir__Pa7Wu4FOwNJkc_jn31CcfpSFrJc7Mk55mTT-r-3bExBZJ0kWsZqGKnfXD70';
 
-let isSubscribed = false;
-let swRegistration = null;
+// // var express = require('express')
+// var pushapp = express.Router()
+
+
+// let isSubscribed = false;
+// let swRegistration = null;
 
 function urlB64ToUint8Array(base64String) {
 	const padding = '='.repeat((4 - base64String.length % 4) % 4);
@@ -73,75 +75,170 @@ function urlB64ToUint8Array(base64String) {
 	return outputArray;
 }
 
-if ('serviceWorker' in navigator && 'PushManager' in window) {
-	console.log('Service Worker and Push is supported');
+// if ('serviceWorker' in navigator && 'PushManager' in window) {
+// 	console.log('Service Worker and Push is supported');
+  
+// 	navigator.serviceWorker.register('sw.js')
+// 	.then(function(swReg) {
+// 	  console.log('Service Worker is registered', swReg);
+  
+// 	  swRegistration = swReg;
+// 	  initialiseUI();
+// 	})
+// 	.catch(function(error) {
+// 	  console.error('Service Worker Error', error);
+// 	});
+//   } else {
+// 	console.warn('Push messaging is not supported');
+//   }
 
-	navigator.serviceWorker.register('sw.js')
-		.then(function (swReg) {
-			console.log('Service Worker is registered', swReg);
+//   function initialiseUI() {
 
-			swRegistration = swReg;
-			initialiseUI();
-		})
-		.catch(function (error) {
-			console.error('Service Worker Error', error);
-		});
-} else {
-	console.warn('Push messaging is not supported');
-}
+// 	if (isSubscribed) {
+// 	  // TODO: Unsubscribe user
+// 	} else {
+// 	  subscribeUser();
+// 	}
 
-function initialiseUI() {
+// 	// Set the initial subscription value
+// 	swRegistration.pushManager.getSubscription()
+// 	.then(function(subscription) {
+// 	  isSubscribed = !(subscription === null);
+  
+// 	  updateSubscriptionOnServer(subscription);
+  
+// 	  if (isSubscribed) {
+// 		console.log('User IS subscribed.');
+// 	  } else {
+// 		console.log('User is NOT subscribed.');
+// 	  }
+// 	});
+//   }
 
-	if (isSubscribed) {
-		// TODO: Unsubscribe user
-	} else {
-		subscribeUser();
-	}
+//   function subscribeUser() {
+// 	const applicationServerKey = urlB64ToUint8Array(applicationServerPublicKey);
 
-	// Set the initial subscription value
-	swRegistration.pushManager.getSubscription()
-		.then(function (subscription) {
-			isSubscribed = !(subscription === null);
+// 	swRegistration.pushManager.subscribe({
+// 	  userVisibleOnly: true,
+// 	  applicationServerKey: applicationServerKey
+// 	})
+// 	.then(function(subscription) {
+// 	  console.log('User is subscribed:', subscription);
+  
+// 	  updateSubscriptionOnServer(subscription);
 
-			updateSubscriptionOnServer(subscription);
+// 	  sendSubscriptionToBackEnd(subscription)
 
-			if (isSubscribed) {
-				console.log('User IS subscribed.');
-			} else {
-				console.log('User is NOT subscribed.');
-			}
-		});
-}
+// 	  isSubscribed = true;
+// 	})
+// 	.catch(function(err) {
+// 	  console.log('Failed to subscribe the user: ', err);
+// 	});
+//   }
+  
+//   function sendSubscriptionToBackEnd(subscription) {
+// 	return fetch('/api/save-subscription/', {
+// 	  method: 'POST',
+// 	  headers: {
+// 		'Content-Type': 'application/json'
+// 	  },
+// 	  body: JSON.stringify(subscription)
+// 	})
+// 	.then(function(response) {
+// 	  if (!response.ok) {
+// 		throw new Error('Bad status code from server.');
+// 	  }
+  
+// 	  return response.json();
+// 	})
+// 	.then(function(responseData) {
+// 	  if (!(responseData.data && responseData.data.success)) {
+// 		throw new Error('Bad response from server.');
+// 	  }
+// 	});
+//   }
 
-function subscribeUser() {
-	const applicationServerKey = urlB64ToUint8Array(applicationServerPublicKey);
+  
 
-	swRegistration.pushManager.subscribe({
-		userVisibleOnly: true,
-		applicationServerKey: applicationServerKey
-	})
-		.then(function (subscription) {
-			console.log('User is subscribed:', subscription);
+//   pushapp.post('/api/save-subscription/', function (req, res) {
+// 	  return saveSubscriptionToDatabase(req.body)
+// 	  .then(function(subscriptionId) {
+// 		res.setHeader('Content-Type', 'application/json');
+// 		res.send(JSON.stringify({ data: { success: true } }));
+// 	  })
+// 	  .catch(function(err) {
+// 		res.status(500);
+// 		res.setHeader('Content-Type', 'application/json');
+// 		res.send(JSON.stringify({
+// 		  error: {
+// 			id: 'unable-to-save-subscription',
+// 			message: 'The subscription was received but we were unable to save it to our database.'
+// 		  }
+// 		}));
+// 	  });
+// })
 
-			updateSubscriptionOnServer(subscription);
+//   function saveSubscriptionToDatabase(subscription) {
+// 	return firebaseService.postSubscription(subscription);
+//   }
 
-			isSubscribed = true;
-		})
-		.catch(function (err) {
-			console.log('Failed to subscribe the user: ', err);
-		});
-}
+//   function updateSubscriptionOnServer(subscription) {
+// 	// // TODO: Send subscription to application server
+// 	// const subscriptionJson = document.querySelector('.js-subscription-json');
+// 	// const subscriptionDetails =
+// 	//   document.querySelector('.js-subscription-details');
+  
+// 	// if (subscription) {
+// 	//   subscriptionJson.textContent = JSON.stringify(subscription);
+// 	//   subscriptionDetails.classList.remove('is-invisible');
+// 	// } else {
+// 	//   subscriptionDetails.classList.add('is-invisible');
+// 	// }
+//   }
 
-function updateSubscriptionOnServer(subscription) {
-	// TODO: Send subscription to application server
-	const subscriptionJson = document.querySelector('.js-subscription-json');
-	const subscriptionDetails =
-		document.querySelector('.js-subscription-details');
+//   const vapidKeys = {
+// 	publicKey:
+//   'BC1hwgbyv5m4x6yWj8I0V5hqir__Pa7Wu4FOwNJkc_jn31CcfpSFrJc7Mk55mTT-r-3bExBZJ0kWsZqGKnfXD70',
+// 	privateKey: '1JRyjA88pExwzcASksxNIuagdAdUR59y64Nk_B5Jrgg'
+//   };
+  
+//   const webpush = require('web-push');
 
-	if (subscription) {
-		subscriptionJson.textContent = JSON.stringify(subscription);
-		subscriptionDetails.classList.remove('is-invisible');
-	} else {
-		subscriptionDetails.classList.add('is-invisible');
-	}
-}
+//   webpush.setVapidDetails(
+// 	'mailto:web-push-book@gauntface.com',
+// 	vapidKeys.publicKey,
+// 	vapidKeys.privateKey
+//   );
+
+//   pushapp.post('/api/trigger-push-msg/', function (req, res) {
+// 	return getSubscriptionFromDatabase()
+//   .then(function(subscriptions) {
+//     let promiseChain = Promise.resolve();
+
+//     for (let i = 0; i < subscriptions.length; i++) {
+//       const subscription = subscriptions[i];
+//       promiseChain = promiseChain.then(() => {
+//         return triggerPushMsg(subscription, dataToSend);
+//       });
+//     }
+
+//     return promiseChain;
+//   })
+// })
+
+//   async function getSubscriptionFromDatabase() {
+// 	const subscriptions = await firebaseService.getSubscription()
+// 	return subscriptions
+//   }
+
+//   const triggerPushMsg = async function(subscription, dataToSend) {
+// 	return await webpush.sendNotification(subscription, dataToSend)
+// 	.catch((err) => {
+// 	  if (err.statusCode === 404 || err.statusCode === 410) {
+// 		console.log('Subscription has expired or is no longer valid: ', err);
+// 		return deleteSubscriptionFromDatabase(subscription._id);
+// 	  } else {
+// 		throw err;
+// 	  }
+// 	});
+//   };
