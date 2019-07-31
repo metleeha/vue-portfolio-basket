@@ -13,17 +13,17 @@ firebase.initializeApp(config)
 
 /* Firebase PWA enable */
 firebase.firestore().enablePersistence()
-  .catch(function(err) {
-      if (err.code == 'failed-precondition') {
-          // Multiple tabs open, persistence can only be enabled
-          // in one tab at a a time.
-          // ...
-      } else if (err.code == 'unimplemented') {
-          // The current browser does not support all of the
-          // features required to enable persistence
-          // ...
-      }
-  });
+	.catch(function (err) {
+		if (err.code == 'failed-precondition') {
+			// Multiple tabs open, persistence can only be enabled
+			// in one tab at a a time.
+			// ...
+		} else if (err.code == 'unimplemented') {
+			// The current browser does not support all of the
+			// features required to enable persistence
+			// ...
+		}
+	});
 
 const firestore = firebase.firestore()
 
@@ -52,7 +52,7 @@ export default {
 	getPortfolios() {
 		const postsCollection = firestore.collection(PORTFOLIOS)
 		return postsCollection
-			.where('deleted','==',false)
+			.where('deleted', '==', false)
 			.orderBy('created_at', 'desc')
 			.get()
 			.then((docSnapshots) => {
@@ -67,17 +67,17 @@ export default {
 	getPortfolio(id) {
 		var cityRef = firestore.collection(PORTFOLIOS).doc(id);
 		var getDoc = cityRef.get()
-		.then(doc => {
-			if (!doc.exists) {
-				console.log('No such document!')
-			} else {
-				console.log(doc.data())
-				return doc.data()
-			}
-		})
-		.catch(err => {
-			console.log('Error getting document', err)
-		})
+			.then(doc => {
+				if (!doc.exists) {
+					console.log('No such document!')
+				} else {
+					console.log(doc.data())
+					return doc.data()
+				}
+			})
+			.catch(err => {
+				console.log('Error getting document', err)
+			})
 
 		return getDoc
 	},
@@ -97,7 +97,7 @@ export default {
 			"img": img,
 		})
 	},
-	deletePortfolio(id){
+	deletePortfolio(id) {
 		return firestore.collection(PORTFOLIOS).doc(id).update({
 			"deleted": true,
 			"deleted_at": firebase.firestore.FieldValue.serverTimestamp()
@@ -277,84 +277,101 @@ export default {
 			return TotalView
 		})
 	},
-	async checkAuthMaster(){
+	async checkAuthMaster() {
 		let user = firebase.auth().currentUser;
 		return firebase.database().ref('/users/')
 			.orderByChild('uid')
 			.equalTo(user.uid)
 			.once('value')
-			.then(function(snapshot){
-				if(snapshot.val().authority == 'master'){
+			.then(function (snapshot) {
+				if (snapshot.val().authority == 'master') {
 					return true;
-				} else{
+				} else {
 					return false;
 				}
-		})
+			})
 	},
-	async checkAuthMember(){
+	async checkAuthMember() {
 		let user = firebase.auth().currentUser;
 		return firebase.database().ref('/users/')
 			.orderByChild('uid')
 			.equalTo(user.uid)
 			.once('value')
-			.then(function(snapshot){
-				if(snapshot.val().authority == 'member'){
+			.then(function (snapshot) {
+				if (snapshot.val().authority == 'member') {
 					return true;
-				} else{
+				} else {
 					return false;
 				}
-		})
-	},
-	async changeAuthMember(uid){
-		if(this.checkAuthMaster){
-			let key =  firebase.database().ref('/users/').orderByChild('uid').equalTo(uid).once('value').then(function(snapshot){
-				snapshot.forEach(function(childSnapshot){
-					firebase.database().ref('/users/'+childSnapshot.key).update({authority: "member"});
-				});
-				
 			})
-		}else{
+	},
+	async changeAuthMember(uid) {
+		if (this.checkAuthMaster) {
+			let key = firebase.database().ref('/users/').orderByChild('uid').equalTo(uid).once('value').then(function (snapshot) {
+				snapshot.forEach(function (childSnapshot) {
+					firebase.database().ref('/users/' + childSnapshot.key).update({ authority: "member" });
+				});
+
+			})
+		} else {
 			alert("권한 관리는 관리자 계정만 가능합니다.");
 			return;
 		}
 	},
-	async changeAuthMaster(uid){
-		if(this.checkAuthMaster){
-			let key =  firebase.database().ref('/users/').orderByChild('uid').equalTo(uid).once('value').then(function(snapshot){
-				snapshot.forEach(function(childSnapshot){
-					firebase.database().ref('/users/'+childSnapshot.key).update({authority: "master"});
+	async changeAuthMaster(uid) {
+		if (this.checkAuthMaster) {
+			let key = firebase.database().ref('/users/').orderByChild('uid').equalTo(uid).once('value').then(function (snapshot) {
+				snapshot.forEach(function (childSnapshot) {
+					firebase.database().ref('/users/' + childSnapshot.key).update({ authority: "master" });
 				});
-				
+
 			})
-		}else{
+		} else {
 			alert("권한 관리는 관리자 계정만 가능합니다.");
 			return;
 		}
 	},
-	async changeAuthMember(uid){
-		if(this.checkAuthMaster){
-			let key =  firebase.database().ref('/users/').orderByChild('uid').equalTo(uid).once('value').then(function(snapshot){
-				snapshot.forEach(function(childSnapshot){
-					firebase.database().ref('/users/'+childSnapshot.key).update({authority: "member"});
+	async changeAuthMember(uid) {
+		if (this.checkAuthMaster) {
+			let key = firebase.database().ref('/users/').orderByChild('uid').equalTo(uid).once('value').then(function (snapshot) {
+				snapshot.forEach(function (childSnapshot) {
+					firebase.database().ref('/users/' + childSnapshot.key).update({ authority: "member" });
 				});
-				
+
 			})
-		}else{
+		} else {
 			alert("권한 관리는 관리자 계정만 가능합니다.");
 			return;
 		}
 	},
-	async changeAuthVisitor(uid){
-		if(this.checkAuthMaster){
-			let key =  firebase.database().ref('/users/').orderByChild('uid').equalTo(uid).once('value').then(function(snapshot){
-				snapshot.forEach(function(childSnapshot){
-					firebase.database().ref('/users/'+childSnapshot.key).update({authority: "visitor"});
+	async changeAuthVisitor(uid) {
+		if (this.checkAuthMaster) {
+			let key = firebase.database().ref('/users/').orderByChild('uid').equalTo(uid).once('value').then(function (snapshot) {
+				snapshot.forEach(function (childSnapshot) {
+					firebase.database().ref('/users/' + childSnapshot.key).update({ authority: "visitor" });
 				});
-				
+
 			})
-		}else{
+		} else {
 			alert("권한 관리는 관리자 계정만 가능합니다.");
 			return;
 		}
+	},
+	async getUser(uid) {
+		if (uid != null) {
+			let user = await firebase.database().ref('/users/').orderByChild('uid').equalTo(uid).once('value').then(function (snapshot) {
+				return snapshot.val();	
+			})
+			console.log("===================================================================");
+			console.log(uid);
+			console.log(user);
+			console.log("===================================================================");
+			return { name: user.name, email: user.email, authority: user.authority };
+		} else {
+			return { name: 'Anonymous', email: 'None', authority: 'visitor' };
+		}
+	},
+	onAuthStateChanged(f) {
+		return firebase.auth().onAuthStateChanged(f);
 	}
 }

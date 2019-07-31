@@ -13,7 +13,7 @@ import './registerServiceWorker'
 
 import IncrementCnt from './services/IncrementCnt'
 
-import firebase from 'firebase'
+import firebaseService from './services/FirebaseService'
 
 import VueDisqus from 'vue-disqus'
 export const bus = new Vue()
@@ -33,30 +33,18 @@ Vue.use(Vuetify, {
 Vue.use(VueSimplemde)
 
 Vue.use(VueDisqus)
-let app;
 
-firebase.auth().onAuthStateChanged(function (user) {
-	if(!app){
-		app = new Vue({
-			router,
-			store,
-			render: h => h(App) 
-		}).$mount('#app')
-	}
-	if (user) {
-		// User is signed in.
-		if(user.isAnonymous){
-			store.state.user = {name: 'Anonymous', email: 'None'}
-		}else{
-			store.state.user = {name: user.displayName, email: user.email }
-		}
-		
-	} else {
-		// User is signed out.
-		// ...
-	}
+firebaseService.onAuthStateChanged(function (user) {
+	let uid = user.uid;
+	let userInfo = firebaseService.getUser(uid);
+	store.commit('setUser', user);
+
+	new Vue({
+		router,
+		store,
+		render: h => h(App) 
+	}).$mount('#app')
 });
-
 
 router.beforeEach(function(to, from, next) {
 	IncrementCnt.Increment(to.name)

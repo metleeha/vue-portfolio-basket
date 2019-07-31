@@ -195,14 +195,14 @@ export default {
             const result = await FirebaseService.signIn(this.email, this.password)
             if (result) {
                 alert("Sign in with E-mail!");
-                this.$store.state.commit("setUser", result.user);
+                this.$store.commit("setUser", result.user);
                 this.dialog = false;
             }
         },
         async signOut() {
             const result = await FirebaseService.signOut();
             if (result) {
-                this.$store.state.commit("setUser", '');
+                this.$store.commit("setUser", '');
                 alert("Sign out completed!");
                 this.clear()
             }
