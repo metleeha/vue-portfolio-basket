@@ -13,7 +13,7 @@
 		</v-layout>
 		<!-- Post List -->
     	<v-layout mt-5 xs12 row wrap id="pfPan" >
-			<v-flex xs8 v-for="i in filteredPosts.length > showPostLimits ? showPostLimits : filteredPosts.length" class="pflist" :key="i">
+			<v-flex xs10 v-for="i in filteredPosts.length > showPostLimits ? showPostLimits : filteredPosts.length" class="pflist" :key="i">
 				<Post 
 				:id="filteredPosts[i - 1].id"
 				:date="filteredPosts[i - 1].created_at"
