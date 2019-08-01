@@ -14,7 +14,7 @@
     "core-js": "^2.6.5",
     "cors": "^2.8.5",
     "date-and-time": "^0.8.1",
-    "express": "^4.17.1",
+    "epic-spinners": "^1.1.0",
     "firebase": "^6.3.0",
     "firebaseui": "^4.1.0",
     "hchs-vue-charts": "^1.2.8",
