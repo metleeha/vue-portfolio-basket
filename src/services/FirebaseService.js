@@ -390,9 +390,7 @@ export default {
 		if (!user) {
 			return false;
 		}
-		return await firebase.database().ref('/users/')
-			.orderByChild('uid')
-			.equalTo(user.uid)
+		return await firebase.database().ref('/users/'+user.uid)
 			.once('value')
 			.then(function (snapshot) {
 				console.log(snapshot.val());

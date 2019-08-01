@@ -73,7 +73,7 @@ const router = new Router({
 					next();
 				}else{
 					alert('admin 접근 권한이 필요합니다.');
-					next('/');
+					next('/')
 				}
 			}
 		}
