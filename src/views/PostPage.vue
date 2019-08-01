@@ -15,7 +15,7 @@
         <!-- Post Writer --->
         <transition name="fade">
             <v-layout v-if="newToggle" xs12 justify-center>
-                <PostWriter v-show="isMember" />
+                <PostWriter />
             </v-layout>
         </transition>
         <!-- Post -->
@@ -58,14 +58,6 @@ export default {
     computed: {
         getNewTogglePost() {
             return this.$store.getters.getNewTogglePost
-        },
-        isMember() {
-            auth = this.$store.getter.getUser.Auth;
-            if (auth == 'member' || auth == 'master') {
-                return true;
-            } else {
-                return false;
-            }
         },
         authCheck() {
             const user = this.$store.getters.getUser;

@@ -59,6 +59,7 @@ export default {
         },
         authCheck() {
             const user = this.$store.getters.getUser;
+
             if (user) {
                 if (user.authority == "master" || user.authority == "member") {
                     return true;
