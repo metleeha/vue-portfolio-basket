@@ -63,7 +63,6 @@ messaging.getToken().then(function (currentToken) {
 			data.forEach(function (elem) {
 				if (elem.token == currentToken) {
 					flag = true
-					throw "Already Saved";
 				}
 			})
 			if (!flag) {
