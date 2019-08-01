@@ -11,7 +11,7 @@
         <v-toolbar color="primary" dark>
             <v-toolbar-title><span class="headline">회원 정보 수정</span></v-toolbar-title>
             <v-spacer></v-spacer>
-            <v-btn icon dark @click="dialog = false">
+            <v-btn icon dark @click="clear">
                 <v-icon>close</v-icon>
             </v-btn>
         </v-toolbar>
@@ -20,17 +20,18 @@
                 <v-container grid-list-md text-xs-center>
 
                     <v-layout wrap row>
-                        <v-text-field class="input-with-icon" name='email' label='E-Mail' id='signUpEmail' v-model='email' type='email' prepend-icon="mail_outline" required></v-text-field>
-                        <v-text-field class="input-with-icon" name='name' label='Name' id='name' v-model='name' type='text' prepend-icon="face" required></v-text-field>
-                        <v-text-field class="input-with-icon" name='password' label='Password' id='signUpPassword' v-model='password' type='password' prepend-icon="lock" required></v-text-field>
+                        <v-text-field class="input-with-icon" name='email' label='E-Mail' id='Email' v-model='email' type='email' prepend-icon="mail_outline" required disabled></v-text-field>
+                        <v-text-field class="input-with-icon" name='name' label='Name' id='name' v-model='name' type='text' prepend-icon="face"></v-text-field>
+                        <v-text-field class="input-with-icon" name='password' label='Recent password' id='Password' v-model='beforePassword' type='password' prepend-icon="lock" required></v-text-field>
+                        <v-text-field class="input-with-icon" name='password' label='Password' id='Password' v-model='password' type='password' prepend-icon="lock" required></v-text-field>
                         <v-text-field class="input-with-icon" name='confirmPassword' label='confirmPassword' id='confirmPassword' v-model='confirmPassword' type='password' prepend-icon="check_circle" :rules="[comparePasswords]" required></v-text-field>
                     </v-layout>
                     <v-layout wrap row>
                         <v-flex xs6>
-                            <v-btn round color="primary" block @click="signUp">Sign Up</v-btn>
+                            <v-btn round color="primary" block @click="modify">Modify</v-btn>
                         </v-flex>
                         <v-flex xs6>
-                            <v-btn round color="secondary" block @click="isSignUp = false">Back</v-btn>
+                            <v-btn round color="secondary" block @click="clear">Back</v-btn>
                         </v-flex>
                     </v-layout>
 
@@ -48,14 +49,14 @@ import FirebaseService from '@/services/FirebaseService'
 import store from '../store'
 
 export default {
-    name: 'signInMenu',
+    name: 'modifyUser',
     store,
     data() {
         return {
             dialog: false,
-            title: 'Sign In',
             name: '',
             email: '',
+            beforePassword: '',
             password: '',
             confirmPassword: '',
             confirmRule: false,
@@ -63,15 +64,24 @@ export default {
     },
     components: {},
     methods: {
+        modify(){
+            if(firebase.modifyMyInfo(this.name, this.password)){
+                alert('변경 완료');
+            }
+        },
         clear() {
-            this.name = '';
-            this.email = '';
+            this.beforePassword= '';
             this.password = '';
             this.confirmPassword = '';
             this.confirmRule = false;
+            this.dialog = false;
         }
     },
-    mounted: function () {},
+    mounted: function () {
+        let user = this.$store.getters.getUser;
+        this.name = user.name;  
+        this.email = user.email;
+    },
     computed: {
         comparePasswords() {
             return this.password !== this.confirmPassword ? 'Passwords do not match' : ''

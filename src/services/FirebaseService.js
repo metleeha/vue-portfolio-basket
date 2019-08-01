@@ -36,76 +36,76 @@ const messaging = firebase.messaging();
 messaging.usePublicVapidKey(config.vapid)
 console.log(config.vapid)
 
-Notification.requestPermission().then(function(permission){
-  if(permission === 'granted'){
-    console.log("firebase permission granted");
-  }else{
-    console.log("firebase permission rejected");
-  }
+Notification.requestPermission().then(function (permission) {
+	if (permission === 'granted') {
+		console.log("firebase permission granted");
+	} else {
+		console.log("firebase permission rejected");
+	}
 })
 
-messaging.onTokenRefresh(function() {
-  messaging.getToken().then(function(refreshedToken) {
-	console.log('Token refreshed.');
-	
-	
-  }).catch(function(err) {
-    console.log('Unable to retrieve refreshed token ', err);
-  });
+messaging.onTokenRefresh(function () {
+	messaging.getToken().then(function (refreshedToken) {
+		console.log('Token refreshed.');
+
+
+	}).catch(function (err) {
+		console.log('Unable to retrieve refreshed token ', err);
+	});
 });
 
-messaging.getToken().then(function(currentToken) {
+messaging.getToken().then(function (currentToken) {
 	console.log(currentToken)
-  if (currentToken) {
-	var flag = false;
-	console.log("getted" , currentToken);
-	getTopics().then(function (data){
-	  data.forEach(function (elem){
-		if(elem.token == currentToken){
-		  flag = true
-		  throw "Already Saved";
-		}
-	  })
-	  if(!flag){
-		firestore.collection(TOPIC_TOKEN).add({
-		  token : currentToken,
-		  created_at : firebase.firestore.FieldValue.serverTimestamp()
+	if (currentToken) {
+		var flag = false;
+		console.log("getted", currentToken);
+		getTopics().then(function (data) {
+			data.forEach(function (elem) {
+				if (elem.token == currentToken) {
+					flag = true
+					throw "Already Saved";
+				}
+			})
+			if (!flag) {
+				firestore.collection(TOPIC_TOKEN).add({
+					token: currentToken,
+					created_at: firebase.firestore.FieldValue.serverTimestamp()
+				})
+				console.log("Saved")
+			}
 		})
-		console.log("Saved")
-	  }
-	})
-  } else {
-	console.log('No Instance ID token available. Request permission to generate one.');
-  }
-}).catch(function(err) {
-  console.log('An error occurred while retrieving token. ', err);
+	} else {
+		console.log('No Instance ID token available. Request permission to generate one.');
+	}
+}).catch(function (err) {
+	console.log('An error occurred while retrieving token. ', err);
 })
 
-messaging.onMessage(function(payload) {
-  console.log('[firebase-messaging-sw.js] Received background message ', payload);
-  // Customize notification here
-  var notificationTitle =  payload.data.title;
-  var notificationOptions = {
-    body: payload.data.str,
-    icon: '/firebase-logo.png'
-  };
+messaging.onMessage(function (payload) {
+	console.log('[firebase-messaging-sw.js] Received background message ', payload);
+	// Customize notification here
+	var notificationTitle = payload.data.title;
+	var notificationOptions = {
+		body: payload.data.str,
+		icon: '/firebase-logo.png'
+	};
 
-  return self.registration.showNotification(notificationTitle,
-    notificationOptions);
+	return self.registration.showNotification(notificationTitle,
+		notificationOptions);
 })
 
-function getTopics(){
-  const postsCollection = firestore.collection(TOPIC_TOKEN)
-  return postsCollection
-    .orderBy('created_at', 'desc')
-    .get()
-    .then((docSnapshots) => {
-      return docSnapshots.docs.map((doc) => {
-        let data = doc.data()
-        data.created_at = new Date(data.created_at.toDate())
-        return data
-      })
-    })
+function getTopics() {
+	const postsCollection = firestore.collection(TOPIC_TOKEN)
+	return postsCollection
+		.orderBy('created_at', 'desc')
+		.get()
+		.then((docSnapshots) => {
+			return docSnapshots.docs.map((doc) => {
+				let data = doc.data()
+				data.created_at = new Date(data.created_at.toDate())
+				return data
+			})
+		})
 }
 
 
@@ -313,7 +313,7 @@ export default {
 			data.user.updateProfile({
 				displayName: name,
 			});
-			database.ref('/users/'+data.user.uid).set ({
+			database.ref('/users/' + data.user.uid).set({
 				name: name,
 				email: email,
 				authority: 'visitor',
@@ -408,9 +408,7 @@ export default {
 		if (!user) {
 			return false;
 		}
-		return await firebase.database().ref('/users/')
-			.orderByChild('uid')
-			.equalTo(user.uid)
+		return await firebase.database().ref('/users/' + user.uid)
 			.once('value')
 			.then(function (snapshot) {
 				const auth = snapshot.val().authority;
@@ -475,7 +473,7 @@ export default {
 	},
 	async getUser(uid) {
 		if (uid != null) {
-			let user = await database.ref('/users/'+uid).once('value').then(function (snapshot) {
+			let user = await database.ref('/users/' + uid).once('value').then(function (snapshot) {
 				return snapshot.val();
 			})
 			return user;
@@ -485,6 +483,32 @@ export default {
 	},
 	onAuthStateChanged(f) {
 		return firebase.auth().onAuthStateChanged(f);
+	},
+	modifyMyInfo(name, password) {
+		const user = firebase.auth().currentUser;
+		let result = true;
+
+		//패스워드 변경
+		result = result & user.updatePassword(password).then(function () {
+			return true;
+		}).catch(function (error) {
+			alert("패스워드 변경 실패");
+			return false;
+		});
+
+		//이름 변경
+		result = result & user.updateProfile({
+			displayName: name
+		}).then(function () {
+			// Update successful.
+			return true;
+		}).catch(function (error) {
+			alert("이름 변경 실패");
+			return false;
+		});
+
+		result = result & database.ref('/users/' + user.uid+'/name/').update(name);
+		return result;
 	}
 
 }
