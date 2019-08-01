@@ -410,14 +410,11 @@ export default {
 		if (!user) {
 			return false;
 		}
-		return await firebase.database().ref('/users/'+user.uid)
+		return await firebase.database().ref('/users/')
+			.orderByChild('uid')
+			.equalTo(user.uid)
 			.once('value')
 			.then(function (snapshot) {
-				console.log("=================================")
-				console.log(snapshot)
-				console.log("=================================")
-				console.log(snapshot.val())
-				console.log("=================================")
 				const auth = snapshot.val().authority;
 				if (auth == 'member' || auth == 'master') {
 					return true;
