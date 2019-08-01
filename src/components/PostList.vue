@@ -12,9 +12,9 @@
 			</v-flex>
 		</v-layout>
 		<!-- Post List -->
-    	<v-layout xs12 mt-5 wrap id="pfPan">
+    	<v-layout mt-5 xs12 row wrap id="pfPan" >
 			<v-flex xs8 v-for="i in filteredPosts.length > showPostLimits ? showPostLimits : filteredPosts.length" class="pflist" :key="i">
-				<Post
+				<Post 
 				:id="filteredPosts[i - 1].id"
 				:date="filteredPosts[i - 1].created_at"
 				:title="filteredPosts[i - 1].title"
@@ -88,11 +88,6 @@ export default {
 }
 </script>
 <style>
-/* 
-  .mw-700 {
-    max-width: 700px;
-    margin: auto;
-  } */
   #pfPan {
     display: inline-flex;
     justify-content: center;
