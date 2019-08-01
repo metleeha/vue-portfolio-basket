@@ -172,7 +172,7 @@ export default {
   font-family: 'Literata', 'Noto Serif KR', serif;
   font-weight: 700;
   font-style: italic;
-  font-size: 5vw;
+  font-size: 40px;
 }
 .page-author{
   text-align: left;
@@ -181,15 +181,15 @@ export default {
 }
 .page-author p {
   font-family: 'Literata', 'Noto Serif KR', serif;
-  font-size: 2vw;
-  margin-bottom: 2em;
+  font-size: 1.5em;
+  margin-bottom: 1em;
 }
 .page-img{
   margin-bottom: 2em;
 }
 .page-body p{
   font-family: 'Literata', 'Noto Serif KR', serif;
-  font-size: 1.5em;
+  font-size: 1.2em;
   word-break: normal;
   padding: 0.5em 0.5em;
   margin-bottom: 1em;
@@ -200,7 +200,6 @@ export default {
   padding-left: 0.5em;
   margin-bottom: 2em;
   text-decoration: none;
-
 }
 .fade-enter-active, .fade-leave-active {
   transition: opacity .5s;
