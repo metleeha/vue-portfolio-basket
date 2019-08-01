@@ -42,6 +42,8 @@
                 <v-icon left>assessment</v-icon>Post</v-btn>
             <UserMenu v-if="this.isSignined"></UserMenu>
             <SignInMenu v-else></SignInMenu>
+            <v-btn flat @click="signOut" v-if="this.isSignined">
+            <v-icon left >close</v-icon>Logout</v-btn>
         </v-toolbar-items>
     </v-toolbar>
     <!-- end navbar -->
@@ -78,6 +80,7 @@
 import TranslateBtn from './TranslateBtn'
 import SignInMenu from './SignInMenu'
 import UserMenu from './UserMenu'
+import FirebaseService from '@/services/FirebaseService'
 
 export default {
     name: 'Header',
@@ -106,6 +109,14 @@ export default {
             })
             this.$vuetify.goTo(0)
             behavior: "smooth"
+        },
+        async signOut() {
+            const result = await FirebaseService.signOut();
+            if (result) {
+                this.$store.commit("setUser", '');
+                alert("Sign out completed!");
+
+            }
         }
     },
     computed: {
