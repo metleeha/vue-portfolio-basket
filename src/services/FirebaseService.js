@@ -34,13 +34,8 @@ firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION);
 const firestore = firebase.firestore();
 const database = firebase.database();
 const messaging = firebase.messaging();
-<<<<<<< HEAD
 messaging.usePublicVapidKey(config.vapid)
 console.log(config.vapid)
-=======
-
-messaging.usePublicVapidKey("BC1hwgbyv5m4x6yWj8I0V5hqir__Pa7Wu4FOwNJkc_jn31CcfpSFrJc7Mk55mTT-r-3bExBZJ0kWsZqGKnfXD70")
->>>>>>> cebbf8606dfa4736931eb94456a45293ce6b3a1e
 
 Notification.requestPermission().then(function(permission){
   if(permission === 'granted'){
