@@ -1,8 +1,8 @@
 <template>
 	<v-container>
 		<!-- Post Search Bar -->
-		<v-layout row wrap justify-center text-xs-center>
-			<v-flex xs8>
+		<v-layout xs12 row wrap justify-center text-xs-center>
+			<v-flex xs10>
 				<v-text-field 
 				prepend-inner-icon="fa-search"
 				v-model="search"
