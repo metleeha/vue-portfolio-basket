@@ -4,7 +4,7 @@
       
       <!-- dialog acticator section --> 
       <template v-slot:activator="{ on }">
-        <v-card max-width="260px;" class="portfolio--card" v-on="on">
+        <v-card class="portfolio--card" v-on="on">
           <v-img :src="imgSrc" height="200px">
           </v-img>
           <v-card-title primary-title>

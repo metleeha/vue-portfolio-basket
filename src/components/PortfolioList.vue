@@ -110,7 +110,7 @@ export default {
     margin: auto;
   } */
   #pfPan {
-    display: inline-flex;
+    display: inline-block;
     justify-content: center;
     text-align: center;
     width: 100%;
@@ -118,6 +118,7 @@ export default {
   .pflist {
     display: inline-block;
     width: 250px;
+    max-width: 250px;
     margin: 10px;
   }
 
