@@ -16,7 +16,7 @@
 			<v-flex v-for="i in filteredPosts.length > showPostLimits ? showPostLimits : filteredPosts.length" class="pflist" :key="i">
 				<Post
 				:id="filteredPosts[i - 1].id"
-				:date="filteredPosts[i - 1].created_at"
+				:date="new Date(filteredPosts[i - 1].created_at.toDate())"
 				:title="filteredPosts[i - 1].title"
 				:body="filteredPosts[i - 1].body"></Post>
 				<v-divider></v-divider>
@@ -57,7 +57,7 @@ export default {
 		async getPostsFirebase() {
 			var ps = await FirebaseService.getPosts()
 			while (ps[0].created_at == null) {
-				ps = await FirebaseService.getPortfolios()
+				ps = await FirebaseService.getPosts()
 			}
 			this.$store.state.posts = ps
 		},
