@@ -18,7 +18,7 @@
 <script>
 import FirebaseService from '@/services/FirebaseService'
 import store from '../store'
-import ModiUserInfo from './ModiUserInfo'
+import ModiUserInfo from './ModifyUserInfo'
 
 export default {
     name: 'userMenu',
