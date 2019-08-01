@@ -7,7 +7,6 @@ import 'firebase/database'
 const POSTS = 'posts'
 const PORTFOLIOS = 'portfolios'
 const BANNERIMAGE = 'bannerimage'
-const SUBSCRIPTION = 'subscription'
 const TOPIC_TOKEN = 'topic_token'
 
 // Setup Firebase
@@ -34,8 +33,8 @@ firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION);
 const firestore = firebase.firestore();
 const database = firebase.database();
 const messaging = firebase.messaging();
-
-messaging.usePublicVapidKey("BC1hwgbyv5m4x6yWj8I0V5hqir__Pa7Wu4FOwNJkc_jn31CcfpSFrJc7Mk55mTT-r-3bExBZJ0kWsZqGKnfXD70")
+messaging.usePublicVapidKey(config.vapid)
+console.log(config.vapid)
 
 Notification.requestPermission().then(function(permission){
   if(permission === 'granted'){

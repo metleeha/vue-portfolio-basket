@@ -21,7 +21,7 @@ yarn-error.log*
 *.sw*
 
 # Firebase
-# .firebase
+.firebase
 
 # GoogleAPIkey & ssafy.lab
 # ignore_apikeys.json
