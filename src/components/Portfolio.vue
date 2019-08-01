@@ -1,10 +1,10 @@
 <template>
   <v-layout row justify-center>
-    <v-dialog v-model="dialog_portfolio" fullscreen hide-overlay transition="dialog-bottom-transition">
+    <v-dialog v-model="dialog_portfolio" width="60%" scrollable transition="dialog-bottom-transition">
       
       <!-- dialog acticator section --> 
       <template v-slot:activator="{ on }">
-        <v-card max-width="260" class="portfolio--card" v-on="on">
+        <v-card max-width="260px;" class="portfolio--card" v-on="on">
           <v-img :src="imgSrc" height="200px">
           </v-img>
           <v-card-title primary-title>
@@ -17,13 +17,13 @@
       </template>
 
       <!-- dialog-portfoilo section --> 
-      <v-container grid-list-md>
+      <!-- <v-container grid-list-md> -->
         <v-layout row wrap>
-          <v-flex xs12 d-inline-flex justify-space-around class="px-0 py-5">
-            <v-flex xs2 >
+          <v-flex xs12 d-inline-block justify-space-around class="px-0">
+            <!-- <v-flex xs2 >
               <v-btn fab dark color="#1c2938" @click="dialog_portfolio = false"><v-icon>close</v-icon></v-btn>
-            </v-flex>
-            <v-flex xs10 class="px-0">
+            </v-flex> -->
+            <v-flex xs12 class="px-0">
               <v-card dark white--text color="#1c2938">
                 <v-img :src="imgSrc" id="portfolio--image"></v-img>
                 <v-card-title primary-title>
@@ -46,7 +46,7 @@
             </v-flex>
           </v-flex>
         </v-layout>
-      </v-container>
+      <!-- </v-container> -->
     
     </v-dialog>
   </v-layout>
@@ -62,7 +62,7 @@ export default {
 		date: {type: String},
 		title: {type: String},
 		body: {type: String},
-		imgSrc: {type: String},
+    imgSrc: {type: String},
 	},
 	data() {
 		return {
