@@ -7,7 +7,6 @@ import 'firebase/database'
 const POSTS = 'posts'
 const PORTFOLIOS = 'portfolios'
 const BANNERIMAGE = 'bannerimage'
-const SUBSCRIPTION = 'subscription'
 const TOPIC_TOKEN = 'topic_token'
 
 // Setup Firebase
