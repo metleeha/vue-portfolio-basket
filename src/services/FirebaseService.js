@@ -30,7 +30,8 @@ firebase.firestore().enablePersistence()
 
 const firestore = firebase.firestore()
 const messaging = firebase.messaging();
-messaging.usePublicVapidKey("BC1hwgbyv5m4x6yWj8I0V5hqir__Pa7Wu4FOwNJkc_jn31CcfpSFrJc7Mk55mTT-r-3bExBZJ0kWsZqGKnfXD70")
+messaging.usePublicVapidKey(config.vapid)
+console.log(config.vapid)
 
 Notification.requestPermission().then(function(permission){
   if(permission === 'granted'){
