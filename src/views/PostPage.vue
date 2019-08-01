@@ -5,24 +5,25 @@
     </ImgBanner>
     <v-container>
       <!-- Add New Post Button -->
-      <v-layout xs12 justify-center>
-        <v-flex xs12 text-xs-center mt-5>
-          <v-btn @click="newToggle = !newToggle" block flat large :color="newToggle? '#f0bebe':'#3a718c'"><v-icon left>fa-chevron-down</v-icon>New Post</v-btn>
-        </v-flex>
+      <v-layout xs12 justify-center v-show="authCheck">
+          <v-flex xs12 text-xs-center mt-5>
+              <v-btn @click="newToggle = !newToggle" block flat large :color="newToggle? '#f0bebe':'#3a718c'">
+                  <v-icon left>fa-chevron-down</v-icon>New Post
+              </v-btn>
+          </v-flex>
       </v-layout>
       <!-- Post Writer --->
       <transition name="fade">
-        <v-layout v-if="newToggle" xs12 justify-center>
-          <PostWriter v-show="isMember"/>
-        </v-layout>
+          <v-layout v-if="newToggle" xs12 justify-center>
+              <PostWriter />
+          </v-layout>
       </transition>
       <!-- Post -->
       <v-layout>
-        <v-flex xs12>
-          <PostList :limits="6" :load-more="true"></PostList>
-        </v-flex>
+          <v-flex xs12>
+              <PostList :limits="6" :load-more="true"></PostList>
+          </v-flex>
       </v-layout>
-
     </v-container>
   </div>
 </template>
@@ -34,29 +35,41 @@ import PostWriter from '../components/PostWriter'
 import FirebaseService from '@/services/FirebaseService'
 
 export default {
-	name: 'PostPage',
-	components: {
-		ImgBanner,
-    PostList,
-    PostWriter
-	},
-  data(){
-    return {
-      newToggle: false,
-    }
-  },
-  methods:{
-    updatePost(state){
-      if(state){
-        this.$store.state.newTogglePost = false
-        this.newToggle = false
-      }
-    }
-  },
-  computed: {
-    getNewTogglePost(){
-			return this.$store.getters.getNewTogglePost
+    name: 'PostPage',
+    components: {
+        ImgBanner,
+        PostList,
+        PostWriter
     },
+    data() {
+        return {
+            newToggle: false,
+        }
+    },
+    methods: {
+        updatePost(state) {
+            if (state) {
+                this.$store.state.newTogglePost = false
+                this.newToggle = false
+            }
+        }
+    },
+    computed: {
+        getNewTogglePost() {
+            return this.$store.getters.getNewTogglePost
+        },
+        authCheck() {
+            const user = this.$store.getters.getUser;
+            if (user) {
+                if (user.authority == "master" || user.authority == "member") {
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        },
     isMember(){
       auth = this.$store.getter.getUser.Auth;
       if( auth == 'member' || auth == 'master'){
