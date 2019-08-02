@@ -35,9 +35,6 @@ Vue.use(VueDisqus)
 let app = null;
 
 firebaseService.onAuthStateChanged( async function (user) {
-	console.log("================================================");
-	console.log(user);
-	console.log("================================================");
 	if(user){
 		let uid = user.uid;
 		let userInfo = await firebaseService.getUser(uid);

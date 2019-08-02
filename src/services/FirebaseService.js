@@ -34,11 +34,11 @@ const firestore = firebase.firestore();
 const database = firebase.database();
 const messaging = firebase.messaging();
 messaging.usePublicVapidKey(config.vapid)
-console.log(config.vapid)
+// console.log(config.vapid)
 
 Notification.requestPermission().then(function (permission) {
 	if (permission === 'granted') {
-		console.log("firebase permission granted");
+		// console.log("firebase permission granted");
 	} else {
 		console.log("firebase permission rejected");
 	}
@@ -55,10 +55,10 @@ messaging.onTokenRefresh(function () {
 });
 
 messaging.getToken().then(function (currentToken) {
-	console.log(currentToken)
+	// console.log(currentToken)
 	if (currentToken) {
 		var flag = false;
-		console.log("getted", currentToken);
+		// console.log("getted", currentToken);
 		getTopics().then(function (data) {
 			data.forEach(function (elem) {
 				if (elem.token == currentToken) {
