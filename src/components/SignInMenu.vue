@@ -84,7 +84,6 @@
                             <v-btn round color="secondary" block @click="isSignUp = false">Back</v-btn>
                         </v-flex>
                     </v-layout>
-
                 </v-container>
             </v-form>
         </v-responsive>
@@ -158,26 +157,16 @@ export default {
             ]
         }
     },
-    components: {},
+    components: {
+    },
     methods: {
         async socialLogin(service) {
             let result = null;
-            switch (service) {
-                case "Google":
-                    result = await FirebaseService.signInWithGoogle()
-                    break;
-                case "Facebook":
-                    result = await FirebaseService.signInWithFacebook()
-                    break;
-                case "Github":
-                    result = await FirebaseService.signInWithGithub();
-                    break;
-                case "Anonymous":
-                    result = await FirebaseService.signInAnonymously();
-                    break;
+            result = await FirebaseService.signInWith(service);
+            if (result) {
+                this.dialog = false;
+                alert("Sign in with " + service);
             }
-            this.$store.state.user = result.user;
-            this.dialog = false;
         },
         async signUp() {
             const result = await FirebaseService.signUp(this.email, this.password, this.name)
@@ -193,7 +182,6 @@ export default {
             const result = await FirebaseService.signIn(this.email, this.password)
             if (result) {
                 alert("Sign in with E-mail!");
-                this.$store.commit("setUser", result.user);
                 this.dialog = false;
             }
         },

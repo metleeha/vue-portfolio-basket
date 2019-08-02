@@ -17,7 +17,7 @@
 import store from './store'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
-
+var config = require('../ignore/googleAPI.json')
 
 export default {
 	name: 'App',
@@ -59,11 +59,17 @@ export default {
     // Mobile Safari   : Mozilla/5.0 (iPod; U; CPU iPhone OS 3_1_3 like Mac OS X; ko-kr) AppleWebKit/528.18 (KHTML, like Gecko) Version/4.0 Mobile/7E18 Safari/528.16
     // Android Web Browser : Mozilla/5.0 (Linux; U; Android 2.1-update1; ko-kr; Nexus One Build/ERE27) AppleWebKit/530.17 (KHTML, like Gecko) Version/4.0 Mobile Safari/530.17
     // Opera Mini      : Opera/9.80 (J2ME/MIDP; Opera Mini/5.0.18302/1114; U; en) Presto/2.4.15
+    
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
-  },
+      ga('create', config.googleAnalytics , 'auto');
+      ga('send', 'pageview');
+    },
 
 }
-
 </script>
 <style scoped>
   #back {
