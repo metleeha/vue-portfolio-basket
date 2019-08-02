@@ -32,19 +32,25 @@ Vue.use(Vuetify, {
 Vue.use(VueSimplemde)
 
 Vue.use(VueDisqus)
+let app = null;
 
 firebaseService.onAuthStateChanged( async function (user) {
+	console.log("================================================");
+	console.log(user);
+	console.log("================================================");
 	if(user){
 		let uid = user.uid;
 		let userInfo = await firebaseService.getUser(uid);
 		store.commit('setUser', userInfo);
 	}
 
-	new Vue({
-		router,
-		store,
-		render: h => h(App)
-	}).$mount('#app')
+	if(!app){
+		app = new Vue({
+			router,
+			store,
+			render: h => h(App)
+		}).$mount('#app');
+	}
 });
 
 router.beforeEach(function (to, from, next) {

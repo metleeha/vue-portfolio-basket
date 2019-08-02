@@ -230,39 +230,43 @@ export default {
 			img
 		})
 	},
-	signInWithGoogle() {
-		let provider = new firebase.auth.GoogleAuthProvider()
-		return firebase.auth().signInWithPopup(provider).then(function (result) {
-			let accessToken = result.credential.accessToken
-			let user = result.user
-			return result
-		}).catch(function (error) {
-			console.error('[Google Login Error]', error)
-		})
-	},
-	signInWithFacebook() {
-		let provider = new firebase.auth.FacebookAuthProvider();
-		return firebase.auth().signInWithPopup(provider).then(function (result) {
+	async signInWith(service) {
+		let provider = null;
+		switch (service) {
+			case "Google":
+				provider = new firebase.auth.GoogleAuthProvider();
+				break;
+			case "Facebook":
+				provider = new firebase.auth.FacebookAuthProvider();
+				break;
+			case "Github":
+				provider = new firebase.auth.GithubAuthProvider();
+				break;
+			case "Anonymous":
+				return firebase.auth().signInAnonymously().then(function () {
+					return true;
+				}).catch(function (error) {
+					// Handle Errors here.
+					var errorCode = error.code;
+					var errorMessage = error.message;
+					// ...
+					console.error('[anonymous] Login Error]', error)
+					return false;
+				});
+		}
 
-			// This gives you a Facebook Access Token. You can use it to access the Facebook API.
-			let token = result.credential.accessToken;
-			// The signed-in user info.
-			let user = result.user;
-			return result;
-			// ...
-		}).catch(function (error) {
-			console.error('[Facebook Login Error]', error)
-		});
-	},
-	signInWithGithub() {
-		let provider = new firebase.auth.GithubAuthProvider();
-		return firebase.auth().signInWithPopup(provider).then(function (result) {
-			// This gives you a GitHub Access Token. You can use it to access the GitHub API.
-			var token = result.credential.accessToken;
-			// The signed-in user info.
-			var user = result.user;
-			return result;
-			// ...
+		return await firebase.auth().signInWithPopup(provider).then(async function (result) {
+			let user = result.user
+			let isExist = await database.ref('/users/').once('value')
+					.then(function (data) { 
+						return data.child(user.uid).exists();
+					});
+					
+			if(!isExist){
+				await database.ref('/users/'+user.uid).set({name: user.displayName, email: user.email, authority: 'visitor'});
+			}
+			return true;
+			
 		}).catch(function (error) {
 			// Handle Errors here.
 			var errorCode = error.code;
@@ -274,22 +278,12 @@ export default {
 			if (errorCode == "auth/account-exists-with-different-credential") {
 				alert("이미 가입되어있는 이메일입니다.");
 			}
-			console.error('[Github Login Error]', error)
+			console.error('[Login Error]', error)
 			// ...
+			return false;
 		});
 	},
-	signInAnonymously() {
-		return firebase.auth().signInAnonymously().then(function () {
-			return true;
-		}).catch(function (error) {
-			// Handle Errors here.
-			var errorCode = error.code;
-			var errorMessage = error.message;
-			// ...
-			console.error('[anonymous] Login Error]', error)
-		});
 
-	},
 	signUp(email, password, name) {
 
 		if (email.length < 4) {
@@ -389,7 +383,7 @@ export default {
 		if (!user) {
 			return false;
 		}
-		return await firebase.database().ref('/users/'+user.uid)
+		return await firebase.database().ref('/users/' + user.uid)
 			.once('value')
 			.then(function (snapshot) {
 				console.log(snapshot.val());
@@ -468,6 +462,9 @@ export default {
 			return;
 		}
 	},
+	async getUid(){
+		const user =  await firebase.auth().currentUser;
+	},
 	async getUser(uid) {
 		if (uid != null) {
 			let user = await database.ref('/users/' + uid).once('value').then(function (snapshot) {
@@ -504,7 +501,7 @@ export default {
 			return false;
 		});
 
-		result = result & database.ref('/users/' + user.uid+'/name/').update(name);
+		result = result & database.ref('/users/' + user.uid + '/name/').update(name);
 		return result;
 	}
 
