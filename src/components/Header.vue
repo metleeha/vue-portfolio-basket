@@ -40,8 +40,11 @@
                     <v-btn flat to="post" style="cursor: pointer">
                         <v-icon left>assessment</v-icon>Post</v-btn>
                 </v-flex>
-                <v-flex v-show="!this.isSignined">
-                    <SignInMenu></SignInMenu>
+                <v-flex>
+                    <UserMenu v-if="this.isSignined"></UserMenu>
+                    <SignInMenu v-else></SignInMenu>
+                    <v-btn flat @click="signOut" v-if="this.isSignined">
+                    <v-icon left >close</v-icon>Logout</v-btn>
                 </v-flex>
             </v-container>
         </v-list>
