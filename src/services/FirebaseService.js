@@ -512,7 +512,7 @@ export default {
 	authUserAndDB(portfoliodata, user){
 		if(!user) return false
 		if(!portfoliodata) return false
-		if(user.displayName == 'master')
+		if(user.displayName == 'master') return true
 		return user.displayName == portfoliodata.username
 	},
 	async authUserWriter(user){
