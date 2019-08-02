@@ -17,12 +17,8 @@
       </template>
 
       <!-- dialog-portfoilo section --> 
-      <!-- <v-container grid-list-md> -->
         <v-layout row wrap>
           <v-flex xs12 d-inline-block justify-space-around class="px-0">
-            <!-- <v-flex xs2 >
-              <v-btn fab dark color="#1c2938" @click="dialog_portfolio = false"><v-icon>close</v-icon></v-btn>
-            </v-flex> -->
             <v-flex xs12 class="px-0">
               <v-card dark white--text color="#1c2938">
                 <v-img :src="imgSrc" id="portfolio--image"></v-img>
@@ -40,14 +36,12 @@
                   </div>
                   <v-card-actions>
                     <v-btn flat @click="gotoPortfolio()">detail</v-btn>
-                    <!-- <v-btn flat>Comment</v-btn> -->
                 </v-card-actions>
                 </v-card-text>
               </v-card>
             </v-flex>
           </v-flex>
         </v-layout>
-      <!-- </v-container> -->
     
     </v-dialog>
   </v-layout>
@@ -90,6 +84,9 @@ export default {
 }
 </script>
 <style>
+.v-dialog {
+  max-height: 60%!important;
+}
 .cardtable {
   display: table;
   width: 100%;
