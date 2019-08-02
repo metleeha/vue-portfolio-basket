@@ -16,6 +16,7 @@
 			<v-flex xs10 v-for="i in filteredPosts.length > showPostLimits ? showPostLimits : filteredPosts.length" class="pflist" :key="i">
 				<Post 
 				:id="filteredPosts[i - 1].id"
+				:name="filteredPosts[i - 1].username"
 				:date="new Date(filteredPosts[i - 1].created_at.toDate())"
 				:title="filteredPosts[i - 1].title"
 				:body="filteredPosts[i - 1].body"></Post>

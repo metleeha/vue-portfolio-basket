@@ -142,8 +142,9 @@ export default {
 
 		return getDoc
 	},
-	postPost(title, body) {
+	postPost(username, title, body) {
 		return firestore.collection(POSTS).add({
+			username,
 			title,
 			body,
 			created_at: firebase.firestore.FieldValue.serverTimestamp(),
@@ -193,8 +194,9 @@ export default {
 
 		return getDoc
 	},
-	postPortfolio(title, body, img) {
+	postPortfolio(username, title, body, img) {
 		return firestore.collection(PORTFOLIOS).add({
+			username,
 			title,
 			body,
 			img,
@@ -507,6 +509,29 @@ export default {
 
 		result = result & database.ref('/users/' + user.uid+'/name/').update(name);
 		return result;
+	},
+	async getUserDataAuth(){
+		return await firebase.auth().currentUser;
+	},
+	authUserAndDB(portfoliodata, user){
+		if(!user) return false
+		if(!portfoliodata) return false
+		if(user.displayName == 'master')
+		return user.displayName == portfoliodata.username
+	},
+	async authUserWriter(user){
+		if (!user) {
+			return false;
+		}
+		return await firebase.database().ref('/users/' + user.uid)
+			.once('value')
+			.then(function (snapshot) {
+				const auth = snapshot.val().authority;
+				if (auth == 'member' || auth == 'master') {
+					return true;
+				} else {
+					return false;
+				}
+			})
 	}
-
 }

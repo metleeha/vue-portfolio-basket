@@ -17,6 +17,7 @@
       <v-flex v-for="i in filteredPortfolios.length > showPortfoliosLimits ? showPortfoliosLimits : filteredPortfolios.length" class="pflist" :key="i">
         <Portfolio class="ma-3"
               :id="filteredPortfolios[i - 1].id"
+              :name="filteredPortfolios[i - 1].username"
               :date="new Date(filteredPortfolios[i - 1].created_at.toDate()).toString().substring(4,15)"
               :title="filteredPortfolios[i - 1].title"
               :body="filteredPortfolios[i - 1].body"
