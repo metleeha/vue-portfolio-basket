@@ -35,49 +35,49 @@ import PostWriter from '../components/PostWriter'
 import FirebaseService from '@/services/FirebaseService'
 
 export default {
-    name: 'PostPage',
-    components: {
-        ImgBanner,
-        PostList,
-        PostWriter
+  name: 'PostPage',
+  components: {
+      ImgBanner,
+      PostList,
+      PostWriter
+  },
+  data() {
+      return {
+          newToggle: false,
+      }
+  },
+  methods: {
+      updatePost(state) {
+          if (state) {
+              this.$store.state.newTogglePost = false
+              this.newToggle = false
+          }
+      }
+  },
+  computed: {
+    getNewTogglePost() {
+        return this.$store.getters.getNewTogglePost
     },
-    data() {
-        return {
-            newToggle: false,
+    isMember() {
+        auth = this.$store.getter.getUser.Auth;
+        if (auth == 'member' || auth == 'master') {
+            return true;
+        } else {
+            return false;
         }
     },
-    methods: {
-        updatePost(state) {
-            if (state) {
-                this.$store.state.newTogglePost = false
-                this.newToggle = false
-            }
-        }
-    },
-    computed: {
-        getNewTogglePost() {
-            return this.$store.getters.getNewTogglePost
-        },
-        isMember() {
-            auth = this.$store.getter.getUser.Auth;
-            if (auth == 'member' || auth == 'master') {
+    authCheck() {
+        const user = this.$store.getters.getUser;
+        if (user) {
+            if (user.authority == "master" || user.authority == "member") {
                 return true;
             } else {
                 return false;
             }
-        },
-        authCheck() {
-            const user = this.$store.getters.getUser;
-            if (user) {
-                if (user.authority == "master" || user.authority == "member") {
-                    return true;
-                } else {
-                    return false;
-                }
-            } else {
-                return false;
-            }
-        },
+        } else {
+            return false;
+        }
+    },
     isMember(){
       auth = this.$store.getter.getUser.Auth;
       if( auth == 'member' || auth == 'master'){

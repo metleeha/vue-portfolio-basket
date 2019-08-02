@@ -9,8 +9,8 @@
           </v-img>
           <v-card-title primary-title>
             <div class="cardtable">
-              <div class="headline">{{title}}</div>
-              <span class="grey--text">{{body}}</span>
+              <div class="headline">{{ title }}</div>
+              <span class="grey--text">{{ body }}</span>
             </div>
           </v-card-title>
         </v-card>
@@ -34,6 +34,7 @@
                 <v-divider></v-divider>
                 <v-card-text>
                   <div class="portfolio--body">
+                    <div>{{ name }}</div>
                     <div class="portfolio--date mb-3">{{ stringDate }}</div>
                     {{ body }}
                   </div>
@@ -59,6 +60,7 @@ export default {
 	name: 'Porfolio',
 	props: {
     id: {type:String},
+    name: {type:String},
 		date: {type: String},
 		title: {type: String},
 		body: {type: String},

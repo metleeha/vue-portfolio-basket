@@ -1,8 +1,8 @@
 <template>
   <v-layout row justify-center py-4 h-100>
-    <v-flex class="post-head" @click="gotoPortfolio()">
+    <v-flex class="post-head" @click="gotoPost()">
       <div class="post-title">{{ title }}</div> 
-      <div class="post-date">{{ formatedDate }}</div>
+      <div class="post-date">by {{ name }} - ({{ formatedDate }})</div>
       <div class="post-body subheading">{{ body }}</div>
     </v-flex>
   </v-layout>
@@ -13,6 +13,7 @@ export default {
 	name: 'Post',
 	props: {
     id: {type:String},
+    name: {type:String},
 		date: {type: Date},
 		title: {type: String},
 		body: {type: String}
@@ -24,7 +25,7 @@ export default {
 		}
   },
   methods:{
-    async gotoPortfolio(){
+    async gotoPost(){
       this.$router.push({name: 'postview', params: { id: this.id }})
       // this.$router.push({name: 'portfolioview'});
       // eventBus.$emit('senddata',this.title, this.body, this.date, this.imgSrc);
