@@ -20,7 +20,7 @@ export const bus = new Vue()
 Vue.config.productionTip = false
 
 Vue.use(Vuetify, {
-	iconfont: 'fa',
+	iconfont: 'mdi',
 	theme: {
 		primary: '#112d4e',
 		secondary: '#b0bec5',
@@ -40,7 +40,7 @@ firebaseService.onAuthStateChanged( async function (user) {
 		let userInfo = await firebaseService.getUser(uid);
 		store.commit('setUser', userInfo);
 	}
-
+	firebaseService.regDateCheck();
 	if(!app){
 		app = new Vue({
 			router,

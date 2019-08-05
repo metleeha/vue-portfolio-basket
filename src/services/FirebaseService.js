@@ -14,6 +14,7 @@ var config = require("../../ignore/firebaseAPI.json");
 
 firebase.initializeApp(config)
 
+
 /* Firebase PWA enable */
 firebase.firestore().enablePersistence()
 	.catch(function (err) {
@@ -260,15 +261,18 @@ export default {
 		return await firebase.auth().signInWithPopup(provider).then(async function (result) {
 			let user = result.user
 			let isExist = await database.ref('/users/').once('value')
-					.then(function (data) { 
-						return data.child(user.uid).exists();
-					});
-					
-			if(!isExist){
-				await database.ref('/users/'+user.uid).set({name: user.displayName, email: user.email, authority: 'visitor'});
+				.then(function (data) {
+					return data.child(user.uid).exists();
+				});
+
+			if (!isExist) {
+				var date = data.user.metadata.creationTime;
+				date = date.split(' ');
+				date = date[3] + '.' + monthToNum(date[2]) + '.' + date[1];
+				await database.ref('/users/' + user.uid).set({ name: user.displayName, email: user.email, authority: 'visitor', regdate: date });
 			}
 			return true;
-			
+
 		}).catch(function (error) {
 			// Handle Errors here.
 			var errorCode = error.code;
@@ -308,10 +312,14 @@ export default {
 			data.user.updateProfile({
 				displayName: name,
 			});
+			var date = data.user.metadata.creationTime;
+			date = date.split(' ');
+			date = date[3] + '.' + monthToNum(date[2]) + '.' + date[1];
 			database.ref('/users/' + data.user.uid).set({
 				name: name,
 				email: email,
 				authority: 'visitor',
+				regdate: date
 			});
 			return data.user;
 		}).catch(function (error) {
@@ -464,8 +472,8 @@ export default {
 			return;
 		}
 	},
-	async getUid(){
-		const user =  await firebase.auth().currentUser;
+	async getUid() {
+		const user = await firebase.auth().currentUser;
 	},
 	async getUser(uid) {
 		if (uid != null) {
@@ -529,5 +537,55 @@ export default {
 					return false;
 				}
 			})
+	},
+	async getMemberList() {
+		return await database.ref('/users/').once('value').then(function (datas) {
+			var users = [];
+			datas.forEach(function (data) {
+				users.push(data.val());
+			})
+			return users;
+		})
+	},
+	async regDateCheck() {
+		var user = firebase.auth().currentUser;
+		var isExist = await database.ref('/users/' + user.uid).once('value').then(function (datas) {
+			return datas.child('regdate').exists();
+		})
+		if (!isExist) {
+			var date = user.metadata.creationTime;
+			date = date.split(' ');
+			date = date[3] + '.' + monthToNum(date[2]) + '.' + date[1];
+			database.ref('/users/' + user.uid).update({ regdate: date });
+		}
 	}
 }
+
+function monthToNum(mon) {
+	switch (mon.toLowerCase()) {
+		case 'jan':
+			return 1;
+		case 'feb':
+			return 2;
+		case 'mar':
+			return 3;
+		case 'apr':
+			return 4;
+		case 'may':
+			return 5;
+		case 'jun':
+			return 6;
+		case 'jul':
+			return 7;
+		case 'aug':
+			return 8;
+		case 'sep':
+			return 9;
+		case 'oct':
+			return 10;
+		case 'nov':
+			return 11;
+		case 'dec':
+			return 12;
+	}
+};
