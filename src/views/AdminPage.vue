@@ -24,12 +24,9 @@
             </v-flex>
         </v-layout>
         <v-layout v-if="!adminToggle" mt-3 >
-            <v-flex xs12>
-                <v-card flat outlined class="dashboard-members mx-auto"><v-card-text>관리자, 팀, 유저 필터바</v-card-text>
-                    <UserList></UserList>
+            <v-flex xs12 justify-center>   
+                <UserList></UserList>
                 </v-card>
-
-                <v-card flat outlined class="dashboard-members mx-auto">멤버기록</v-card>
             </v-flex>
         </v-layout>
     </v-layout>
