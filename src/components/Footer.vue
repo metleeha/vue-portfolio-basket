@@ -39,7 +39,7 @@
 								>
 									<v-icon size="24px">{{ ii.emoji }}</v-icon>
 								</v-btn>
-								<p class="white--text my-1">Please contact us if you have any question. </p>
+								<p class="white--text my-1">Please contact us if you have any question </p>
 							</v-flex>
 							<v-flex xs4>
 								<v-menu open-on-hover top offset-y>
