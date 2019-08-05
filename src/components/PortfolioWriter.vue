@@ -98,4 +98,7 @@ export default {
 .v-btn--icon {
     display: inline-block;
 }
+.markdown-editor {
+    text-align: -webkit-auto;
+}
 </style>
