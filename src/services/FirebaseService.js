@@ -420,22 +420,10 @@ export default {
 				}
 			})
 	},
-	async changeAuthMember(uid) {
+	async changeAuthMaster(item) {
+		const email = item.email;
 		if (this.checkAuthMaster) {
-			let key = firebase.database().ref('/users/').orderByChild('uid').equalTo(uid).once('value').then(function (snapshot) {
-				snapshot.forEach(function (childSnapshot) {
-					firebase.database().ref('/users/' + childSnapshot.key).update({ authority: "member" });
-				});
-
-			})
-		} else {
-			alert("권한 관리는 관리자 계정만 가능합니다.");
-			return;
-		}
-	},
-	async changeAuthMaster(uid) {
-		if (this.checkAuthMaster) {
-			let key = firebase.database().ref('/users/').orderByChild('uid').equalTo(uid).once('value').then(function (snapshot) {
+			let key = firebase.database().ref('/users/').orderByChild('email').equalTo(email).once('value').then(function (snapshot) {
 				snapshot.forEach(function (childSnapshot) {
 					firebase.database().ref('/users/' + childSnapshot.key).update({ authority: "master" });
 				});
@@ -446,9 +434,10 @@ export default {
 			return;
 		}
 	},
-	async changeAuthMember(uid) {
+	async changeAuthMember(item) {
+		const email = item.email;
 		if (this.checkAuthMaster) {
-			let key = firebase.database().ref('/users/').orderByChild('uid').equalTo(uid).once('value').then(function (snapshot) {
+			let key = firebase.database().ref('/users/').orderByChild('email').equalTo(email).once('value').then(function (snapshot) {
 				snapshot.forEach(function (childSnapshot) {
 					firebase.database().ref('/users/' + childSnapshot.key).update({ authority: "member" });
 				});
@@ -459,9 +448,10 @@ export default {
 			return;
 		}
 	},
-	async changeAuthVisitor(uid) {
+	async changeAuthVisitor(item) {
+		const email = item.email;
 		if (this.checkAuthMaster) {
-			let key = firebase.database().ref('/users/').orderByChild('uid').equalTo(uid).once('value').then(function (snapshot) {
+			let key = firebase.database().ref('/users/').orderByChild('email').equalTo(email).once('value').then(function (snapshot) {
 				snapshot.forEach(function (childSnapshot) {
 					firebase.database().ref('/users/' + childSnapshot.key).update({ authority: "visitor" });
 				});
