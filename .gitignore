@@ -27,4 +27,4 @@ yarn-error.log*
 # ignore_apikeys.json
 
 #API Keys
-/ignore/*.*
+ignore/*

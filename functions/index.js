@@ -9,15 +9,43 @@ const functions = require('firebase-functions');
 
 // The Firebase Admin SDK to access the Firebase Realtime Database.
 const admin = require('firebase-admin');
-admin.initializeApp();
+admin.initializeApp(functions.config().firebase);
+var firestore = admin.firestore();
 
-// Take the text parameter passed to this HTTP endpoint and insert it into the
-// Realtime Database under the path /messages/:pushId/original
-exports.addMessage = functions.https.onRequest(async (req, res) => {
-    // Grab the text parameter.
-    const original = req.query.text;
-    // Push the new message into the Realtime Database using the Firebase Admin SDK.
-    const snapshot = await admin.database().ref('/messages').push({original: original});
-    // Redirect with 303 SEE OTHER to the URL of the pushed object in the Firebase console.
-    res.redirect(303, snapshot.ref.toString());
-  });
+function getTopics(){
+  const postsCollection = firestore.collection('topic_token')
+  return postsCollection
+    .orderBy('created_at', 'desc')
+    .get()
+    .then((docSnapshots) => {
+      return docSnapshots.docs.map((doc) => {
+        let data = doc.data()
+        data.created_at = new Date(data.created_at.toDate())
+        return data
+    })
+  })
+}
+
+exports.sendPost = functions.firestore.document('posts/{create_Id}').onCreate((snap, context) => {
+  console.log("WOW, NEW POSTS.", snap.data())
+  //유저 토큰 가져오기
+  var reg_tokens = [];
+  getTopics().then(function (data){
+    data.forEach(function (elem){
+      reg_tokens.push(elem.token);
+    })
+  }).then(function (chaos){
+    const message = {
+      data : {
+        title : '!POST!',
+        str : '새로운 POST 가 등록되었습니다!'
+      },
+      tokens : reg_tokens
+    }
+    //메세지 발송
+    admin.messaging().sendMulticast(message).then((response) => {
+      console.log(response.successCount + "messages were sent successfully")
+    });
+    return true;
+  })
+});

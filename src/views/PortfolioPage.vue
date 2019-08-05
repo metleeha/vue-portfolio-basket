@@ -5,7 +5,7 @@
     </ImgBanner>
     <v-container>
       <!-- Add New Portfolio Button -->
-      <v-layout xs12 justify-center>
+      <v-layout xs12 justify-center v-if="authCheck">
         <v-flex xs12 text-xs-center mt-5>
           <v-btn @click="newToggle = !newToggle" block flat large :color="newToggle? '#f0bebe':'#3a718c'">
             <v-icon left>fa-chevron-down</v-icon>New Portfolio</v-btn>
@@ -33,35 +33,48 @@ import PortfolioList from '../components/PortfolioList'
 import PortfolioWriter from '../components/PortfolioWriter'
 
 export default {
-  name: 'PortfolioPage',
-  components: {
-		ImgBanner,
-    PortfolioList,
-    PortfolioWriter
-  },
-  data(){
-    return {
-      newToggle: false,
+    name: 'PortfolioPage',
+    components: {
+        ImgBanner,
+        PortfolioList,
+        PortfolioWriter
+    },
+    data() {
+        return {
+            newToggle: false,
+        }
+    },
+    methods: {
+        updatePortfolios(state) {
+            if (state) {
+                this.$store.state.newTogglePortfolios = false
+                this.newToggle = false
+            }
+        }
+    },
+    computed: {
+        getNewTogglePortfolios() {
+            return this.$store.getters.getNewTogglePortfolios
+        },
+        authCheck() {
+            const user = this.$store.getters.getUser;
+            if (user) {
+                if (user.authority == "master" || user.authority == "member") {
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        }
+    },
+    watch: {
+        getNewTogglePortfolios(val, oldVal) {
+            this.updatePortfolios(val)
+        }
     }
-  },
-  methods:{
-    updatePortfolio(state){
-      if(state){
-        this.$store.state.newTogglePortfolio = false
-        this.newToggle = false
-      }
-    }
-  },
-  computed: {
-    getNewTogglePortfolio(){
-			return this.$store.getters.getNewTogglePortfolio
-		}
-  },
-  watch: {
-    getNewTogglePortfolio(val, oldVal){
-      this.updatePortfolio(val)
-    }
-  }
+  
 }
 </script>
 

@@ -1,9 +1,9 @@
 <template>
-  <v-layout py-4 h-100>
-    <v-flex row @click="gotoPortfolio()">
-      <div class="caption">{{formatedDate}}</div>
-      <h2 class="color-333 headline font-weight-light">{{title}}</h2>
-      <p class="mb-1 color-666 font-weight-light subheading">{{body}}</p>
+  <v-layout row justify-center py-4 h-100>
+    <v-flex class="post-head" @click="gotoPost()">
+      <div class="post-title">{{ title }}</div> 
+      <div class="post-date">by {{ name }} - ({{ formatedDate }})</div>
+      <div class="post-body subheading">{{ body }}</div>
     </v-flex>
   </v-layout>
 </template>
@@ -13,6 +13,7 @@ export default {
 	name: 'Post',
 	props: {
     id: {type:String},
+    name: {type:String},
 		date: {type: Date},
 		title: {type: String},
 		body: {type: String}
@@ -24,7 +25,7 @@ export default {
 		}
   },
   methods:{
-    async gotoPortfolio(){
+    async gotoPost(){
       this.$router.push({name: 'postview', params: { id: this.id }})
       // this.$router.push({name: 'portfolioview'});
       // eventBus.$emit('senddata',this.title, this.body, this.date, this.imgSrc);
@@ -43,33 +44,43 @@ export default {
 }
 </script>
 <style>
-  .color-666 {
-    color: #666;
-  }
-  .color-333 {
-    color: #333;
-  }
   .h-100 {
     height: 100%;
   }
-  .caption {
-    display: table;
-    width: 100%;
-    table-layout: fixed;
+  .post-head {
+    font-family: 'Literata', 'Noto Serif KR', serif;
   }
-  .headline {
+  .post-title {
+    text-align: left;
+    color: #333;
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
+    font-weight: 700;
+    font-size: 2em;
+  }
+  .post-date {
+    text-align:left;
+    margin-top: 5px;
+    padding-left: 3px;
+  }
+  .post-body {
+    color: #666;
+    font-size: 1.2em;
+    font-weight: light;
+    word-break: normal;
+    margin-bottom: 1em;
+    padding-left: 3px;
   }
   .subheading {
     white-space: normal;
     line-height: 1.2;
-    height: 4.8em;
+    height: 3.6em;
     text-align: left;
+    margin-top: 5px;
     word-wrap: break-word;
     display: -webkit-box;
-    -webkit-line-clamp: 4;
+    -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
   }

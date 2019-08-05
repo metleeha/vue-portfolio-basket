@@ -1,28 +1,5 @@
 <template>
 <div>
-    <!-- sidebar -->
-    <v-navigation-drawer v-model="drawer" app fixed temporary>
-        <v-list>
-            <v-container justify-center>
-                <v-btn flat to="/" style="cursor: pointer">
-                <v-icon class="mr-1">free_breakfast</v-icon>TEN</v-btn>
-                <v-flex>
-                    <v-btn flat to="portfolio" style="cursor: pointer">
-                        <v-icon left>assessment</v-icon>Portfolio</v-btn>
-                </v-flex>
-                <v-flex>
-                    <v-btn flat to="post" style="cursor: pointer">
-                        <v-icon left>assessment</v-icon>Post</v-btn>
-                </v-flex>
-                <v-flex>
-                    <LoginDialog></LoginDialog>
-                </v-flex>
-            </v-container>
-        </v-list>
-    </v-navigation-drawer>
-    <!-- end sidebar -->
-
-    <!-- #112d4e-->
     <!-- navbar -->
     <v-toolbar color='#248ea9' fixed app temporary dark scroll-off-screen>
         <v-toolbar-side-icon @click.stop="drawer = !drawer" class="hidden-sm-and-up">
@@ -42,8 +19,8 @@
                 <v-icon left>assessment</v-icon>Post</v-btn>
             <UserMenu v-if="this.isSignined"></UserMenu>
             <SignInMenu v-else></SignInMenu>
-
-
+            <v-btn flat @click="signOut" v-if="this.isSignined">
+            <v-icon left >close</v-icon>Logout</v-btn>
         </v-toolbar-items>
     </v-toolbar>
     <!-- end navbar -->
@@ -59,8 +36,15 @@
                         <v-icon left>assessment</v-icon>Portfolio
                     </v-btn>
                 </v-flex>
-                <v-flex v-show="!this.isSignined">
-                    <SignInMenu></SignInMenu>
+                <v-flex>
+                    <v-btn flat to="post" style="cursor: pointer">
+                        <v-icon left>assessment</v-icon>Post</v-btn>
+                </v-flex>
+                <v-flex>
+                    <UserMenu v-if="this.isSignined"></UserMenu>
+                    <SignInMenu v-else></SignInMenu>
+                    <v-btn flat @click="signOut" v-if="this.isSignined">
+                    <v-icon left >close</v-icon>Logout</v-btn>
                 </v-flex>
             </v-container>
         </v-list>
@@ -80,6 +64,7 @@
 import TranslateBtn from './TranslateBtn'
 import SignInMenu from './SignInMenu'
 import UserMenu from './UserMenu'
+import FirebaseService from '@/services/FirebaseService'
 
 export default {
     name: 'Header',
@@ -108,6 +93,14 @@ export default {
             })
             this.$vuetify.goTo(0)
             behavior: "smooth"
+        },
+        async signOut() {
+            const result = await FirebaseService.signOut();
+            if (result) {
+                this.$store.commit("setUser", '');
+                alert("Sign out completed!");
+
+            }
         }
     },
     computed: {

@@ -1,5 +1,4 @@
 import Vue from 'vue'
-
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
 import VueSimplemde from 'vue-simplemde'
@@ -13,15 +12,15 @@ import './registerServiceWorker'
 
 import IncrementCnt from './services/IncrementCnt'
 
-import firebase from 'firebase'
-
+import firebaseService from './services/FirebaseService'
 import VueDisqus from 'vue-disqus'
+
 export const bus = new Vue()
 
 Vue.config.productionTip = false
 
 Vue.use(Vuetify, {
-	iconfont: 'fa',
+	iconfont: 'mdi',
 	theme: {
 		primary: '#112d4e',
 		secondary: '#b0bec5',
@@ -33,125 +32,25 @@ Vue.use(Vuetify, {
 Vue.use(VueSimplemde)
 
 Vue.use(VueDisqus)
-let app;
+let app = null;
 
-firebase.auth().onAuthStateChanged(function (user) {
+firebaseService.onAuthStateChanged( async function (user) {
+	if(user){
+		let uid = user.uid;
+		let userInfo = await firebaseService.getUser(uid);
+		store.commit('setUser', userInfo);
+	}
+	firebaseService.regDateCheck();
 	if(!app){
 		app = new Vue({
 			router,
 			store,
-			render: h => h(App) 
-		}).$mount('#app')
-	}
-	if (user) {
-		// User is signed in.
-		if(user.isAnonymous){
-			store.state.user = {name: 'Anonymous', email: 'None'}
-		}else{
-			store.state.user = {name: user.displayName, email: user.email }
-		}
-		
-	} else {
-		// User is signed out.
-		// ...
+			render: h => h(App)
+		}).$mount('#app');
 	}
 });
 
-
-router.beforeEach(function(to, from, next) {
+router.beforeEach(function (to, from, next) {
 	IncrementCnt.Increment(to.name)
 	next()
 })
-
-const applicationServerPublicKey = 'BC1hwgbyv5m4x6yWj8I0V5hqir__Pa7Wu4FOwNJkc_jn31CcfpSFrJc7Mk55mTT-r-3bExBZJ0kWsZqGKnfXD70';
-
-let isSubscribed = false;
-let swRegistration = null;
-
-function urlB64ToUint8Array(base64String) {
-	const padding = '='.repeat((4 - base64String.length % 4) % 4);
-	const base64 = (base64String + padding)
-	  .replace(/\-/g, '+')
-	  .replace(/_/g, '/');
-  
-	const rawData = window.atob(base64);
-	const outputArray = new Uint8Array(rawData.length);
-  
-	for (let i = 0; i < rawData.length; ++i) {
-	  outputArray[i] = rawData.charCodeAt(i);
-	}
-	return outputArray;
-  }
-
-if ('serviceWorker' in navigator && 'PushManager' in window) {
-	console.log('Service Worker and Push is supported');
-  
-	navigator.serviceWorker.register('sw.js')
-	.then(function(swReg) {
-	  console.log('Service Worker is registered', swReg);
-  
-	  swRegistration = swReg;
-	  initialiseUI();
-	})
-	.catch(function(error) {
-	  console.error('Service Worker Error', error);
-	});
-  } else {
-	console.warn('Push messaging is not supported');
-  }
-
-  function initialiseUI() {
-
-	if (isSubscribed) {
-	  // TODO: Unsubscribe user
-	} else {
-	  subscribeUser();
-	}
-
-	// Set the initial subscription value
-	swRegistration.pushManager.getSubscription()
-	.then(function(subscription) {
-	  isSubscribed = !(subscription === null);
-  
-	  updateSubscriptionOnServer(subscription);
-  
-	  if (isSubscribed) {
-		console.log('User IS subscribed.');
-	  } else {
-		console.log('User is NOT subscribed.');
-	  }
-	});
-  }
-
-  function subscribeUser() {
-	const applicationServerKey = urlB64ToUint8Array(applicationServerPublicKey);
-
-	swRegistration.pushManager.subscribe({
-	  userVisibleOnly: true,
-	  applicationServerKey: applicationServerKey
-	})
-	.then(function(subscription) {
-	  console.log('User is subscribed:', subscription);
-  
-	  updateSubscriptionOnServer(subscription);
-  
-	  isSubscribed = true;
-	})
-	.catch(function(err) {
-	  console.log('Failed to subscribe the user: ', err);
-	});
-  }
-
-  function updateSubscriptionOnServer(subscription) {
-	// TODO: Send subscription to application server
-	const subscriptionJson = document.querySelector('.js-subscription-json');
-	const subscriptionDetails =
-	  document.querySelector('.js-subscription-details');
-  
-	if (subscription) {
-	  subscriptionJson.textContent = JSON.stringify(subscription);
-	  subscriptionDetails.classList.remove('is-invisible');
-	} else {
-	  subscriptionDetails.classList.add('is-invisible');
-	}
-  }

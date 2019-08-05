@@ -1,29 +1,25 @@
 <template>
   <v-layout row justify-center>
-    <v-dialog v-model="dialog_portfolio" fullscreen hide-overlay transition="dialog-bottom-transition">
+    <v-dialog v-model="dialog_portfolio" width="60%" scrollable transition="dialog-bottom-transition">
       
       <!-- dialog acticator section --> 
       <template v-slot:activator="{ on }">
-        <v-card max-width="260" class="portfolio--card" v-on="on">
+        <v-card class="portfolio--card" v-on="on">
           <v-img :src="imgSrc" height="200px">
           </v-img>
           <v-card-title primary-title>
             <div class="cardtable">
-              <div class="headline">{{title}}</div>
-              <span class="grey--text">{{body}}</span>
+              <div class="headline">{{ title }}</div>
+              <span class="grey--text">{{ body }}</span>
             </div>
           </v-card-title>
         </v-card>
       </template>
 
       <!-- dialog-portfoilo section --> 
-      <v-container grid-list-md>
         <v-layout row wrap>
-          <v-flex xs12 d-inline-flex justify-space-around class="px-0 py-5">
-            <v-flex xs2 >
-              <v-btn fab dark color="#1c2938" @click="dialog_portfolio = false"><v-icon>close</v-icon></v-btn>
-            </v-flex>
-            <v-flex xs10 class="px-0">
+          <v-flex xs12 d-inline-block justify-space-around class="px-0">
+            <v-flex xs12 class="px-0">
               <v-card dark white--text color="#1c2938">
                 <v-img :src="imgSrc" id="portfolio--image"></v-img>
                 <v-card-title primary-title>
@@ -34,19 +30,18 @@
                 <v-divider></v-divider>
                 <v-card-text>
                   <div class="portfolio--body">
+                    <div>{{ name }}</div>
                     <div class="portfolio--date mb-3">{{ stringDate }}</div>
                     {{ body }}
                   </div>
                   <v-card-actions>
                     <v-btn flat @click="gotoPortfolio()">detail</v-btn>
-                    <!-- <v-btn flat>Comment</v-btn> -->
                 </v-card-actions>
                 </v-card-text>
               </v-card>
             </v-flex>
           </v-flex>
         </v-layout>
-      </v-container>
     
     </v-dialog>
   </v-layout>
@@ -59,10 +54,11 @@ export default {
 	name: 'Porfolio',
 	props: {
     id: {type:String},
+    name: {type:String},
 		date: {type: String},
 		title: {type: String},
 		body: {type: String},
-		imgSrc: {type: String},
+    imgSrc: {type: String},
 	},
 	data() {
 		return {
@@ -83,11 +79,14 @@ export default {
     },
   },
   created: function(){
-    this.stringDate = this.date.substring(0, 16)
+    this.stringDate = this.date
   }
 }
 </script>
 <style>
+.v-dialog {
+  max-height: 60%!important;
+}
 .cardtable {
   display: table;
   width: 100%;

@@ -12,9 +12,10 @@
     </v-container>
     <v-container v-if="loading">
       <!-- edit btn -->
-      <v-layout xs12 justify-center class="page-edit">
+      <v-layout xs12 justify-center class="page-edit" v-if="authCheck()">
         <v-flex xs12 text-xs-center my-5>
-          <v-btn @click="newToggle = !newToggle" block flat large :color="newToggle? '#f0bebe':'#3a718c'"><v-icon left>fa-chevron-down</v-icon>Edit Portfolio</v-btn>
+          <v-btn @click="newToggle = !newToggle" block flat large :color="newToggle? '#f0bebe':'#3a718c'">
+            <v-icon left>fa-chevron-down</v-icon>Edit Portfolio</v-btn>
         </v-flex>
       </v-layout>
       <!-- Portfolio Writer --->
@@ -39,7 +40,7 @@
       <!-- Created: Date, Author -->
       <v-layout row class="page-author">
         <v-flex xs12 justify-center>
-          <p>by admin, {{ date }}</p>
+          <p>by - {{ name }}  ( {{ date }} )</p>
         </v-flex>
       </v-layout>
       <!-- Img -->
@@ -58,8 +59,8 @@
         </v-flex>
         <!-- btns -->
         <v-flex xs12 row class="page-btn">
-          <v-btn large outline color="red" @click="deletePortfolio()">DELETE</v-btn>
           <v-btn large outline color="green" @click="goToPortfolio()">Back</v-btn>
+          <v-btn v-if="authCheck()" large outline color="red" @click="deletePortfolio()">DELETE</v-btn>
         </v-flex>
       </v-layout>
       <!-- disqus -->
@@ -89,6 +90,7 @@ export default {
 	data(){
     return{
       newToggle: false,
+      name: '누구더라...',
 		  date: '언제더라...',
 		  title: '로딩중...',
 		  body: '뭐더라...',
@@ -106,10 +108,12 @@ export default {
   },
   methods: {
     async getPortfolioData(){
+      this.loading = false
       const pf = await FirebaseService.getPortfolio(this.id)
       this.$store.state.portfolioDetail = pf
     },
     setPortfolioData(portfolio) {
+      this.name = portfolio.username
       this.title = portfolio.title
       this.body = portfolio.body
       this.imgSrc = portfolio.img
@@ -118,9 +122,17 @@ export default {
       this.date = fulldate.toString().substring(4, 15)
       this.loading = true
     },
-    deletePortfolio(){
-      FirebaseService.deletePortfolio(this.id)
-      this.$router.push({name: 'portfolio'})
+    async deletePortfolio(){
+      // 해당 ID를 가진 portfolio를 DB에서 가져옴
+      const portfoliodata = await FirebaseService.getPortfolio(this.id)
+      // 접속한 유저 정보 DB에서 받아옴
+      const user = await FirebaseService.getUserDataAuth()
+      // 접속 유저정보와 DB 데이터비교 권한 인증
+      if(FirebaseService.authUserAndDB(portfoliodata, user)){
+        // DB에서 삭제
+        FirebaseService.deletePortfolio(this.id)
+        this.goToPortfolio()
+      }
     },
     updatePortfolio(state){
       console.log(state)
@@ -132,6 +144,18 @@ export default {
     },
     goToPortfolio(){
       this.$router.push({name: 'portfolio'})
+    },
+    authCheck() {
+        const user = this.$store.getters.getUser;
+        if (user) {
+            if (user.authority == "master") {
+                return true;
+            } else if(user.authority == "member" && user.name == this.name) {
+                return true;
+            }
+        } else {
+            return false;
+        }
     }
   },
   computed: {
@@ -171,7 +195,7 @@ export default {
   font-family: 'Literata', 'Noto Serif KR', serif;
   font-weight: 700;
   font-style: italic;
-  font-size: 5vw;
+  font-size: 40px;
 }
 .page-author{
   text-align: left;
@@ -180,15 +204,15 @@ export default {
 }
 .page-author p {
   font-family: 'Literata', 'Noto Serif KR', serif;
-  font-size: 2vw;
-  margin-bottom: 2em;
+  font-size: 1.5em;
+  margin-bottom: 1em;
 }
 .page-img{
   margin-bottom: 2em;
 }
 .page-body p{
   font-family: 'Literata', 'Noto Serif KR', serif;
-  font-size: 1.5em;
+  font-size: 1.2em;
   word-break: normal;
   padding: 0.5em 0.5em;
   margin-bottom: 1em;
@@ -199,7 +223,6 @@ export default {
   padding-left: 0.5em;
   margin-bottom: 2em;
   text-decoration: none;
-
 }
 .fade-enter-active, .fade-leave-active {
   transition: opacity .5s;

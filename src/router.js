@@ -9,6 +9,8 @@ import PortfolioWriterPage from './views/PortfolioWriterPage.vue'
 import LoginPage from './views/LoginPage.vue'
 import AdminPage from './views/AdminPage.vue'
 
+import FirebaseService from '@/services/FirebaseService'
+
 import { Verify } from 'crypto';
 
 Vue.use(Router)
@@ -64,7 +66,16 @@ const router = new Router({
 		{
 			path: '/admin',
 			name: 'admin',
-			component: AdminPage
+			component: AdminPage,
+			beforeEnter: async (to, from, next)=>{
+				const check = await FirebaseService.checkAuthMaster();
+				if(check){
+					next();
+				}else{
+					alert('admin 접근 권한이 필요합니다.');
+					next('/')
+				}
+			}
 		}
 
   ]

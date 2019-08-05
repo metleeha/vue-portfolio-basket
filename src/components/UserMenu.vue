@@ -1,7 +1,7 @@
 <template>
 <v-menu transition="slide-y-transition" bottom offset-y>
     <template v-slot:activator="{ on }">
-        <v-btn flat dark v-on="on">
+        <v-btn flat v-on="on">
             <v-icon left>account_circle</v-icon>
         {{ userName }}
         </v-btn>
@@ -18,7 +18,7 @@
 <script>
 import FirebaseService from '@/services/FirebaseService'
 import store from '../store'
-import ModiUserInfo from './ModiUserInfo'
+import ModiUserInfo from './ModifyUserInfo'
 
 export default {
     name: 'userMenu',

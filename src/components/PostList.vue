@@ -1,8 +1,8 @@
 <template>
 	<v-container>
 		<!-- Post Search Bar -->
-		<v-layout row wrap justify-center text-xs-center>
-			<v-flex xs12>
+		<v-layout xs12 row wrap justify-center text-xs-center>
+			<v-flex xs10>
 				<v-text-field 
 				prepend-inner-icon="fa-search"
 				v-model="search"
@@ -12,18 +12,18 @@
 			</v-flex>
 		</v-layout>
 		<!-- Post List -->
-    	<v-layout mt-5 wrap id="pfPan">
-			<v-flex v-for="i in filteredPosts.length > showPostLimits ? showPostLimits : filteredPosts.length" class="pflist" :key="i">
-				<Post
+    	<v-layout mt-5 xs12 row wrap id="pfPan" >
+			<v-flex xs10 v-for="i in filteredPosts.length > showPostLimits ? showPostLimits : filteredPosts.length" class="pflist" :key="i">
+				<Post 
 				:id="filteredPosts[i - 1].id"
-				:date="filteredPosts[i - 1].created_at"
+				:name="filteredPosts[i - 1].username"
+				:date="new Date(filteredPosts[i - 1].created_at.toDate())"
 				:title="filteredPosts[i - 1].title"
 				:body="filteredPosts[i - 1].body"></Post>
 				<v-divider></v-divider>
 			</v-flex>
     		<v-flex xs12 text-xs-center round my-5 v-if="loadMore">
-      			        <v-btn color="#3a718c" dark large v-on:click="loadMorePosts()"><v-icon size="25" class="mr-2">fa-plus</v-icon>더 보기</v-btn><br>
-				<!-- <v-btn color="info" dark v-on:click="loadMorePosts"><v-icon size="25" class="mr-2">fa-plus</v-icon> 더 보기</v-btn> -->
+				<v-btn color="#3a718c" dark large v-on:click="loadMorePosts()"><v-icon size="25" class="mr-2">fa-plus</v-icon>더 보기</v-btn><br>
     		</v-flex>
   		</v-layout>
 	</v-container>
@@ -51,23 +51,30 @@ export default {
 	},
 	mounted() {
 		this.showPostLimits = this.limits
-		this.getPosts()
+		this.getPostsFirebase()
 	},
 	methods: {
-		async getPosts() {
-			this.posts = await FirebaseService.getPosts()
+		async getPostsFirebase() {
+			var ps = await FirebaseService.getPosts()
+			while (ps[0].created_at == null) {
+				ps = await FirebaseService.getPosts()
+			}
+			this.$store.state.posts = ps
 		},
 		loadWriter(){
 			this.$emit('postWriterOn');
 		},
 		loadMorePosts() {
 			this.showPostLimits+=4;
-    	},
-		updatePost(state){
+		},
+		setPosts(posts){
+			this.posts = posts
+		},
+		updatePosts(state){
 			if(state){
 				this.$store.state.postPostDone = false
 				this.$store.state.newTogglePost = true
-				this.getPosts()
+				this.getPostsFirebase()
 			}
 		}
 	},
@@ -77,23 +84,24 @@ export default {
 				return post.title.match(this.search);
 			});
 		},
+		getPosts(){
+			return this.$store.getters.getPosts
+		},
     	getPostPostDone(){
 			return this.$store.getters.getPostPostDone
 		}
 	},
 	watch: {
+		getPosts(val,oldVal){
+			this.setPosts(val)
+		},
 		getPostPostDone(val, oldVal){
-		this.updatePost(val)
+		this.updatePosts(val)
 		}
 	}
 }
 </script>
 <style>
-/* 
-  .mw-700 {
-    max-width: 700px;
-    margin: auto;
-  } */
   #pfPan {
     display: inline-flex;
     justify-content: center;

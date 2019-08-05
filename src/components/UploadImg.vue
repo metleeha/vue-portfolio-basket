@@ -24,10 +24,6 @@
 
 
 <script>
-
-import * as firebase from 'firebase'
-// import { firestore } from '../services/firebaseService';
-
 export default {
 	name: 'UploadImg',
   data(){
