@@ -20,7 +20,7 @@ export const bus = new Vue()
 Vue.config.productionTip = false
 
 Vue.use(Vuetify, {
-	iconfont: 'fa',
+	iconfont: 'mdi',
 	theme: {
 		primary: '#112d4e',
 		secondary: '#b0bec5',
@@ -35,15 +35,12 @@ Vue.use(VueDisqus)
 let app = null;
 
 firebaseService.onAuthStateChanged( async function (user) {
-	console.log("================================================");
-	console.log(user);
-	console.log("================================================");
 	if(user){
 		let uid = user.uid;
 		let userInfo = await firebaseService.getUser(uid);
 		store.commit('setUser', userInfo);
 	}
-
+	firebaseService.regDateCheck();
 	if(!app){
 		app = new Vue({
 			router,
