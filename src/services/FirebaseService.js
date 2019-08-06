@@ -466,7 +466,7 @@ export default {
 	async getUser(uid) {
 		if (uid != null) {
 			const user = await firestore.collection('users').doc(uid).get().then(function(doc){
-				return doc;
+				return doc.data();
 			})
 			return user;
 		} else {
@@ -534,7 +534,7 @@ export default {
 		});
 	},
 	async regDateCheck() {
-		var user = firebase.auth().currentUser;
+		var user = await firebase.auth().currentUser;
 		var isExist = await firestore.collection('users').doc(user.uid).get().then(function(doc){
 			return doc.exists;
 		});
