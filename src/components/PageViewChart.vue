@@ -57,9 +57,9 @@ data () {
         datasets: [
         {
             label: 'view',
-            backgroundColor: '#f87979',
+            backgroundColor: 'transparent',
             pointBackgroundColor: 'white',
-            borderWidth: 1,
+            borderWidth: 3,
             pointBorderColor: '#249EBF',
             //Data to be represented on y-axis
             data: recent7DaysValue
@@ -74,7 +74,7 @@ data () {
             beginAtZero: true
             },
             gridLines: {
-            display: true
+            display: false
             }
         }],
         xAxes: [ {
@@ -86,6 +86,11 @@ data () {
         legend: {
         display: true
         },
+        elements: {
+					line: {
+						tension: 0
+					}
+				},
         responsive: true,
         maintainAspectRatio: false
     }
