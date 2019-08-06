@@ -113,14 +113,11 @@ export default {
       this.loading = true
     },
     async deletePost(){
-      // 해당 ID를 가진 portfolio를 DB에서 가져옴
-      const postData = await FirebaseService.getPost(this.id)
-      // 접속한 유저 정보 DB에서 받아옴
-      const user = await FirebaseService.getUserDataAuth()
-      // 접속 유저정보와 DB 데이터비교 권한 인증
-      if(FirebaseService.authUserAndDB(postData, user)){
-        FirebaseService.deletePost(this.id)
+      // DB에서 삭제 요청
+      if(FirebaseService.deletePost(this.id)){
         this.goToPost()
+      }else{
+        alert('삭제권한이 없습니다.')
       }
     },
     updatePost(state){

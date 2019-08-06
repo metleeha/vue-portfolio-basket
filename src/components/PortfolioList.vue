@@ -59,7 +59,7 @@ export default {
 	methods: {
 		async getPortfoliosFirebase() {
       var ps = await FirebaseService.getPortfolios()
-      while (ps[0].created_at == null) {
+      while (ps[0].created_at == null) {  // 새로 생성시 timestamp가 바로 찍히지 않기 때문에 찍힐때까지 호출
         ps = await FirebaseService.getPortfolios()
       }
       this.$store.state.portfolios = ps

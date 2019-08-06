@@ -142,25 +142,43 @@ export default {
 
 		return getDoc
 	},
-	postPost(username, title, body) {
+	async postPost(username, title, body) {
 		return firestore.collection(POSTS).add({
 			username,
 			title,
 			body,
 			created_at: firebase.firestore.FieldValue.serverTimestamp(),
 			deleted: false
+		}).then(onfulfilled => {
+			return true
+		})
+		.catch(err =>{
+			console.log('postPost() =>', err)
+			return false
 		})
 	},
-	updatePost(id, title, body) {
+	async updatePost(id, title, body) {
 		return firestore.collection(POSTS).doc(id).update({
 			"title": title,
 			"body": body,
+		}).then(onfulfilled => {
+			return true
+		})
+		.catch(err =>{
+			console.log('updatePost() =>', err)
+			return false
 		})
 	},
-	deletePost(id) {
+	async deletePost(id) {
 		return firestore.collection(POSTS).doc(id).update({
 			"deleted": true,
 			"deleted_at": firebase.firestore.FieldValue.serverTimestamp()
+		}).then(onfulfilled => {
+			return true
+		})
+		.catch(err =>{
+			console.log('deletePost() =>', err)
+			return false
 		})
 	},
 	getPortfolios() {
@@ -194,27 +212,45 @@ export default {
 
 		return getDoc
 	},
-	postPortfolio(username, title, body, img) {
-		return firestore.collection(PORTFOLIOS).add({
+	async postPortfolio(username, title, body, img) {
+		return await firestore.collection(PORTFOLIOS).add({
 			username,
 			title,
 			body,
 			img,
 			created_at: firebase.firestore.FieldValue.serverTimestamp(),
 			deleted: false
+		}).then(onfulfilled => {
+			return true
+		})
+		.catch(err =>{
+			console.log('postPortfolio() =>', err)
+			return false
 		})
 	},
-	updatePortfolio(id, title, body, img) {
-		return firestore.collection(PORTFOLIOS).doc(id).update({
+	async updatePortfolio(id, title, body, img) {
+		return await firestore.collection(PORTFOLIOS).doc(id).update({
 			"title": title,
 			"body": body,
 			"img": img,
+		}).then(onfulfilled => {
+			return true
+		})
+		.catch(err =>{
+			console.log('updatePortfolio() =>', err)
+			return false
 		})
 	},
-	deletePortfolio(id) {
-		return firestore.collection(PORTFOLIOS).doc(id).update({
+	async deletePortfolio(id) {
+		return await firestore.collection(PORTFOLIOS).doc(id).update({
 			"deleted": true,
 			"deleted_at": firebase.firestore.FieldValue.serverTimestamp()
+		}).then(onfulfilled => {
+			return true
+		})
+		.catch(err =>{
+			console.log('deletePortfolio() =>', err)
+			return false
 		})
 	},
 	getBannerImage() {
