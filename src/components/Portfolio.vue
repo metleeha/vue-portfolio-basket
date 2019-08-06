@@ -85,7 +85,7 @@ export default {
 </script>
 <style>
 .v-dialog {
-  max-height: 60%!important;
+  max-height: 600px!important;
 }
 .cardtable {
   display: table;
