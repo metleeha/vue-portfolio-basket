@@ -123,15 +123,11 @@ export default {
       this.loading = true
     },
     async deletePortfolio(){
-      // 해당 ID를 가진 portfolio를 DB에서 가져옴
-      const portfoliodata = await FirebaseService.getPortfolio(this.id)
-      // 접속한 유저 정보 DB에서 받아옴
-      const user = await FirebaseService.getUserDataAuth()
-      // 접속 유저정보와 DB 데이터비교 권한 인증
-      if(FirebaseService.authUserAndDB(portfoliodata, user)){
-        // DB에서 삭제
-        FirebaseService.deletePortfolio(this.id)
+      // DB에서 삭제 요청
+      if(await FirebaseService.deletePortfolio(this.id)){
         this.goToPortfolio()
+      }else{
+        alert('삭제권한이 없습니다.')
       }
     },
     updatePortfolio(state){
@@ -147,6 +143,7 @@ export default {
     },
     authCheck() {
         const user = this.$store.getters.getUser;
+          console.log(user)
         if (user) {
             if (user.authority == "master") {
                 return true;
