@@ -17,6 +17,7 @@
                     <v-card-text>TODAY: {{ todayView }} </v-card-text>
                     <v-card-text>TOTAL: {{ totalView }}</v-card-text>
                     <v-card-text>일별 방문자수 그래프</v-card-text>
+                        <PageViewChart></PageViewChart>
                     <v-card-text>포트폴리오 게시글수, 포스팅 게시글수, 댓글</v-card-text>
                     <v-card-text>방문경로: 직접 url, 검색엔진/ 접근기기: 모바일, 데스크탑</v-card-text>
                     <v-card-text>일별 가입자수 그래프</v-card-text>
@@ -26,7 +27,6 @@
         <v-layout v-if="!adminToggle" mt-3 >
             <v-flex xs12 justify-center>   
                 <UserList></UserList>
-                </v-card>
             </v-flex>
         </v-layout>
     </v-layout>
@@ -36,6 +36,7 @@
 <script>
 import FirebaseService from '../services/FirebaseService'
 import UserList from '../components/MemberManage'
+import PageViewChart from '../components/PageViewChart'
 
 export default {
     data() {
@@ -47,7 +48,8 @@ export default {
         }
     },
     components: {
-        UserList
+        UserList,
+        PageViewChart
     },
     methods: {
         navToggle(){
