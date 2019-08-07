@@ -51,6 +51,7 @@ export default {
 	},
 	mounted() {
 		this.showPostLimits = this.limits
+    	FirebaseService.observePosts()
 		this.getPostsFirebase()
 	},
 	methods: {
