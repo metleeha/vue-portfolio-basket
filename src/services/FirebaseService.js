@@ -304,7 +304,6 @@ export default {
 				date = date.split(' ');
 				date = date[3] + '.' + monthToNum(date[2]) + '.' + date[1];
 				await firestore.collection('users').doc(user.uid).set({ name: user.displayName, email: user.email, authority: 'visitor', regdate: date });
-				this.$store.commit('setUser', { name: user.displayName, email: user.email, authority: 'visitor'});
 			}
 			return true;
 
@@ -558,21 +557,6 @@ export default {
 		if(!portfoliodata) return false
 		if(user.displayName == 'master') return true
 		return user.displayName == portfoliodata.username
-	},
-	async authUserWriter(user){
-		if (!user) {
-			return false;
-		}
-		return await firebase.database().ref('/users/' + user.uid)
-			.once('value')
-			.then(function (snapshot) {
-				const auth = snapshot.val().authority;
-				if (auth == 'member' || auth == 'master') {
-					return true;
-				} else {
-					return false;
-				}
-			})
 	},
 	async getMemberList() {
 		return await firestore.collection('users').get().then(function(docs){
