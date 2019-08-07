@@ -36,8 +36,7 @@ let app = null;
 
 firebaseService.onAuthStateChanged( async function (user) {
 	if(user){
-		let uid = user.uid;
-		let userInfo = await firebaseService.getUser(uid);
+		let userInfo = await firebaseService.getUser(user);
 		store.commit('setUser', userInfo);
 	}
 	if(!app){

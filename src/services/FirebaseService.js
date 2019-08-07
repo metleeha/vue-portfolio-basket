@@ -300,10 +300,11 @@ export default {
 			});
 
 			if (!isExist) {
-				var date = data.user.metadata.creationTime;
+				var date = user.metadata.creationTime;
 				date = date.split(' ');
 				date = date[3] + '.' + monthToNum(date[2]) + '.' + date[1];
 				await firestore.collection('users').doc(user.uid).set({ name: user.displayName, email: user.email, authority: 'visitor', regdate: date });
+				this.$store.commit('setUser', { name: user.displayName, email: user.email, authority: 'visitor'});
 			}
 			return true;
 
@@ -498,12 +499,24 @@ export default {
 			return;
 		}
 	},
-	async getUser(uid) {
+	async getUser(user) {
+		const uid = user.uid;
 		if (uid != null) {
-			const user = await firestore.collection('users').doc(uid).get().then(function(doc){
-				return doc.data();
-			})
-			return user;
+			const isExist = await firestore.collection('users').doc(uid).get().then(function(doc){
+				return doc.exists;
+			});
+			if(isExist){
+				const userData = await firestore.collection('users').doc(uid).get().then(function(doc){
+					return doc.data();
+				})
+				return userData;
+			}else{
+				var date = user.metadata.creationTime;
+				date = date.split(' ');
+				date = date[3] + '.' + monthToNum(date[2]) + '.' + date[1];
+				await firestore.collection('users').doc(user.uid).set({ name: user.displayName, email: user.email, authority: 'visitor', regdate: date });
+				return { name: user.displayName, email: user.email, authority: 'visitor'};
+			}
 		} else {
 			return { name: 'Anonymous', email: 'None', authority: 'visitor' };
 		}
