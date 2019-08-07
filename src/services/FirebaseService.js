@@ -295,17 +295,16 @@ export default {
 		}
 
 		return await firebase.auth().signInWithPopup(provider).then(async function (result) {
-			let user = result.user
-			let isExist = await database.ref('/users/').once('value')
-				.then(function (data) {
-					return data.child(user.uid).exists();
-				});
+			const user = result.user;
+			const isExist = await firestore.collection('users').doc(user.uid).get().then(function(doc){
+				return doc.exists;
+			});
 
 			if (!isExist) {
 				var date = data.user.metadata.creationTime;
 				date = date.split(' ');
 				date = date[3] + '.' + monthToNum(date[2]) + '.' + date[1];
-				await database.ref('/users/' + user.uid).set({ name: user.displayName, email: user.email, authority: 'visitor', regdate: date });
+				await firestore.collection('users').doc(user.uid).set({ name: user.displayName, email: user.email, authority: 'visitor', regdate: date });
 			}
 			return true;
 
@@ -351,7 +350,7 @@ export default {
 			var date = data.user.metadata.creationTime;
 			date = date.split(' ');
 			date = date[3] + '.' + monthToNum(date[2]) + '.' + date[1];
-			database.ref('/users/' + data.user.uid).set({
+			firestore.collection('users').doc(data.user.uid).set({
 				name: name,
 				email: email,
 				authority: 'visitor',
@@ -406,8 +405,9 @@ export default {
 		});
 	},
 	getTodayView() {
-		let today = new Date()
-		let formattedToday = (today.getMonth() + 1) + '월 ' + today.getDate() + '일'
+		let today = new Date();
+		let formattedToday = (today.getMonth() + 1) + '월 ' + today.getDate() + '일';
+
 		return firebase.database().ref('/Page/' + formattedToday + '/home').once('value').then(function (snapshot) {
 			let todayView = snapshot.val()
 			if (todayView != null) {
@@ -429,42 +429,39 @@ export default {
 		if (!user) {
 			return false;
 		}
-		return await firebase.database().ref('/users/' + user.uid)
-			.once('value')
-			.then(function (snapshot) {
-				console.log(snapshot.val());
-				if (snapshot.val().authority == 'master') {
-					return true;
-				} else {
-					return false;
-				}
-			})
+		return await firestore.collection('users').doc(user.uid).get().then(function(doc){
+			if(doc.data().authority == 'master'){
+				return true;
+			}else{
+				return false;
+			}
+		});
 	},
 	async checkAuthMember() {
 		const user = await firebase.auth().currentUser;
 		if (!user) {
 			return false;
 		}
-		return await firebase.database().ref('/users/' + user.uid)
-			.once('value')
-			.then(function (snapshot) {
-				const auth = snapshot.val().authority;
-				if (auth == 'member' || auth == 'master') {
-					return true;
-				} else {
-					return false;
-				}
-			})
+		return await firestore.collection('users').doc(user.uid).get().then(function(doc){
+			const auth = doc.data().authority;
+			if(auth == 'master' || auth == 'member'){
+				return true;
+			}else{
+				return false;
+			}
+		});
 	},
 	async changeAuthMaster(item) {
 		const email = item.email;
 		if (this.checkAuthMaster) {
-			let key = firebase.database().ref('/users/').orderByChild('email').equalTo(email).once('value').then(function (snapshot) {
-				snapshot.forEach(function (childSnapshot) {
-					firebase.database().ref('/users/' + childSnapshot.key).update({ authority: "master" });
-				});
-
-			})
+			firestore.collection('users').where('email', '==', email).get().then(function(docs){
+				docs.forEach(function(doc){
+					const id = doc.id;
+					if(id != ''){
+						firestore.collection('users').doc(id).update({authority: "master"});
+					}
+				})
+			});
 		} else {
 			alert("권한 관리는 관리자 계정만 가능합니다.");
 			return;
@@ -473,11 +470,13 @@ export default {
 	async changeAuthMember(item) {
 		const email = item.email;
 		if (this.checkAuthMaster) {
-			let key = firebase.database().ref('/users/').orderByChild('email').equalTo(email).once('value').then(function (snapshot) {
-				snapshot.forEach(function (childSnapshot) {
-					firebase.database().ref('/users/' + childSnapshot.key).update({ authority: "member" });
-				});
-
+			firestore.collection('users').where('email', '==', email).get().then(function(docs){
+				docs.forEach(function(doc){
+					const id = doc.id;
+					if(id!=''){
+						firestore.collection('users').doc(id).update({authority: "member"});
+					}
+				})
 			})
 		} else {
 			alert("권한 관리는 관리자 계정만 가능합니다.");
@@ -487,24 +486,23 @@ export default {
 	async changeAuthVisitor(item) {
 		const email = item.email;
 		if (this.checkAuthMaster) {
-			let key = firebase.database().ref('/users/').orderByChild('email').equalTo(email).once('value').then(function (snapshot) {
-				snapshot.forEach(function (childSnapshot) {
-					firebase.database().ref('/users/' + childSnapshot.key).update({ authority: "visitor" });
-				});
-
+			firestore.collection('users').where('email', '==', email).get().then(function(docs){
+				docs.forEach(function(doc){
+					const id = doc.id;
+					if(id!=''){
+						firestore.collection('users').doc(id).update({authority: "visitor"});
+					}
+				})
 			})
 		} else {
 			alert("권한 관리는 관리자 계정만 가능합니다.");
 			return;
 		}
 	},
-	async getUid() {
-		const user = await firebase.auth().currentUser;
-	},
 	async getUser(uid) {
 		if (uid != null) {
-			let user = await database.ref('/users/' + uid).once('value').then(function (snapshot) {
-				return snapshot.val();
+			const user = await firestore.collection('users').doc(uid).get().then(function(doc){
+				return doc.data();
 			})
 			return user;
 		} else {
@@ -537,7 +535,7 @@ export default {
 			return false;
 		});
 
-		result = result & database.ref('/users/' + user.uid + '/name/').update(name);
+		result = result & firestore.collection('users').doc(user.uid).update({name: name});
 		return result;
 	},
 	async getUserDataAuth(){
@@ -565,24 +563,23 @@ export default {
 			})
 	},
 	async getMemberList() {
-		return await database.ref('/users/').once('value').then(function (datas) {
-			var users = [];
-			datas.forEach(function (data) {
-				users.push(data.val());
-			})
-			return users;
-		})
+		return await firestore.collection('users').get().then(function(docs){
+			return docs.docs.map(function(doc){
+				return doc.data();
+			});
+		});
 	},
 	async regDateCheck() {
-		var user = firebase.auth().currentUser;
-		var isExist = await database.ref('/users/' + user.uid).once('value').then(function (datas) {
-			return datas.child('regdate').exists();
-		})
+		var user = await firebase.auth().currentUser;
+		var isExist = await firestore.collection('users').doc(user.uid).get().then(function(doc){
+			return doc.exists;
+		});
 		if (!isExist) {
-			var date = user.metadata.creationTime;
-			date = date.split(' ');
-			date = date[3] + '.' + monthToNum(date[2]) + '.' + date[1];
-			database.ref('/users/' + user.uid).update({ regdate: date });
+			firestore.collection('users').doc(user.uid).set(await database.ref('/users/' + user.uid).once('value').then(function(doc){
+				console.log(doc.val());
+				return doc.val();
+			}));
+			
 		}
 	}
 }
