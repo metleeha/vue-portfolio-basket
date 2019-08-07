@@ -32,7 +32,6 @@ firebase.firestore().enablePersistence()
 firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION);
 
 const firestore = firebase.firestore();
-const database = firebase.database();
 const messaging = firebase.messaging();
 messaging.usePublicVapidKey(config.vapid)
 // console.log(config.vapid)
@@ -568,19 +567,6 @@ export default {
 				return doc.data();
 			});
 		});
-	},
-	async regDateCheck() {
-		var user = await firebase.auth().currentUser;
-		var isExist = await firestore.collection('users').doc(user.uid).get().then(function(doc){
-			return doc.exists;
-		});
-		if (!isExist) {
-			firestore.collection('users').doc(user.uid).set(await database.ref('/users/' + user.uid).once('value').then(function(doc){
-				console.log(doc.val());
-				return doc.val();
-			}));
-			
-		}
 	}
 }
 

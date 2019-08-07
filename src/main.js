@@ -40,7 +40,6 @@ firebaseService.onAuthStateChanged( async function (user) {
 		let userInfo = await firebaseService.getUser(uid);
 		store.commit('setUser', userInfo);
 	}
-	firebaseService.regDateCheck();
 	if(!app){
 		app = new Vue({
 			router,
