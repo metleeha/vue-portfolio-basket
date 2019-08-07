@@ -26,7 +26,6 @@
         <v-layout v-if="!adminToggle" mt-3 >
             <v-flex xs12 justify-center>   
                 <UserList></UserList>
-                </v-card>
             </v-flex>
         </v-layout>
     </v-layout>
