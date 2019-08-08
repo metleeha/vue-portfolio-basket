@@ -49,7 +49,7 @@
 </template>
 
 <script>
-const removeMd =require('remove-markdown');
+const removeMd = require('remove-markdown');
 export default {
 	name: 'Porfolio',
 	props: {

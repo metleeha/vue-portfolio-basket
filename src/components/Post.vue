@@ -9,6 +9,8 @@
 </template>
 
 <script>
+
+const removeMd =require('remove-markdown');
 export default {
 	name: 'Post',
 	props: {
@@ -40,6 +42,9 @@ export default {
 		formatedDate() {
 			return `${this.date.getFullYear()}년 ${this.date.getMonth()}월 ${this.date.getDate()}일`
     },
+    plainMarkDown: function () {
+            return removeMd(this.body);
+        },
     compiledMarkdown: function () {
             return marked(this.body, {
                 sanitize: true
