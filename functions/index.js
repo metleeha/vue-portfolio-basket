@@ -35,10 +35,10 @@ exports.sendPost = functions.firestore.document('posts/{create_Id}').onCreate((s
       reg_tokens.push(elem.token);
     })
   }).then(function (chaos){
-    const message = {
+    var message = {
       data : {
-        title : '!POST!',
-        str : '새로운 POST 가 등록되었습니다!'
+        title :'새로운 POST 가 등록되었습니다!',
+        str : snap.data().title
       },
       tokens : reg_tokens
     }
