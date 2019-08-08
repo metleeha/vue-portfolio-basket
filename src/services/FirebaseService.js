@@ -4,6 +4,9 @@ import 'firebase/auth'
 import 'firebase/messaging'
 import 'firebase/database'
 
+import store from '../store'
+import { async } from 'q';
+
 const POSTS = 'posts'
 const PORTFOLIOS = 'portfolios'
 const BANNERIMAGE = 'bannerimage'
@@ -110,7 +113,21 @@ function getTopics() {
 
 
 export default {
-
+	observePosts(){
+		const postCollection = firestore.collection(POSTS)
+		postCollection
+		.where('deleted', '==', false)
+		.onSnapshot(async(docSnapshots) => {
+			var ps = await this.getPosts()
+			store.state.posts = ps
+			// return docSnapshots.docs.map((doc) => {
+			// 	console.log('aa')
+			// 	let data = doc.data()
+			// 	data.id = doc.id			// 각 데이터 키값
+			// 	return data
+			// })
+		})
+	},
 	getPosts() {
 		const postsCollection = firestore.collection(POSTS)
 		return postsCollection
@@ -181,9 +198,25 @@ export default {
 			return false
 		})
 	},
+	observePortfolios(){
+		const portfoliosCollection = firestore.collection(PORTFOLIOS)
+		portfoliosCollection
+		.where('deleted', '==', false)
+		.onSnapshot(async(docSnapshots) => {
+			var ps = await this.getPortfolios()
+			store.state.portfolios = ps
+			// return docSnapshots.docs.map((doc) => {
+			// 	console.log('aa')
+			// 	let data = doc.data()
+			// 	data.id = doc.id			// 각 데이터 키값
+			// 	return data
+			// })
+		})
+	},
 	getPortfolios() {
-		const postsCollection = firestore.collection(PORTFOLIOS)
-		return postsCollection
+		const portfoliosCollection = firestore.collection(PORTFOLIOS)
+		
+		return portfoliosCollection
 			.where('deleted', '==', false)
 			.orderBy('created_at', 'desc')
 			.get()
@@ -553,11 +586,20 @@ export default {
 	async getUserDataAuth(){
 		return await firebase.auth().currentUser;
 	},
-	authUserAndDB(portfoliodata, user){
-		if(!user) return false
-		if(!portfoliodata) return false
-		if(user.displayName == 'master') return true
-		return user.displayName == portfoliodata.username
+	async authUserWriter(user){
+		if (!user) {
+			return false;
+		}
+		return await firebase.database().ref('/users/' + user.uid)
+			.once('value')
+			.then(function (snapshot) {
+				const auth = snapshot.val().authority;
+				if (auth == 'member' || auth == 'master') {
+					return true;
+				} else {
+					return false;
+				}
+			})
 	},
 	async getMemberList() {
 		return await firestore.collection('users').get().then(function(docs){

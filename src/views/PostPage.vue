@@ -80,7 +80,7 @@ export default {
     },
     isMember(){
       auth = this.$store.getter.getUser.Auth;
-      if( auth == 'member' || auth == 'master'){
+      if( auth == 'master' || auth == 'member'){
         return true;
       }else{
         return false;
