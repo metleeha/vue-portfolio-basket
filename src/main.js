@@ -15,6 +15,7 @@ import IncrementCnt from './services/IncrementCnt'
 import firebaseService from './services/FirebaseService'
 import VueDisqus from 'vue-disqus'
 
+
 export const bus = new Vue()
 
 Vue.config.productionTip = false
@@ -29,7 +30,7 @@ Vue.use(Vuetify, {
 	}
 })
 
-Vue.use(VueSimplemde)
+Vue.component('vue-simplemde', VueSimplemde)
 
 Vue.use(VueDisqus)
 
