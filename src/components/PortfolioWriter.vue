@@ -10,7 +10,7 @@
                 <UploadImg :imgSrc="img" />
             </v-flex>
             <v-flex xs10>
-                <markdown-editor v-model="contents"></markdown-editor>
+                <vue-simplemde v-model="contents" ref="markdownEditor" />
             </v-flex>
         </div>
     </v-layout>
@@ -24,11 +24,26 @@ import FirebaseService from '@/services/FirebaseService'
 export default {
     name: 'PortfolioWriterPage',
     props: {
-        id: { type: String, default: '' },
-        ti: { type: String,  default: '' },
-        body: { type: String, default: '' },
-        imgSrc: { type: String, default: '' },
-        update: { type: Boolean, default: false }
+        id: {
+            type: String,
+            default: ''
+        },
+        ti: {
+            type: String,
+            default: ''
+        },
+        body: {
+            type: String,
+            default: ''
+        },
+        imgSrc: {
+            type: String,
+            default: ''
+        },
+        update: {
+            type: Boolean,
+            default: false
+        }
     },
     data() {
         return {
@@ -48,33 +63,33 @@ export default {
     methods: {
         async posting(event) {
             // component에서 이미지 불러오기
-            this.img = document.getElementById('image').src 
+            this.img = document.getElementById('image').src
             if (this.update) {
                 // 로컬 데이터로 DB에 반영
-                if(await FirebaseService.updatePortfolio(this.id, this.title, this.contents, this.img)){
+                if (await FirebaseService.updatePortfolio(this.id, this.title, this.contents, this.img)) {
                     // 페이지 리로딩
                     this.$store.state.updatePortfolioDone = true
-                }else{
+                } else {
                     // 수정 실패
-			        alert("수정 권한이 없습니다.");
+                    alert("수정 권한이 없습니다.");
                 }
                 return;
             } else {
                 // 접속한 유저 정보 DB에서 받아옴
                 const user = await FirebaseService.getUserDataAuth()
-                if(!user){
+                if (!user) {
                     alert("작성 권한이 없습니다.");
                     return
                 }
                 //파이어베이스 디비에 넣는 작업
-                if(await FirebaseService.postPortfolio(user.displayName, this.title, this.contents, this.img)){
-                     // 페이지 리로딩
+                if (await FirebaseService.postPortfolio(user.displayName, this.title, this.contents, this.img)) {
+                    // 페이지 리로딩
                     this.$store.state.postPortfolioDone = true
-                }else{
+                } else {
                     alert("작성 권한이 없습니다.");
                 }
                 return;
-                
+
             }
         },
 
@@ -83,20 +98,5 @@ export default {
 </script>
 
 <style>
-.markdown {
-    width: 100%;
-    text-align: -webkit-center;
-}
-
-.v-text-field {
-    display: inline-block;
-    width: 75%
-}
-
-.v-btn--icon {
-    display: inline-block;
-}
-.markdown-editor {
-    text-align: -webkit-auto;
-}
+@import '~simplemde/dist/simplemde.min.css';
 </style>
