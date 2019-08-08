@@ -3,7 +3,7 @@
     <v-flex class="post-head" @click="gotoPost()">
       <div class="post-title">{{ title }}</div> 
       <div class="post-date">by {{ name }} - ({{ formatedDate }})</div>
-      <div class="post-body subheading">{{ body }}</div>
+      <div class="post-body subheading">{{ plainMarkDown }}</div>
     </v-flex>
   </v-layout>
 </template>
@@ -39,7 +39,12 @@ export default {
   computed: {
 		formatedDate() {
 			return `${this.date.getFullYear()}년 ${this.date.getMonth()}월 ${this.date.getDate()}일`
-    }
+    },
+    compiledMarkdown: function () {
+            return marked(this.body, {
+                sanitize: true
+            })
+        }
   }
 }
 </script>
