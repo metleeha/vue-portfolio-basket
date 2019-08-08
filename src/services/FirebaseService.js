@@ -16,7 +16,8 @@ firebase.initializeApp(config)
 
 
 /* Firebase PWA enable */
-firebase.firestore().enablePersistence()
+firebase.firestore().enablePersistence().then(() => {
+	const firestore = app.firestore();})
 	.catch(function (err) {
 		if (err.code == 'failed-precondition') {
 			// Multiple tabs open, persistence can only be enabled
