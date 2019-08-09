@@ -66,6 +66,7 @@ import PostWriter from '../components/PostWriter'
 import {
     FlowerSpinner
 } from 'epic-spinners'
+import marked from 'marked';
 
 export default {
     name: 'PostViewPage',
@@ -148,9 +149,7 @@ export default {
             return this.$store.getters.getUpdatePostDone
         },
         compiledMarkdown: function () {
-            return marked(this.body, {
-                sanitize: true
-            })
+            return marked(this.body)
         }
     },
     watch: {

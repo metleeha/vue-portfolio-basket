@@ -69,6 +69,7 @@ import PortfolioWriter from '../components/PortfolioWriter'
 import {
     FlowerSpinner
 } from 'epic-spinners'
+import marked from 'marked';
 
 export default {
     name: 'PortfolioViewPage',
@@ -121,7 +122,6 @@ export default {
             }
         },
         updatePortfolio(state) {
-            console.log(state)
             if (state) {
                 this.$store.state.updatePortfolioDone = false
                 this.newToggle = false
@@ -135,7 +135,6 @@ export default {
         },
         authCheck() {
             const user = this.$store.getters.getUser;
-            console.log(user)
             if (user) {
                 if (user.authority == "master") {
                     return true;
@@ -155,9 +154,7 @@ export default {
             return this.$store.getters.getUpdatePortfolioDone
         },
         compiledMarkdown: function () {
-            return marked(this.body, {
-                sanitize: true
-            })
+            return marked(this.body)
         }
     },
     watch: {
