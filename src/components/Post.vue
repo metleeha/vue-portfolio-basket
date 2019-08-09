@@ -9,7 +9,7 @@
 </template>
 
 <script>
-
+import marked from 'marked';
 const removeMd =require('remove-markdown');
 export default {
 	name: 'Post',
@@ -46,9 +46,7 @@ export default {
             return removeMd(this.body);
         },
     compiledMarkdown: function () {
-            return marked(this.body, {
-                sanitize: true
-            })
+            return marked(this.body)
         }
   }
 }
