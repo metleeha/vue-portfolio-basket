@@ -1,0 +1,3 @@
+[submodule "SMO"]
+	path = SMO
+	url = https://github.com/snackmonsters/SMO.git
