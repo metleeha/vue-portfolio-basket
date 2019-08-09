@@ -54,7 +54,8 @@ export default {
 	},
 	mounted() {
     this.showPortfoliosLimits = this.limits
-		this.getPortfoliosFirebase()
+    FirebaseService.observePortfolios()
+    this.getPortfoliosFirebase()
 	},
 	methods: {
 		async getPortfoliosFirebase() {
@@ -62,6 +63,7 @@ export default {
       while (ps[0].created_at == null) {  // 새로 생성시 timestamp가 바로 찍히지 않기 때문에 찍힐때까지 호출
         ps = await FirebaseService.getPortfolios()
       }
+      console.log(ps)
       this.$store.state.portfolios = ps
 		},
     loadWriter(){

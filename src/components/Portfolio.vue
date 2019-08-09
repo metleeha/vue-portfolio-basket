@@ -52,6 +52,7 @@
 
 import marked from 'marked';
 const removeMd = require('remove-markdown');
+
 export default {
 	name: 'Porfolio',
 	props: {
