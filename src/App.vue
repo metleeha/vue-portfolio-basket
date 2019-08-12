@@ -17,6 +17,7 @@
 import store from './store'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
+
 var config = require('../ignore/googleAPI.json')
 
 export default {
@@ -72,6 +73,8 @@ export default {
 }
 </script>
 <style scoped>
+  @import './assets/styles/main.css';
+
   #back {
     background-color: #f4f6f6;
   }

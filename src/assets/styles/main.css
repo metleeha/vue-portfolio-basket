@@ -1,0 +1,11 @@
+
+/* UserLlist */
+table th {
+    font-family: 'Literata','Noto Serif KR', serif;
+    background-color: #F4F6F6;
+    font-size: 14px!important;
+}
+.theme--light.v-datatable .v-datatable__actions {
+    background-color: #F4F6F6 !important;
+    font-size: 14px !important;
+}
