@@ -7,7 +7,19 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
+const https = require('https');
+const fs = require('fs');
+
 var app = express();
+
+const options = {
+  key: fs.readFileSync('./keys/private.pem'),
+  cert: fs.readFileSync('./keys/public.pem')
+}
+
+https.createServer(options, app).listen(3000, function() {
+  console.log('https server');
+});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
