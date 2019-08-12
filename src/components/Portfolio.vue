@@ -10,7 +10,7 @@
           <v-card-title primary-title>
             <div class="cardtable">
               <div class="headline">{{ title }}</div>
-              <span class="grey--text">{{ body }}</span>
+              <span class="grey--text">{{ plainMarkDown }}</span>
             </div>
           </v-card-title>
         </v-card>
@@ -32,7 +32,7 @@
                   <div class="portfolio--body">
                     <div>{{ name }}</div>
                     <div class="portfolio--date mb-3">{{ stringDate }}</div>
-                    {{ body }}
+                    <div v-html="compiledMarkdown"></div>
                   </div>
                   <v-card-actions>
                     <v-btn flat @click="gotoPortfolio()">detail</v-btn>
@@ -49,6 +49,9 @@
 </template>
 
 <script>
+
+import marked from 'marked';
+const removeMd = require('remove-markdown');
 
 export default {
 	name: 'Porfolio',
@@ -80,12 +83,20 @@ export default {
   },
   created: function(){
     this.stringDate = this.date
+  },
+  computed:{
+        plainMarkDown: function () {
+            return removeMd(this.body);
+        },
+        compiledMarkdown: function () {
+            return marked(this.body)
+        }
   }
 }
 </script>
 <style>
 .v-dialog {
-  max-height: 60%!important;
+  max-height: 600px!important;
 }
 .cardtable {
   display: table;

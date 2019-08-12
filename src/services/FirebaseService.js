@@ -4,6 +4,9 @@ import 'firebase/auth'
 import 'firebase/messaging'
 import 'firebase/database'
 
+import store from '../store'
+import { async } from 'q';
+
 const POSTS = 'posts'
 const PORTFOLIOS = 'portfolios'
 const BANNERIMAGE = 'bannerimage'
@@ -16,7 +19,8 @@ firebase.initializeApp(config)
 
 
 /* Firebase PWA enable */
-firebase.firestore().enablePersistence()
+firebase.firestore().enablePersistence().then(() => {
+	const firestore = app.firestore();})
 	.catch(function (err) {
 		if (err.code == 'failed-precondition') {
 			// Multiple tabs open, persistence can only be enabled
@@ -32,7 +36,6 @@ firebase.firestore().enablePersistence()
 firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION);
 
 const firestore = firebase.firestore();
-const database = firebase.database();
 const messaging = firebase.messaging();
 messaging.usePublicVapidKey(config.vapid)
 // console.log(config.vapid)
@@ -110,7 +113,21 @@ function getTopics() {
 
 
 export default {
-
+	observePosts(){
+		const postCollection = firestore.collection(POSTS)
+		postCollection
+		.where('deleted', '==', false)
+		.onSnapshot(async(docSnapshots) => {
+			var ps = await this.getPosts()
+			store.state.posts = ps
+			// return docSnapshots.docs.map((doc) => {
+			// 	console.log('aa')
+			// 	let data = doc.data()
+			// 	data.id = doc.id			// 각 데이터 키값
+			// 	return data
+			// })
+		})
+	},
 	getPosts() {
 		const postsCollection = firestore.collection(POSTS)
 		return postsCollection
@@ -142,30 +159,64 @@ export default {
 
 		return getDoc
 	},
-	postPost(username, title, body) {
+	async postPost(username, title, body) {
 		return firestore.collection(POSTS).add({
 			username,
 			title,
 			body,
 			created_at: firebase.firestore.FieldValue.serverTimestamp(),
 			deleted: false
+		}).then(onfulfilled => {
+			return true
+		})
+		.catch(err =>{
+			console.log('postPost() =>', err)
+			return false
 		})
 	},
-	updatePost(id, title, body) {
+	async updatePost(id, title, body) {
 		return firestore.collection(POSTS).doc(id).update({
 			"title": title,
 			"body": body,
+		}).then(onfulfilled => {
+			return true
+		})
+		.catch(err =>{
+			console.log('updatePost() =>', err)
+			return false
 		})
 	},
-	deletePost(id) {
+	async deletePost(id) {
 		return firestore.collection(POSTS).doc(id).update({
 			"deleted": true,
 			"deleted_at": firebase.firestore.FieldValue.serverTimestamp()
+		}).then(onfulfilled => {
+			return true
+		})
+		.catch(err =>{
+			console.log('deletePost() =>', err)
+			return false
+		})
+	},
+	observePortfolios(){
+		const portfoliosCollection = firestore.collection(PORTFOLIOS)
+		portfoliosCollection
+		.where('deleted', '==', false)
+		.onSnapshot(async(docSnapshots) => {
+			var ps = await this.getPortfolios()
+			store.state.portfolios = ps
+			// return docSnapshots.docs.map((doc) => {
+			// 	console.log('aa')
+			// 	let data = doc.data()
+			// 	data.id = doc.id			// 각 데이터 키값
+			// 	return data
+			// })
 		})
 	},
 	getPortfolios() {
-		const postsCollection = firestore.collection(PORTFOLIOS)
-		return postsCollection
+		const portfoliosCollection = firestore.collection(PORTFOLIOS)
+		
+		return portfoliosCollection
 			.where('deleted', '==', false)
 			.orderBy('created_at', 'desc')
 			.get()
@@ -194,27 +245,45 @@ export default {
 
 		return getDoc
 	},
-	postPortfolio(username, title, body, img) {
-		return firestore.collection(PORTFOLIOS).add({
+	async postPortfolio(username, title, body, img) {
+		return await firestore.collection(PORTFOLIOS).add({
 			username,
 			title,
 			body,
 			img,
 			created_at: firebase.firestore.FieldValue.serverTimestamp(),
 			deleted: false
+		}).then(onfulfilled => {
+			return true
+		})
+		.catch(err =>{
+			console.log('postPortfolio() =>', err)
+			return false
 		})
 	},
-	updatePortfolio(id, title, body, img) {
-		return firestore.collection(PORTFOLIOS).doc(id).update({
+	async updatePortfolio(id, title, body, img) {
+		return await firestore.collection(PORTFOLIOS).doc(id).update({
 			"title": title,
 			"body": body,
 			"img": img,
+		}).then(onfulfilled => {
+			return true
+		})
+		.catch(err =>{
+			console.log('updatePortfolio() =>', err)
+			return false
 		})
 	},
-	deletePortfolio(id) {
-		return firestore.collection(PORTFOLIOS).doc(id).update({
+	async deletePortfolio(id) {
+		return await firestore.collection(PORTFOLIOS).doc(id).update({
 			"deleted": true,
 			"deleted_at": firebase.firestore.FieldValue.serverTimestamp()
+		}).then(onfulfilled => {
+			return true
+		})
+		.catch(err =>{
+			console.log('deletePortfolio() =>', err)
+			return false
 		})
 	},
 	getBannerImage() {
@@ -259,17 +328,16 @@ export default {
 		}
 
 		return await firebase.auth().signInWithPopup(provider).then(async function (result) {
-			let user = result.user
-			let isExist = await database.ref('/users/').once('value')
-				.then(function (data) {
-					return data.child(user.uid).exists();
-				});
+			const user = result.user;
+			const isExist = await firestore.collection('users').doc(user.uid).get().then(function(doc){
+				return doc.exists;
+			});
 
 			if (!isExist) {
-				var date = data.user.metadata.creationTime;
+				var date = user.metadata.creationTime;
 				date = date.split(' ');
 				date = date[3] + '.' + monthToNum(date[2]) + '.' + date[1];
-				await database.ref('/users/' + user.uid).set({ name: user.displayName, email: user.email, authority: 'visitor', regdate: date });
+				await firestore.collection('users').doc(user.uid).set({ name: user.displayName, email: user.email, authority: 'visitor', regdate: date });
 			}
 			return true;
 
@@ -315,7 +383,7 @@ export default {
 			var date = data.user.metadata.creationTime;
 			date = date.split(' ');
 			date = date[3] + '.' + monthToNum(date[2]) + '.' + date[1];
-			database.ref('/users/' + data.user.uid).set({
+			firestore.collection('users').doc(data.user.uid).set({
 				name: name,
 				email: email,
 				authority: 'visitor',
@@ -370,8 +438,9 @@ export default {
 		});
 	},
 	getTodayView() {
-		let today = new Date()
-		let formattedToday = (today.getMonth() + 1) + '월 ' + today.getDate() + '일'
+		let today = new Date();
+		let formattedToday = (today.getMonth() + 1) + '월 ' + today.getDate() + '일';
+
 		return firebase.database().ref('/Page/' + formattedToday + '/home').once('value').then(function (snapshot) {
 			let todayView = snapshot.val()
 			if (todayView != null) {
@@ -393,94 +462,94 @@ export default {
 		if (!user) {
 			return false;
 		}
-		return await firebase.database().ref('/users/' + user.uid)
-			.once('value')
-			.then(function (snapshot) {
-				console.log(snapshot.val());
-				if (snapshot.val().authority == 'master') {
-					return true;
-				} else {
-					return false;
-				}
-			})
+		return await firestore.collection('users').doc(user.uid).get().then(function(doc){
+			if(doc.data().authority == 'master'){
+				return true;
+			}else{
+				return false;
+			}
+		});
 	},
 	async checkAuthMember() {
 		const user = await firebase.auth().currentUser;
 		if (!user) {
 			return false;
 		}
-		return await firebase.database().ref('/users/' + user.uid)
-			.once('value')
-			.then(function (snapshot) {
-				const auth = snapshot.val().authority;
-				if (auth == 'member' || auth == 'master') {
-					return true;
-				} else {
-					return false;
-				}
-			})
+		return await firestore.collection('users').doc(user.uid).get().then(function(doc){
+			const auth = doc.data().authority;
+			if(auth == 'master' || auth == 'member'){
+				return true;
+			}else{
+				return false;
+			}
+		});
 	},
-	async changeAuthMember(uid) {
+	async changeAuthMaster(item) {
+		const email = item.email;
 		if (this.checkAuthMaster) {
-			let key = firebase.database().ref('/users/').orderByChild('uid').equalTo(uid).once('value').then(function (snapshot) {
-				snapshot.forEach(function (childSnapshot) {
-					firebase.database().ref('/users/' + childSnapshot.key).update({ authority: "member" });
-				});
-
+			firestore.collection('users').where('email', '==', email).get().then(function(docs){
+				docs.forEach(function(doc){
+					const id = doc.id;
+					if(id != ''){
+						firestore.collection('users').doc(id).update({authority: "master"});
+					}
+				})
+			});
+		} else {
+			alert("권한 관리는 관리자 계정만 가능합니다.");
+			return;
+		}
+	},
+	async changeAuthMember(item) {
+		const email = item.email;
+		if (this.checkAuthMaster) {
+			firestore.collection('users').where('email', '==', email).get().then(function(docs){
+				docs.forEach(function(doc){
+					const id = doc.id;
+					if(id!=''){
+						firestore.collection('users').doc(id).update({authority: "member"});
+					}
+				})
 			})
 		} else {
 			alert("권한 관리는 관리자 계정만 가능합니다.");
 			return;
 		}
 	},
-	async changeAuthMaster(uid) {
+	async changeAuthVisitor(item) {
+		const email = item.email;
 		if (this.checkAuthMaster) {
-			let key = firebase.database().ref('/users/').orderByChild('uid').equalTo(uid).once('value').then(function (snapshot) {
-				snapshot.forEach(function (childSnapshot) {
-					firebase.database().ref('/users/' + childSnapshot.key).update({ authority: "master" });
-				});
-
+			firestore.collection('users').where('email', '==', email).get().then(function(docs){
+				docs.forEach(function(doc){
+					const id = doc.id;
+					if(id!=''){
+						firestore.collection('users').doc(id).update({authority: "visitor"});
+					}
+				})
 			})
 		} else {
 			alert("권한 관리는 관리자 계정만 가능합니다.");
 			return;
 		}
 	},
-	async changeAuthMember(uid) {
-		if (this.checkAuthMaster) {
-			let key = firebase.database().ref('/users/').orderByChild('uid').equalTo(uid).once('value').then(function (snapshot) {
-				snapshot.forEach(function (childSnapshot) {
-					firebase.database().ref('/users/' + childSnapshot.key).update({ authority: "member" });
-				});
-
-			})
-		} else {
-			alert("권한 관리는 관리자 계정만 가능합니다.");
-			return;
-		}
-	},
-	async changeAuthVisitor(uid) {
-		if (this.checkAuthMaster) {
-			let key = firebase.database().ref('/users/').orderByChild('uid').equalTo(uid).once('value').then(function (snapshot) {
-				snapshot.forEach(function (childSnapshot) {
-					firebase.database().ref('/users/' + childSnapshot.key).update({ authority: "visitor" });
-				});
-
-			})
-		} else {
-			alert("권한 관리는 관리자 계정만 가능합니다.");
-			return;
-		}
-	},
-	async getUid() {
-		const user = await firebase.auth().currentUser;
-	},
-	async getUser(uid) {
+	async getUser(user) {
+		const uid = user.uid;
 		if (uid != null) {
-			let user = await database.ref('/users/' + uid).once('value').then(function (snapshot) {
-				return snapshot.val();
-			})
-			return user;
+			const isExist = await firestore.collection('users').doc(uid).get().then(function(doc){
+				return doc.exists;
+			});
+			if(isExist){
+				const userData = await firestore.collection('users').doc(uid).get().then(function(doc){
+					return doc.data();
+				})
+				return userData;
+			}else{
+				var date = user.metadata.creationTime;
+				date = date.split(' ');
+				date = date[3] + '.' + monthToNum(date[2]) + '.' + date[1];
+				await firestore.collection('users').doc(user.uid).set({ name: user.displayName, email: user.email, authority: 'visitor', regdate: date });
+				return { name: user.displayName, email: user.email, authority: 'visitor'};
+			}
 		} else {
 			return { name: 'Anonymous', email: 'None', authority: 'visitor' };
 		}
@@ -511,17 +580,11 @@ export default {
 			return false;
 		});
 
-		result = result & database.ref('/users/' + user.uid + '/name/').update(name);
+		result = result & firestore.collection('users').doc(user.uid).update({name: name});
 		return result;
 	},
 	async getUserDataAuth(){
 		return await firebase.auth().currentUser;
-	},
-	authUserAndDB(portfoliodata, user){
-		if(!user) return false
-		if(!portfoliodata) return false
-		if(user.displayName == 'master') return true
-		return user.displayName == portfoliodata.username
 	},
 	async authUserWriter(user){
 		if (!user) {
@@ -539,25 +602,11 @@ export default {
 			})
 	},
 	async getMemberList() {
-		return await database.ref('/users/').once('value').then(function (datas) {
-			var users = [];
-			datas.forEach(function (data) {
-				users.push(data.val());
-			})
-			return users;
-		})
-	},
-	async regDateCheck() {
-		var user = firebase.auth().currentUser;
-		var isExist = await database.ref('/users/' + user.uid).once('value').then(function (datas) {
-			return datas.child('regdate').exists();
-		})
-		if (!isExist) {
-			var date = user.metadata.creationTime;
-			date = date.split(' ');
-			date = date[3] + '.' + monthToNum(date[2]) + '.' + date[1];
-			database.ref('/users/' + user.uid).update({ regdate: date });
-		}
+		return await firestore.collection('users').get().then(function(docs){
+			return docs.docs.map(function(doc){
+				return doc.data();
+			});
+		});
 	}
 }
 

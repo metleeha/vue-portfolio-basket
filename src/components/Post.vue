@@ -3,12 +3,14 @@
     <v-flex class="post-head" @click="gotoPost()">
       <div class="post-title">{{ title }}</div> 
       <div class="post-date">by {{ name }} - ({{ formatedDate }})</div>
-      <div class="post-body subheading">{{ body }}</div>
+      <div class="post-body subheading">{{ plainMarkDown }}</div>
     </v-flex>
   </v-layout>
 </template>
 
 <script>
+import marked from 'marked';
+const removeMd =require('remove-markdown');
 export default {
 	name: 'Post',
 	props: {
@@ -38,8 +40,14 @@ export default {
   },
   computed: {
 		formatedDate() {
-			return `${this.date.getFullYear()}년 ${this.date.getMonth()}월 ${this.date.getDate()}일`
-    }
+			return `${this.date.getFullYear()}년 ${this.date.getMonth()+1}월 ${this.date.getDate()}일`
+    },
+    plainMarkDown: function () {
+            return removeMd(this.body);
+        },
+    compiledMarkdown: function () {
+            return marked(this.body)
+        }
   }
 }
 </script>

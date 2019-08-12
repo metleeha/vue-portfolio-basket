@@ -8,6 +8,7 @@ import PortfolioViewPage from './views/PortfolioViewPage.vue'
 import PortfolioWriterPage from './views/PortfolioWriterPage.vue'
 import LoginPage from './views/LoginPage.vue'
 import AdminPage from './views/AdminPage.vue'
+import Admin from './views/Admin.vue'
 
 import FirebaseService from '@/services/FirebaseService'
 
@@ -66,7 +67,7 @@ const router = new Router({
 		{
 			path: '/admin',
 			name: 'admin',
-			component: AdminPage,
+			component: Admin,
 			beforeEnter: async (to, from, next)=>{
 				const check = await FirebaseService.checkAuthMaster();
 				if(check){
@@ -76,6 +77,11 @@ const router = new Router({
 					next('/')
 				}
 			}
+		},
+		{
+			path: '/admintest',
+			name: 'admintest',
+			component: AdminPage
 		}
 
   ]

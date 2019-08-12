@@ -20,11 +20,7 @@ export default new Vuex.Store({
     updatePostDone: false,
     postPostDone: false,
     newTogglePost: false,
-  },
-  mutations: {
-    setUser: function(state, user){
-      state.user = user
-    }
+    isAdmin: false,
   },
   getters:{
     getMembers: state => {
@@ -68,6 +64,14 @@ export default new Vuex.Store({
     },
     getUser: state => {
       return state.user
+    },
+    isAdmin(state) {
+      return state.isAdmin
     }
-  }
+  },
+  mutations: {
+    setUser: function (state, user) {
+        state.user = user
+      }
+  },
 })

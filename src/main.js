@@ -15,6 +15,7 @@ import IncrementCnt from './services/IncrementCnt'
 import firebaseService from './services/FirebaseService'
 import VueDisqus from 'vue-disqus'
 
+
 export const bus = new Vue()
 
 Vue.config.productionTip = false
@@ -29,25 +30,21 @@ Vue.use(Vuetify, {
 	}
 })
 
-Vue.use(VueSimplemde)
+Vue.component('vue-simplemde', VueSimplemde)
 
 Vue.use(VueDisqus)
-let app = null;
 
-firebaseService.onAuthStateChanged( async function (user) {
-	if(user){
-		let uid = user.uid;
-		let userInfo = await firebaseService.getUser(uid);
+firebaseService.onAuthStateChanged(async function (user) {
+	if (user) {
+		let userInfo = await firebaseService.getUser(user);
 		store.commit('setUser', userInfo);
 	}
-	firebaseService.regDateCheck();
-	if(!app){
-		app = new Vue({
-			router,
-			store,
-			render: h => h(App)
-		}).$mount('#app');
-	}
+	new Vue({
+		router,
+		store,
+		render: h => h(App)
+	}).$mount('#app');
+
 });
 
 router.beforeEach(function (to, from, next) {
