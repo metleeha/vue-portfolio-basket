@@ -11,16 +11,13 @@
                 :text--white="!adminToggle" :color="adminToggle? '#3a718c':'#f0bebe'">Membership</v-btn>
             </v-flex>
         </v-layout>
-        <v-layout v-if="!logToggle" mt-3 >
+        <v-layout column v-if="!logToggle">
             <v-flex xs12>
-                <v-card flat outlined class="dashboard-visits mx-auto">방문기록
+                <v-card flat class="dashboard-visits mx-auto my-2" color="#F4F6F6">
                     <v-card-text>TODAY: {{ todayView }} </v-card-text>
                     <v-card-text>TOTAL: {{ totalView }}</v-card-text>
-                    <v-card-text>일별 방문자수 그래프</v-card-text>
-                    <v-card-text>포트폴리오 게시글수, 포스팅 게시글수, 댓글</v-card-text>
-                    <v-card-text>방문경로: 직접 url, 검색엔진/ 접근기기: 모바일, 데스크탑</v-card-text>
-                    <v-card-text>일별 가입자수 그래프</v-card-text>
                 </v-card>
+                <PageViewChart></PageViewChart>
             </v-flex>
         </v-layout>
         <v-layout v-if="!adminToggle" mt-3 >
@@ -35,6 +32,7 @@
 <script>
 import FirebaseService from '../services/FirebaseService'
 import UserList from '../components/UserList'
+import PageViewChart from '../components/PageViewChart'
 
 export default {
     data() {
@@ -46,7 +44,8 @@ export default {
         }
     },
     components: {
-        UserList
+        UserList,
+        PageViewChart
     },
     methods: {
         navToggle(){
@@ -75,6 +74,8 @@ export default {
 }
 .dashboard-visits{
     text-align: center;
+    font-family: 'Literata', 'Noto Serif KR', serif;
+    font-size: 1.5em;
 }
 .dashboard-members{
     text-align: center;

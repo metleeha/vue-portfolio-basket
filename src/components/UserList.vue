@@ -29,7 +29,7 @@
 				:class="{mobile: isMobile}"
 			>
 				<template slot="items" slot-scope="props">
-					<tr v-if="!isMobile">
+					<tr v-if="!isMobile" >
 						<td class="text-xs-center">{{ props.item.name }}</td>
 						<td class="text-xs-center">{{ props.item.email }}</td>
 						<td class="text-xs-center px-0 py-0">
@@ -107,7 +107,7 @@ export default {
 							align: 'center',
 							sortable: false,
 							// width: "10%"
-					}
+					},
         ],
         members: [],
 				authorityType: ['master', 'member', 'visitor'],
@@ -129,7 +129,7 @@ export default {
     methods: {
         async initialize() {
             const users = await FirebaseService.getMemberList();
-            console.log(users);
+            // console.log(users);
             this.members = users;
         },
 
@@ -187,6 +187,7 @@ export default {
 }
 </script>
 <style scoped>
+
 .userlist {
 	font-family: 'Literata', 'Noto Serif KR', serif;
 	padding: 0 0;
@@ -195,6 +196,14 @@ export default {
 	text-align: center;
 	justify-content: center;
 }
+table.v-table tbody tr {
+	background-color: #F4F6F6;
+	border-bottom: none;
+}
+table.v-table tbody td {
+	font-size: 14px!important;
+}
+
 table.v-table td {
 	height: max-content!important;
 }
@@ -214,7 +223,7 @@ table.v-table td {
 		}
 
 		.mobile table.v-table tr:nth-child(even) {
-			border-left: 6px solid cyan;
+			border-left: 6px solid darkgrey;
 		}
 
 		.mobile table.v-table tr td {
@@ -244,6 +253,7 @@ table.v-table td {
 		}
 
 	}
+
 	.flex-content {
 		padding: 0;
 		margin: 0;

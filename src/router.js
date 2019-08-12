@@ -67,7 +67,7 @@ const router = new Router({
 		{
 			path: '/admin',
 			name: 'admin',
-			component: AdminPage,
+			component: Admin,
 			beforeEnter: async (to, from, next)=>{
 				const check = await FirebaseService.checkAuthMaster();
 				if(check){
@@ -81,7 +81,7 @@ const router = new Router({
 		{
 			path: '/admintest',
 			name: 'admintest',
-			component: Admin
+			component: AdminPage
 		}
 
   ]
