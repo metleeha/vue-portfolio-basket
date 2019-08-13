@@ -17,7 +17,7 @@ const options = {
   cert: fs.readFileSync('./keys/public.pem')
 }
 
-https.createServer(options, app).listen(3000, function() {
+https.createServer(options, app).listen(443, function() {
   console.log('https server');
 });
 
