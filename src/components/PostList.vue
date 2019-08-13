@@ -77,6 +77,12 @@ export default {
 				this.$store.state.newTogglePost = true
 				this.getPostsFirebase()
 			}
+		},
+		observePosts(state){
+			if(state){
+				this.$store.state.observePosts = false
+				this.getPostsFirebase()
+			}
 		}
 	},
 	computed: {
@@ -90,6 +96,9 @@ export default {
 		},
     	getPostPostDone(){
 			return this.$store.getters.getPostPostDone
+		},
+		getObservePosts(){
+				return this.$store.getters.getObservePosts
 		}
 	},
 	watch: {
@@ -97,7 +106,10 @@ export default {
 			this.setPosts(val)
 		},
 		getPostPostDone(val, oldVal){
-		this.updatePosts(val)
+			this.updatePosts(val)
+		},
+		getObservePosts(val, oldVal){
+			this.observePosts(val)
 		}
 	}
 }

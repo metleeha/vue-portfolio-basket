@@ -118,8 +118,10 @@ export default {
 		postCollection
 		.where('deleted', '==', false)
 		.onSnapshot(async(docSnapshots) => {
-			var ps = await this.getPosts()
-			store.state.posts = ps
+
+			store.state.observePosts = true
+			// var ps = await this.getPosts()
+			// store.state.posts = ps
 			// return docSnapshots.docs.map((doc) => {
 			// 	console.log('aa')
 			// 	let data = doc.data()
@@ -203,8 +205,10 @@ export default {
 		portfoliosCollection
 		.where('deleted', '==', false)
 		.onSnapshot(async(docSnapshots) => {
-			var ps = await this.getPortfolios()
-			store.state.portfolios = ps
+			
+			store.state.observePortfolios = true
+			// var ps = await this.getPortfolios()
+			// store.state.portfolios = ps
 			// return docSnapshots.docs.map((doc) => {
 			// 	console.log('aa')
 			// 	let data = doc.data()
