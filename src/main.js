@@ -34,16 +34,19 @@ Vue.component('vue-simplemde', VueSimplemde)
 
 Vue.use(VueDisqus)
 
+let app;
 firebaseService.onAuthStateChanged(async function (user) {
 	if (user) {
 		let userInfo = await firebaseService.getUser(user);
 		store.commit('setUser', userInfo);
 	}
-	new Vue({
-		router,
-		store,
-		render: h => h(App)
-	}).$mount('#app');
+	if(!app){
+		app = new Vue({
+			router,
+			store,
+			render: h => h(App)
+		}).$mount('#app');
+	}	
 
 });
 
