@@ -13,8 +13,8 @@ const fs = require('fs');
 var app = express();
 
 const options = {
-  key: fs.readFileSync('./keys/private.pem'),
-  cert: fs.readFileSync('./keys/public.pem')
+  key: fs.readFileSync('server.key'),
+  cert: fs.readFileSync('server.cert')
 }
 
 https.createServer(options, app).listen(443, function() {
