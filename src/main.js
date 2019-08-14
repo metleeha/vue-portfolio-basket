@@ -14,7 +14,9 @@ import IncrementCnt from './services/IncrementCnt'
 
 import firebaseService from './services/FirebaseService'
 import VueDisqus from 'vue-disqus'
-
+import VueOffline from 'vue-offline'
+ 
+Vue.use(VueOffline)
 
 export const bus = new Vue()
 
@@ -33,7 +35,9 @@ Vue.use(Vuetify, {
 Vue.component('vue-simplemde', VueSimplemde)
 
 Vue.use(VueDisqus)
-
+console.log("-----------------------");
+console.log((+ new Date()));
+console.log("-----------------------");
 let app;
 firebaseService.onAuthStateChanged(async function (user) {
 	if (user) {

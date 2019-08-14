@@ -14,16 +14,14 @@ self.addEventListener('fetch', function (e) {
   var req = e.request.clone();
   if (req.clone().method == "GET") {
     e.respondWith(
-      caches.match(e.request).then(function (r) {
-        return r || fetch(e.request).then(function (response) {
+      caches.match(req.clone()).then(function (r) {
+        return r || fetch(req.clone()).then(function (response) {
           return caches.open("tenPWA_v1").then(function (cache) {
-            cache.put(e.request, response.clone());
+            cache.put(req.clone(), response.clone());
             return response;
           });
         });
       })
     );
-  }else{
-    fetch(e.request);
-  }
+  } 
 });

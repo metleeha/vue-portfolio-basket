@@ -29,6 +29,7 @@
     "vue-chartjs": "^3.4.2",
     "vue-chartkick": "^0.5.1",
     "vue-disqus": "^3.0.5",
+    "vue-offline": "^2.0.8",
     "vue-router": "^3.0.1",
     "vue-simplemde": "^1.0.0",
     "vuetify": "^1.5.5",
