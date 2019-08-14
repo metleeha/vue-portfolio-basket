@@ -20,11 +20,11 @@
                 <v-container grid-list-md text-xs-center>
 
                     <v-layout wrap row>
-                        <v-text-field class="input-with-icon" name='email' label='E-Mail' id='Email' v-model='email' type='email' prepend-icon="mail_outline" required disabled></v-text-field>
-                        <v-text-field class="input-with-icon" name='name' label='Name' id='name' v-model='name' type='text' prepend-icon="face"></v-text-field>
-                        <v-text-field class="input-with-icon" name='password' label='Recent password' id='Password' v-model='beforePassword' type='password' prepend-icon="lock" required></v-text-field>
-                        <v-text-field class="input-with-icon" name='password' label='Password' id='Password' v-model='password' type='password' prepend-icon="lock" required></v-text-field>
-                        <v-text-field class="input-with-icon" name='confirmPassword' label='confirmPassword' id='confirmPassword' v-model='confirmPassword' type='password' prepend-icon="check_circle" :rules="[comparePasswords]" required></v-text-field>
+                        <v-text-field class="input-with-icon" name='email' label='E-Mail' v-model='email' type='email' prepend-icon="mail_outline" required disabled></v-text-field>
+                        <v-text-field class="input-with-icon" name='name' label='Name' v-model='name' type='text' prepend-icon="face"></v-text-field>
+                        <v-text-field class="input-with-icon" name='password' label='Recent password' v-model='beforePassword' type='password' prepend-icon="lock" required></v-text-field>
+                        <v-text-field class="input-with-icon" name='password' label='Password' v-model='password' type='password' prepend-icon="lock" required></v-text-field>
+                        <v-text-field class="input-with-icon" name='confirmPassword' label='confirmPassword'  v-model='confirmPassword' type='password' prepend-icon="check_circle" :rules="[comparePasswords]" required></v-text-field>
                     </v-layout>
                     <v-layout wrap row>
                         <v-flex xs6>

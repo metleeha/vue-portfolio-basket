@@ -23,8 +23,8 @@
                 <v-container grid-list-md text-xs-center>
 
                     <v-layout wrap row>
-                        <v-text-field class="input-with-icon" name='email' label='E-Mail' id='email' v-model='email' type='email' prepend-icon="mail_outline" required></v-text-field>
-                        <v-text-field class="input-with-icon" name='password' label='Password' id='password' v-model='password' type='password' prepend-icon="lock" v-on:keyup.enter="signIn" required></v-text-field>
+                        <v-text-field class="input-with-icon" name='email' label='E-Mail' v-model='email' type='email' prepend-icon="mail_outline" required></v-text-field>
+                        <v-text-field class="input-with-icon" name='password' label='Password'  v-model='password' type='password' prepend-icon="lock" v-on:keyup.enter="signIn" required></v-text-field>
                     </v-layout>
 
                     <v-layout wrap row>
@@ -71,10 +71,10 @@
                 <v-container grid-list-md text-xs-center>
 
                     <v-layout wrap row>
-                        <v-text-field class="input-with-icon" name='email' label='E-Mail' id='signUpEmail' v-model='email' type='email' prepend-icon="mail_outline" required></v-text-field>
-                        <v-text-field class="input-with-icon" name='name' label='Name' id='name' v-model='name' type='text' prepend-icon="face" required></v-text-field>
-                        <v-text-field class="input-with-icon" name='password' label='Password' id='signUpPassword' v-model='password' type='password' prepend-icon="lock" required></v-text-field>
-                        <v-text-field class="input-with-icon" name='confirmPassword' label='confirmPassword' id='confirmPassword' v-model='confirmPassword' type='password' prepend-icon="check_circle" :rules="[comparePasswords]" required></v-text-field>
+                        <v-text-field class="input-with-icon" name='email' label='E-Mail' v-model='email' type='email' prepend-icon="mail_outline" required></v-text-field>
+                        <v-text-field class="input-with-icon" name='name' label='Name' v-model='name' type='text' prepend-icon="face" required></v-text-field>
+                        <v-text-field class="input-with-icon" name='password' label='Password'  v-model='password' type='password' prepend-icon="lock" required></v-text-field>
+                        <v-text-field class="input-with-icon" name='confirmPassword' label='confirmPassword' v-model='confirmPassword' type='password' prepend-icon="check_circle" :rules="[comparePasswords]" required></v-text-field>
                     </v-layout>
                     <v-layout wrap row>
                         <v-flex xs6>
@@ -95,7 +95,7 @@
                 <v-container grid-list-md text-xs-left>
                     <h4>가입시 사용하였던 이메일을 입력하시면, 패스워드 리셋 메일을 보내드립니다.</h4>
                     <v-layout wrap row>
-                        <v-text-field class="input-with-icon" name='Email' label='E-Mail' id='forgot_Email' v-model='email' type='email' prepend-icon="mail_outline" required></v-text-field>
+                        <v-text-field class="input-with-icon" name='Email' label='E-Mail' v-model='email' type='email' prepend-icon="mail_outline" required></v-text-field>
                     </v-layout>
                     <v-subheader>(5-10분정도 시간이 소요될 수 있습니다.)</v-subheader>
                     <v-layout wrap row>

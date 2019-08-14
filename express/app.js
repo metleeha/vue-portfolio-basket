@@ -12,14 +12,21 @@ const fs = require('fs');
 
 var app = express();
 
+
+
 const options = {
-  key: fs.readFileSync('./keys/private.pem'),
-  cert: fs.readFileSync('./keys/public.pem')
+  key: fs.readFileSync('server.key'),
+  cert: fs.readFileSync('server.cert')
 }
 
-https.createServer(options, app).listen(3000, function() {
+https.createServer(options, app).listen(443, function() {
   console.log('https server');
 });
+
+
+const history = require('connect-history-api-fallback');
+
+app.use(history());
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -30,6 +37,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);

@@ -63,7 +63,6 @@ export default {
       while (ps[0].created_at == null) {  // 새로 생성시 timestamp가 바로 찍히지 않기 때문에 찍힐때까지 호출
         ps = await FirebaseService.getPortfolios()
       }
-      console.log(ps)
       this.$store.state.portfolios = ps
 		},
     loadWriter(){
@@ -81,6 +80,12 @@ export default {
         this.$store.state.newTogglePortfolios = true
         this.getPortfoliosFirebase()
       }
+    },
+    observePortfolios(state){
+      if(state){
+        this.$store.state.observePortfolios = false
+        this.getPortfoliosFirebase()
+      }
     }
   },
   computed: {
@@ -94,7 +99,10 @@ export default {
     },
     getPostPortfolioDone(){
 			return this.$store.getters.getPostPortfolioDone
-		}
+    },
+    getObservePortfolios(){
+			return this.$store.getters.getObservePortfolios
+    }
   },
   watch: {
     getPortfolios(val, oldVal){
@@ -102,6 +110,9 @@ export default {
     },
     getPostPortfolioDone(val, oldVal){
       this.updatePortfolios(val)
+    },
+    getObservePortfolios(val, oldVal){
+      this.observePortfolios(val)
     }
   }
 }

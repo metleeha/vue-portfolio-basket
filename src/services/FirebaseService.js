@@ -19,9 +19,7 @@ firebase.initializeApp(config)
 
 
 /* Firebase PWA enable */
-firebase.firestore().enablePersistence().then(() => {
-	const firestore = app.firestore();})
-	.catch(function (err) {
+firebase.firestore().enablePersistence().catch(function (err) {
 		if (err.code == 'failed-precondition') {
 			// Multiple tabs open, persistence can only be enabled
 			// in one tab at a a time.
@@ -118,8 +116,10 @@ export default {
 		postCollection
 		.where('deleted', '==', false)
 		.onSnapshot(async(docSnapshots) => {
-			var ps = await this.getPosts()
-			store.state.posts = ps
+
+			store.state.observePosts = true
+			// var ps = await this.getPosts()
+			// store.state.posts = ps
 			// return docSnapshots.docs.map((doc) => {
 			// 	console.log('aa')
 			// 	let data = doc.data()
@@ -203,8 +203,10 @@ export default {
 		portfoliosCollection
 		.where('deleted', '==', false)
 		.onSnapshot(async(docSnapshots) => {
-			var ps = await this.getPortfolios()
-			store.state.portfolios = ps
+			
+			store.state.observePortfolios = true
+			// var ps = await this.getPortfolios()
+			// store.state.portfolios = ps
 			// return docSnapshots.docs.map((doc) => {
 			// 	console.log('aa')
 			// 	let data = doc.data()

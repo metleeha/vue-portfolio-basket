@@ -17,22 +17,20 @@
                         <v-container grid-list-sm fluid>
                           <v-layout row wrap>
                             <v-card flat tile class="d-flex">
-                                  
-                                
-                                  <v-btn flat class='randomImgSize' @click="getRandomImgUrl()">
-                                    <h1>?</h1>
-                                    <template v-slot:placeholder>
-                                      <v-layout
-                                      fill-height
-                                      align-center
-                                      justify-center
-                                      ma-0
-                                      >
-                                      <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
-                                      </v-layout>
-                                    </template>
-                                  </v-btn>
-                              </v-card>
+                              <v-btn flat class='randomImgSize' @click="getRandomImgUrl()">
+                                <h1>?</h1>
+                                <template v-slot:placeholder>
+                                  <v-layout
+                                  fill-height
+                                  align-center
+                                  justify-center
+                                  ma-0
+                                  >
+                                  <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
+                                  </v-layout>
+                                </template>
+                              </v-btn>
+                            </v-card>
                             
                             <v-flex
                             v-for="(n, i) in this.imgUrlList.length"
@@ -41,7 +39,6 @@
                             d-flex
                             >
                               <v-card flat tile class="d-flex">
-                                  
                                 <v-img
                                 :src= 'imgUrlList[i].img'
                                 aspect-ratio="1.8"
@@ -70,7 +67,7 @@
             </v-card>
         </v-dialog>	  
       <v-layout align-center justify-center row fill-height>
-        <v-flex class=' moveSlot'>
+        <v-flex class='moveSlot'>
           <span class="banner-title text-shadow">
             <slot name="text"/>
           </span>
@@ -163,15 +160,15 @@ export default {
     height: 120px;
     padding: 0%;
     margin: 0%;
-}
-  .randomImgSize {
-    width: 212px;
-    height: 120px;
-}
-.moveIcon {
-  margin-top: 20px;
-}
-.moveSlot {
-  margin-top: -10px;
-}
+  }
+    .randomImgSize {
+      width: 212px;
+      height: 120px;
+  }
+  .moveIcon {
+    margin-top: 20px;
+  }
+  .moveSlot {
+    margin-top: -10px;
+  }
 </style>
