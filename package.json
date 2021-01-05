@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "@google-cloud/translate": "^4.1.1",
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "cache-polyfill": "^1.0.1",
     "chart.js": "^2.8.0",
     "core-js": "^2.6.5",
